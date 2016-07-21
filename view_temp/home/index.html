@@ -1,0 +1,19 @@
+{{define "content"}}{{template "header" .}}
+<style>
+    /**style here at this moment*/
+</style>
+{{template "header_foo" .}}
+<div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+    {{template "navbar" .}}
+    <main id="app" class="mdl-layout__content">
+        <div class="container">
+            <h1>Home</h1>
+        </div>
+    </main>
+</div>
+{{template "script" .}}
+<script src="/static/dist/js/vue.js"></script>
+<script type="text/javascript">
+</script>
+{{template "footer" .}}
+{{end}}

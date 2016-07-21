@@ -1,0 +1,19 @@
+{
+  "layouts": [
+    "layouts/header.html",
+    "layouts/header_foo.html",
+    "layouts/navbar.html",
+    "layouts/center_script.html",
+    "layouts/footer.html"
+  ],
+  "template": {
+    "home/index.html": {
+      "title": "首页"
+    }
+  },
+  "watched_folder": [
+    {
+      "folder": "home"
+    }
+  ]
+}
