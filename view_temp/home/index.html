@@ -3,13 +3,78 @@
     /**style here at this moment*/
 </style>
 {{template "header_foo" .}}
-<div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
-    {{template "navbar" .}}
-    <main id="app" class="mdl-layout__content">
+{{template "navbar" .}}
+<main id="app" class="content">
+    <div class="content-header ui-content-header">
         <div class="container">
-            <h1>Home</h1>
+            <div class="row">
+                <div class="col-lg-6 col-lg-offset-3 col-md-10 col-md-offset-1">
+                    <h1 class="content-heading">Navigation Drawers</h1>
+                </div>
+            </div>
         </div>
-    </main>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 col-lg-offset-3 col-md-10 col-md-offset-1">
+                <section class="content-inner margin-top-no">
+                    <div class="card">
+                        <div class="card-main">
+                            <div class="card-inner">
+                                <p>The navigation drawer slides in from the left. It is a common pattern found in Google
+                                    apps and sites.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <h2 class="content-sub-heading">Examples</h2>
+                    <div class="card">
+                        <div class="card-main">
+                            <div class="card-header">
+                                <div class="card-inner">
+                                    <h3 class="h5 margin-bottom-no margin-top-no">Permanent</h3>
+                                </div>
+                            </div>
+                            <div class="card-inner">
+                                <p>The navigation drawer on the left is a live demo of a permanent navigation drawer.
+                                    Permanent navigation drawers are always visible and pinned to the left edge.</p>
+                                <p><strong>N.B.</strong> Permanent navigation drawers are recommended for desktop, they
+                                    will turn into temporary navigation drawers on mobile and tablets.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-main">
+                            <div class="card-header">
+                                <div class="card-inner">
+                                    <h3 class="h5 margin-bottom-no margin-top-no">Temporary</h3>
+                                </div>
+                            </div>
+                            <div class="card-inner">
+                                <p>The navigation drawer on the right is a live demo of a temporary navigation drawer.
+                                    Temporary navigation drawers can toggle open or closed. Closed by default, the
+                                    drawer opens temporarily above all other content until a section is selected.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+</main>
+<footer class="ui-footer">
+    <div class="container">
+        <p>Material</p>
+    </div>
+</footer>
+<div class="fbtn-container">
+    <div class="fbtn-inner">
+        <a class="fbtn fbtn-lg fbtn-brand-accent waves-attach waves-circle waves-light" data-toggle="dropdown"><span class="fbtn-text fbtn-text-left">Links</span><span class="fbtn-ori icon">apps</span><span class="fbtn-sub icon">close</span></a>
+        <div class="fbtn-dropup">
+            <a class="fbtn waves-attach waves-circle" href="https://github.com/Daemonite/material" target="_blank"><span class="fbtn-text fbtn-text-left">Fork me on GitHub</span><span class="icon">code</span></a>
+            <a class="fbtn fbtn-brand waves-attach waves-circle waves-light" href="https://twitter.com/daemonites" target="_blank"><span class="fbtn-text fbtn-text-left">Follow Daemon on Twitter</span><span class="icon">share</span></a>
+            <a class="fbtn fbtn-green waves-attach waves-circle" href="http://www.daemon.com.au/" target="_blank"><span class="fbtn-text fbtn-text-left">Visit Daemon Website</span><span class="icon">link</span></a>
+        </div>
+    </div>
 </div>
 {{template "script" .}}
 <script src="/static/dist/js/vue.js"></script>

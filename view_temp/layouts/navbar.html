@@ -1,24 +1,96 @@
-{{define "navbar"}}<header class="mdl-layout__header">
-    <div class="mdl-layout__header-row">
-        <!-- Title -->
-        <span class="mdl-layout-title">Title</span>
-        <!-- Add spacer, to align navigation to the right -->
-        <div class="mdl-layout-spacer"></div>
-        <!-- Navigation. We hide it in small screens. -->
-        <nav class="mdl-navigation mdl-layout--large-screen-only">
-            <a class="mdl-navigation__link" href="">Link</a>
-            <a class="mdl-navigation__link" href="">Link</a>
-            <a class="mdl-navigation__link" href="">Link</a>
-            <a class="mdl-navigation__link" href="">Link</a>
-        </nav>
+{{define "navbar"}}
+<nav class="menu menu-left nav-drawer nav-drawer-md" id="ui_menu">
+    <div class="menu-scroll">
+        <div class="menu-content">
+            <a class="menu-logo" href="index.html">Material</a>
+            <ul class="nav">
+                <li>
+                    <a class="collapsed waves-attach" data-toggle="collapse" href="#ui_menu_samples">Sample Pages</a>
+                    <ul class="menu-collapse collapse" id="ui_menu_samples">
+                        <li>
+                            <a class="waves-attach" href="page-login.html">Login Page</a>
+                        </li>
+                        <li>
+                            <a class="waves-attach" href="page-picker.html">Picker Page</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
     </div>
+</nav>
+<header class="header header-transparent header-waterfall ui-header">
+    <ul class="nav nav-list pull-left hidden-md hidden-lg">
+        <li>
+            <a data-toggle="menu" href="#ui_menu">
+                <span class="icon icon-lg">menu</span>
+            </a>
+        </li>
+    </ul>
+    <a class="header-logo header-affix-hide margin-left-no margin-right-no hidden-md hidden-lg" data-offset-top="213"
+       data-spy="affix" href="index.html">Material</a>
+    <span class="header-logo header-affix hidden-md hidden-lg margin-left-no margin-right-no" data-offset-top="213"
+          data-spy="affix">Nav Drawers</span>
+    <span class="header-logo header-affix visible-md-block visible-lg-block margin-right-no" data-offset-top="213"
+          data-spy="affix">Nav Drawers</span>
+    <ul class="nav nav-list pull-right">
+        <li>
+            <a data-toggle="menu" href="#ui_menu_profile">
+                <span class="access-hide">John Smith</span>
+                <span class="avatar avatar-sm"><img alt="alt text for John Smith avatar"
+                                                    src="/static/img/avatar.jpg"></span>
+            </a>
+        </li>
+    </ul>
 </header>
-<div class="mdl-layout__drawer">
-    <span class="mdl-layout-title">Title</span>
-    <nav class="mdl-navigation">
-        <a class="mdl-navigation__link" href="">Link</a>
-        <a class="mdl-navigation__link" href="">Link</a>
-        <a class="mdl-navigation__link" href="">Link</a>
-        <a class="mdl-navigation__link" href="">Link</a>
-    </nav>
-</div>{{end}}
+<nav aria-hidden="true" class="menu menu-right" id="ui_menu_profile" tabindex="-1">
+    <div class="menu-scroll">
+        <div class="menu-top">
+            <div class="menu-top-img">
+                <img alt="John Smith" src="/static/img/landscape.jpg">
+            </div>
+            <div class="menu-top-info">
+                <a class="menu-top-user" href="javascript:void(0)"><span class="avatar avatar-inline margin-right"><img
+                        alt="alt text for John Smith avatar" src="/static/img/avatar.jpg"></span>John Smith</a>
+            </div>
+            <div class="menu-top-info-sub">
+                <small>Some additional information about John Smith</small>
+            </div>
+        </div>
+        <div class="menu-content">
+            <ul class="nav">
+                <li>
+                    <a class="waves-attach" href="javascript:void(0)">
+                        Profile Settings
+							<span class="menu-collapse-toggle collapsed waves-attach"
+                                  data-target="#ui_menu_profile_settings" data-toggle="collapse">
+								<div class="menu-collapse-toggle-close">
+									<i class="icon icon-lg">close</i>
+								</div>
+								<div class="menu-collapse-toggle-default">
+									<i class="icon icon-lg">add</i>
+								</div>
+							</span>
+                    </a>
+                    <ul class="menu-collapse collapse" id="ui_menu_profile_settings">
+                        <li>
+                            <a class="waves-attach" href="javascript:void(0)">First Item</a>
+                        </li>
+                        <li>
+                            <a class="waves-attach" href="javascript:void(0)">Another Item</a>
+                        </li>
+                        <li>
+                            <a class="waves-attach" href="javascript:void(0)">Something Else</a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a class="waves-attach" href="javascript:void(0)">Upload Photo</a>
+                </li>
+                <li>
+                    <a class="waves-attach" href="page-login.html">Logout</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>{{end}}
