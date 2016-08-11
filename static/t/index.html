@@ -33,7 +33,7 @@
             <a data-toggle="menu" href="#ui_menu_profile">
                 <span class="access-hide">John Smith</span>
                 <span class="avatar avatar-sm">
-                    <img alt="alt text for John Smith avatar" src="/static/img/avatar.jpg">
+                     <img :alt="settings.me.refer.name"  :src="settings.me.refer.avatar">
                 </span>
             </a>
         </li>
@@ -69,14 +69,17 @@
     <div class="menu-scroll">
         <div class="menu-top">
             <div class="menu-top-img">
-                <img alt="John Smith" src="/static/img/landscape.jpg">
+                <img alt="landscape" src="/static/img/landscape.jpg">
             </div>
             <div class="menu-top-info">
-                <a class="menu-top-user" href="javascript:void(0)"><span class="avatar avatar-inline margin-right"><img
-                        alt="alt text for John Smith avatar" src="/static/img/avatar.jpg"></span>John Smith</a>
+                <a class="menu-top-user" href="javascript:void(0)">
+                    <span class="avatar avatar-inline margin-right">
+                    <img :alt="settings.me.refer.name"  :src="settings.me.refer.avatar">
+                    </span><span>{{settings.me.refer.name}}</span>
+                </a>
             </div>
             <div class="menu-top-info-sub">
-                <small>Some additional information about John Smith</small>
+                <small>{{settings.me.refer.bio}}</small>
             </div>
         </div>
         <div class="menu-content">
@@ -127,8 +130,8 @@
         </div>
     </div>
     <div class="container">
-        <list-grid :lists="list.data" :show="list.show"></list-grid>
-        <detail-grid :detail="detail.data" :show="detail.show"></detail-grid>
+        <list-grid :lists="list.data" :show="list.show" :settings="settings"></list-grid>
+        <detail-grid :detail="detail.data" :show="detail.show" :settings="settings"></detail-grid>
     </div>
 </main>
 <footer class="ui-footer footer">
@@ -184,5 +187,21 @@
     </div>
 </script>
 <script type="text/x-template" id="detail-template">
-    <div  v-show="show" >Detail</div>
+    <div  v-show="show" class="container">
+        <div class="row blog-detail-mate">
+             <span class="avatar" style="display: inline-block">
+                <a :href="settings.me.refer.url"  target="_blank">
+                    <img alt="..." :src="settings.me.refer.avatar">
+                </a>
+            </span>
+            <span class="refer-me">
+                By <a :href="settings.me.refer.url" target="_blank">{{settings.me.refer.name}}</a>&nbsp;·&nbsp;</span>
+            <span class="label label-brand" title="2015-12-23">3天前</span>
+        </div>
+        <article class="row blog-article">
+            <div class="col-md-12" v-html="article | marked">
+            </div>
+        </article>
+
+    </div>
 </script>
