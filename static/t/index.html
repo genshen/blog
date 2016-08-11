@@ -1,0 +1,188 @@
+<header class="header header-transparent header-waterfall ui-header">
+    <ul class="nav nav-list pull-left">
+        <li>
+            <a data-toggle="menu" href="#ui_menu">
+                <span class="icon icon-lg">menu</span>
+            </a>
+        </li>
+    </ul>
+    <a class="header-logo header-affix-hide margin-left-no margin-right-no" data-offset-top="213"
+       data-spy="affix" href="index.html">Material</a>
+    <ul class="nav nav-list pull-right">
+        <li class="dropdown margin-right">
+            <a class="dropdown-toggle text-black waves-attach waves-effect"
+               data-toggle="dropdown" aria-expanded="false">
+                <span>Sample Pages</span>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-right">
+                <li>
+                    <a class="padding-right-lg waves-attach waves-effect" href="javascript:void(0)">
+                        <span class="icon icon-lg margin-right waves-effect">account_box</span>Profile Settings</a>
+                </li>
+                <li>
+                    <a class="padding-right-lg waves-attach waves-effect" href="javascript:void(0)">
+                        <span class="icon icon-lg margin-right">add_to_photos</span>Upload Photo</a>
+                </li>
+                <li>
+                    <a class="padding-right-lg waves-attach waves-effect" href="page-login.html">
+                        <span class="icon icon-lg margin-right">exit_to_app</span>Logout</a>
+                </li>
+            </ul>
+        </li>
+        <li>
+            <a data-toggle="menu" href="#ui_menu_profile">
+                <span class="access-hide">John Smith</span>
+                <span class="avatar avatar-sm">
+                    <img alt="alt text for John Smith avatar" src="/static/img/avatar.jpg">
+                </span>
+            </a>
+        </li>
+    </ul>
+</header>
+<nav aria-hidden="true" tabindex="-1" class="menu " id="ui_menu">
+    <div class="menu-scroll">
+        <div class="menu-content">
+            <a class="menu-logo" href="index.html">Material</a>
+            <ul class="nav">
+                <li class="nav-search-box">
+                    <div class="form-group form-group-label">
+                        <label class="floating-label" for="search">search</label>
+                        <input class="form-control" id="search" type="text">
+                    </div>
+                </li>
+                <li>
+                    <a class="collapsed waves-attach waves-effect" data-toggle="collapse" href="#ui_menu_samples">Sample Pages</a>
+                    <ul class="menu-collapse collapse" id="ui_menu_samples">
+                        <li>
+                            <a class="waves-attach waves-effect" href="page-login.html">Login Page</a>
+                        </li>
+                        <li>
+                            <a class="waves-attach waves-effect" href="page-picker.html">Picker Page</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<nav aria-hidden="true" class="menu menu-right" id="ui_menu_profile" tabindex="-1">
+    <div class="menu-scroll">
+        <div class="menu-top">
+            <div class="menu-top-img">
+                <img alt="John Smith" src="/static/img/landscape.jpg">
+            </div>
+            <div class="menu-top-info">
+                <a class="menu-top-user" href="javascript:void(0)"><span class="avatar avatar-inline margin-right"><img
+                        alt="alt text for John Smith avatar" src="/static/img/avatar.jpg"></span>John Smith</a>
+            </div>
+            <div class="menu-top-info-sub">
+                <small>Some additional information about John Smith</small>
+            </div>
+        </div>
+        <div class="menu-content">
+            <ul class="nav">
+                <li>
+                    <a class="waves-attach waves-effect" href="javascript:void(0)">
+                        Profile Settings
+							<span class="menu-collapse-toggle collapsed waves-attach waves-effect"
+                                  data-target="#ui_menu_profile_settings" data-toggle="collapse">
+								<div class="menu-collapse-toggle-close">
+									<i class="icon icon-lg">close</i>
+								</div>
+								<div class="menu-collapse-toggle-default">
+									<i class="icon icon-lg">add</i>
+								</div>
+							</span>
+                    </a>
+                    <ul class="menu-collapse collapse" id="ui_menu_profile_settings">
+                        <li>
+                            <a class="waves-attach waves-effect" href="javascript:void(0)">First Item</a>
+                        </li>
+                        <li>
+                            <a class="waves-attach waves-effect" href="javascript:void(0)">Another Item</a>
+                        </li>
+                        <li>
+                            <a class="waves-attach waves-effect" href="javascript:void(0)">Something Else</a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a class="waves-attach waves-effect" href="javascript:void(0)">Upload Photo</a>
+                </li>
+                <li>
+                    <a class="waves-attach waves-effect" href="page-login.html">Logout</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<main id="app" class="ui-main-content">
+    <div class="content-header ui-content-header" v-show="settings.show_content_header">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 col-lg-offset-3 col-md-10 col-md-offset-1">
+                    <h1 class="content-heading">Navigation Drawers</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <list-grid :lists="list.data" :show="list.show"></list-grid>
+        <detail-grid :detail="detail.data" :show="detail.show"></detail-grid>
+    </div>
+</main>
+<footer class="ui-footer footer">
+    <div class="container">
+        <p>Material</p>
+    </div>
+</footer>
+<div class="fbtn-container">
+    <div class="fbtn-inner">
+        <a class="fbtn fbtn-lg fbtn-brand-accent waves-attach waves-effect waves-circle waves-light" data-toggle="dropdown"><span
+                class="fbtn-text fbtn-text-left">Links</span><span class="fbtn-ori icon">apps</span><span
+                class="fbtn-sub icon">close</span></a>
+        <div class="fbtn-dropup">
+            <a class="fbtn waves-attach waves-effect waves-circle" href="https://github.com/Daemonite/material" target="_blank"><span
+                    class="fbtn-text fbtn-text-left">Fork me on GitHub</span><span class="icon">code</span></a>
+            <a class="fbtn fbtn-brand waves-attach waves-effect waves-circle waves-light" href="https://twitter.com/daemonites"
+               target="_blank"><span class="fbtn-text fbtn-text-left">Follow Daemon on Twitter</span><span class="icon">share</span></a>
+            <a class="fbtn fbtn-green waves-attach waves-effect waves-circle" href="http://www.daemon.com.au/" target="_blank"><span
+                    class="fbtn-text fbtn-text-left">Visit Daemon Website</span><span class="icon">link</span></a>
+        </div>
+    </div>
+</div>
+
+<script type="text/x-template" id="list-template">
+    <div v-show="show" class="row">
+        <div v-for="blog in lists" class="col-md-12">
+            <div class="card">
+                <div class="card-main">
+                    <div class="card-header">
+                        <div class="card-header-side pull-left">
+                            <span>{{blog.date}}</span>
+                        </div>
+                        <div class="card-inner">
+                            <a href="#" class="card-heading">{{blog.title}}</a>
+                        </div>
+                    </div>
+                    <div class="card-img">
+                        <img alt="alt text" :src="blog.img" style="width: 100%;">
+                        <p class="card-img-heading">{{blog.summary}}</p>
+                    </div>
+                    <div class="card-inner">
+                        <p>Lorem ipsum dolor sit amet.<br>Consectetur adipiscing elit.</p>
+                    </div>
+                    <div class="card-action">
+                        <div class="card-action-btn pull-left">
+                            <a class="btn btn-flat waves-effect waves-attach" href="javascript:void(0)">
+                                <span class="icon">more_vert</span>&nbsp;Read More</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+<script type="text/x-template" id="detail-template">
+    <div  v-show="show" >Detail</div>
+</script>

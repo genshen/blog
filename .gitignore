@@ -8,6 +8,7 @@
 _obj
 _test
 .idea/
+.idea
 temp
 
 # Architecture specific extensions/prefixes
