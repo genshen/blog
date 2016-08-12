@@ -12,7 +12,7 @@
 }
 
 .ui-main-content {
-    margin-top: 56px;
+    margin-top: 55px;
     margin-bottom: 92px;
 }
 
@@ -30,7 +30,7 @@
 .blog-detail-mate {
     margin-top: 16px;
 }
-.blog-detail-mate:after{
+.blog-article:after, .blog-detail-mate:after{
     margin-top: 16px;
     border: 0;
     border-top: 1px solid rgba(0,0,0,0.12);
@@ -38,7 +38,9 @@
     display: block;
     height: 0;
 }
-
+.inline-avatar{
+    display:inline-block;
+}
 .blog-detail-mate .refer-me {
     font-family: Georgia, "Times New Roman", Times, serif;
 }
@@ -47,12 +49,56 @@
 }
 .blog-article code{
     border:none;
-}/*
-    Paraíso (light)
+}
+
+.comment-area .comment-form{
+    margin-top: 20px;
+    margin-bottom: 6px
+}
+
+.comment-area .comment-item{
+    padding: 6px 0;
+}
+.comment-item.comments-border{
+    border-top: 1px solid rgba(0,0,0,0.12);
+}
+.comment-mate .user-refer{
+    font-family: Georgia, "Times New Roman", Times, serif;
+}
+.comment-content{
+    padding-left: 40px;
+}
+
+.reply-area{
+    padding-left: 56px; /*40+16 */
+    padding-right: 10px;  /*10 + 6 = 16*/
+}
+.reply-area .reply-item{
+    padding: 8px 6px 8px 6px;/*10 + 6(2nd) = 16*/
+    border:solid transparent 1px;
+}
+.reply-area .reply-item:hover{
+    border:dashed rgba(0,0,0,0.12) 1px;
+}
+.reply-refer span{
+    vertical-align: super;
+}
+.reply-area .reply-content{
+     padding-left: 40px;
+ }
+
+.reply-box-form{
+    margin-top: 20px;
+    margin-bottom: 6px
+}
+.reply-box-form textarea{
+    resize: none;
+}
+/*
+    based on Paraíso (light)
     Created by Jan T. Sott (http://github.com/idleberg)
     Inspired by the art of Rubens LP (http://www.rubenslp.com.br)
 */
-
 /* Paraíso Comment */
 .hljs-comment,
 .hljs-quote {

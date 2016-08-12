@@ -33,7 +33,7 @@
             <a data-toggle="menu" href="#ui_menu_profile">
                 <span class="access-hide">John Smith</span>
                 <span class="avatar avatar-sm">
-                     <img :alt="settings.me.refer.name"  :src="settings.me.refer.avatar">
+                     <img :alt="settings.me.refer.name" :src="settings.me.refer.avatar">
                 </span>
             </a>
         </li>
@@ -51,7 +51,8 @@
                     </div>
                 </li>
                 <li>
-                    <a class="collapsed waves-attach waves-effect" data-toggle="collapse" href="#ui_menu_samples">Sample Pages</a>
+                    <a class="collapsed waves-attach waves-effect" data-toggle="collapse" href="#ui_menu_samples">Sample
+                        Pages</a>
                     <ul class="menu-collapse collapse" id="ui_menu_samples">
                         <li>
                             <a class="waves-attach waves-effect" href="page-login.html">Login Page</a>
@@ -74,7 +75,7 @@
             <div class="menu-top-info">
                 <a class="menu-top-user" href="javascript:void(0)">
                     <span class="avatar avatar-inline margin-right">
-                    <img :alt="settings.me.refer.name"  :src="settings.me.refer.avatar">
+                    <img :alt="settings.me.refer.name" :src="settings.me.refer.avatar">
                     </span><span>{{settings.me.refer.name}}</span>
                 </a>
             </div>
@@ -119,6 +120,35 @@
         </div>
     </div>
 </nav>
+<div aria-hidden="true" class="modal modal-va-middle fade" id="auth_model" role="dialog" tabindex="-1">
+    <div class="modal-dialog modal-xs">
+        <div class="modal-content">
+            <div class="modal-heading">
+                <h2 class="modal-title">登录认证后才能添加评论</h2>
+            </div>
+            <!--<div class="modal-inner">-->
+            <ul class="nav">
+                <li>
+                    <a @click="openGithub" href="javascript:void(0)" class="margin-bottom-sm waves-attach waves-effect">
+                        <svg aria-hidden="true" class="octicon octicon-mark-github" height="24" version="1.1"
+                             viewBox="0 0 16 16" width="24">
+                            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"></path>
+                        </svg>
+                        <span class="margin-right-sm text-black">&emsp;Github登录</span>
+                    </a>
+                </li>
+            </ul>
+            <!--</div>-->
+            <div class="modal-footer">
+                <p class="text-right">
+                    <a class="btn btn-flat btn-brand-accent waves-attach waves-effect" data-dismiss="modal">取消</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+</div><!--model-->
+
 <main id="app" class="ui-main-content">
     <div class="content-header ui-content-header" v-show="settings.show_content_header">
         <div class="container">
@@ -130,8 +160,8 @@
         </div>
     </div>
     <div class="container">
-        <list-grid :lists="list.data" :show="list.show" :settings="settings"></list-grid>
-        <detail-grid :detail="detail.data" :show="detail.show" :settings="settings"></detail-grid>
+        <list-grid :show="list.show" :settings="settings"></list-grid>
+        <detail-grid :show="detail.show" :settings="settings" :is_auth.sync="detail.is_auth"></detail-grid>
     </div>
 </main>
 <footer class="ui-footer footer">
@@ -141,15 +171,19 @@
 </footer>
 <div class="fbtn-container">
     <div class="fbtn-inner">
-        <a class="fbtn fbtn-lg fbtn-brand-accent waves-attach waves-effect waves-circle waves-light" data-toggle="dropdown"><span
+        <a class="fbtn fbtn-lg fbtn-brand-accent waves-attach waves-effect waves-circle waves-light"
+           data-toggle="dropdown"><span
                 class="fbtn-text fbtn-text-left">Links</span><span class="fbtn-ori icon">apps</span><span
                 class="fbtn-sub icon">close</span></a>
         <div class="fbtn-dropup">
-            <a class="fbtn waves-attach waves-effect waves-circle" href="https://github.com/Daemonite/material" target="_blank"><span
+            <a class="fbtn waves-attach waves-effect waves-circle" href="https://github.com/Daemonite/material"
+               target="_blank"><span
                     class="fbtn-text fbtn-text-left">Fork me on GitHub</span><span class="icon">code</span></a>
-            <a class="fbtn fbtn-brand waves-attach waves-effect waves-circle waves-light" href="https://twitter.com/daemonites"
+            <a class="fbtn fbtn-brand waves-attach waves-effect waves-circle waves-light"
+               href="https://twitter.com/daemonites"
                target="_blank"><span class="fbtn-text fbtn-text-left">Follow Daemon on Twitter</span><span class="icon">share</span></a>
-            <a class="fbtn fbtn-green waves-attach waves-effect waves-circle" href="http://www.daemon.com.au/" target="_blank"><span
+            <a class="fbtn fbtn-green waves-attach waves-effect waves-circle" href="http://www.daemon.com.au/"
+               target="_blank"><span
                     class="fbtn-text fbtn-text-left">Visit Daemon Website</span><span class="icon">link</span></a>
         </div>
     </div>
@@ -187,10 +221,10 @@
     </div>
 </script>
 <script type="text/x-template" id="detail-template">
-    <div  v-show="show" class="container">
+    <div v-show="show" class="container">
         <div class="row blog-detail-mate">
-             <span class="avatar" style="display: inline-block">
-                <a :href="settings.me.refer.url"  target="_blank">
+             <span class="avatar inline-avatar">
+                <a :href="settings.me.refer.url" target="_blank">
                     <img alt="..." :src="settings.me.refer.avatar">
                 </a>
             </span>
@@ -202,6 +236,64 @@
             <div class="col-md-12" v-html="article | marked">
             </div>
         </article>
-
+        <div class="row comment-area">
+            <p><b>12条评论</b></p>
+            <div class="form-group form-group-label comment-form">
+                <label class="floating-label" for="comment-input">你的评论</label>
+                <textarea @focus="checkAuth" class="form-control" id="comment-input" rows="4"
+                          style="resize: none"></textarea>
+                <div class="help-block pull-left"><code>支持Markdown输入</code></div>
+                <div class="pull-right">
+                    <a title="预览" class="btn btn-flat btn-brand waves-attach waves-effect"><i class="material-icons">visibility</i></a>
+                    <a @click="submitComment" class="btn btn-brand btn-brand waves-attach waves-effect">发布</a>
+                </div>
+            </div>
+            <div class="clearfix"></div>
+            <div style="height:8px"></div>
+            <div v-for="comment in comments" :class="{'comments-border':$index != 0}" class="clo-md-12 comment-item">
+                <div class="comment-mate">
+                     <span class="avatar inline-avatar">
+                        <a :href="comment.user.url" target="_blank">
+                            <img alt="..." :src="comment.user.avatar">
+                        </a>
+                    </span>
+                    <span class="user-refer">
+                        &nbsp;<a :href="comment.user.url" target="_blank">{{comment.user.name}}</a>&nbsp;
+                    </span>
+                    <span class="label label-brand" title="2015-12-23">{{comment.date}}</span>
+                    <a href="#" class="pull-right reply-refer">
+                        <i class="material-icons">reply</i><span>回复</span>
+                    </a>
+                </div>
+                <div class="comment-content">
+                    {{comment.content}}
+                </div>
+                <div class="reply-area row">
+                    <div v-for="reply in comment.replies" class="clo-md-12 reply-item">
+                        <div class="comment-mate">
+                             <span class="avatar inline-avatar">
+                                <a :href="reply.user.url" target="_blank">
+                                    <img alt="..." :src="reply.user.avatar">
+                                </a>
+                            </span>
+                            <span class="user-refer">
+                                &nbsp;<a :href="reply.user.url" target="_blank">{{reply.user.name}}</a>&nbsp;
+                            </span>
+                            <span class="label label-brand" title="2015-12-23">{{reply.date}}</span>
+                            <a :href="'javascript:alert('+$index+')'" class="pull-right reply-refer">
+                                <i class="material-icons">reply</i><span>回复</span>
+                            </a>
+                        </div>
+                        <div class="reply-content">
+                            {{reply.content}}
+                        </div>
+                    </div>
+                    <div v-show="comment.show_reply_box && is_auth" class="form-group form-group-label reply-box-form">
+                        <label class="floating-label" :for="'reply-box-'+$index">回复</label>
+                        <textarea class="form-control" :id="'reply-box-'+$index" rows="3"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </script>
