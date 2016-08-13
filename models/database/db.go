@@ -1,19 +1,21 @@
 package database
 
 import (
-	"github.com/jinzhu/gorm"
-	_ "github.com/go-sql-driver/mysql"
-	"github.com/astaxie/beego"
 	"log"
+	"gopkg.in/mgo.v2"
+	"github.com/astaxie/beego"
 )
 
-var DB *gorm.DB
+var DB *mgo.Database
+type Person struct {
+	Name string
+	Phone string
+}
 
-func InitDB() {
-	var err error;
-	DB, err = gorm.Open(beego.AppConfig.String("db_type"), beego.AppConfig.String("db_config"))
+func init() {
+	session, err := mgo.Dial(beego.AppConfig.String("db_config"))
 	if err != nil {
-		log.Println("error to connect to database")
-		return;
+		log.Fatalln(err)
 	}
+	DB = session.DB(beego.AppConfig.String("db_name"))
 }

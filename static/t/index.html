@@ -33,7 +33,7 @@
             <a data-toggle="menu" href="#ui_menu_profile">
                 <span class="access-hide">John Smith</span>
                 <span class="avatar avatar-sm">
-                     <img :alt="settings.me.refer.name" :src="settings.me.refer.avatar">
+                     <img :alt="settings.profile.name" :src="settings.profile.avatar">
                 </span>
             </a>
         </li>
@@ -75,12 +75,12 @@
             <div class="menu-top-info">
                 <a class="menu-top-user" href="javascript:void(0)">
                     <span class="avatar avatar-inline margin-right">
-                    <img :alt="settings.me.refer.name" :src="settings.me.refer.avatar">
-                    </span><span>{{settings.me.refer.name}}</span>
+                    <img :alt="settings.profile.name" :src="settings.profile.avatar">
+                    </span><span>{{settings.profile.name}}</span>
                 </a>
             </div>
             <div class="menu-top-info-sub">
-                <small>{{settings.me.refer.bio}}</small>
+                <small>{{settings.profile.bio}}</small>
             </div>
         </div>
         <div class="menu-content">
@@ -126,7 +126,6 @@
             <div class="modal-heading">
                 <h2 class="modal-title">登录认证后才能添加评论</h2>
             </div>
-            <!--<div class="modal-inner">-->
             <ul class="nav">
                 <li>
                     <a @click="openGithub" href="javascript:void(0)" class="margin-bottom-sm waves-attach waves-effect">
@@ -138,7 +137,6 @@
                     </a>
                 </li>
             </ul>
-            <!--</div>-->
             <div class="modal-footer">
                 <p class="text-right">
                     <a class="btn btn-flat btn-brand-accent waves-attach waves-effect" data-dismiss="modal">取消</a>
@@ -224,12 +222,12 @@
     <div v-show="show" class="container">
         <div class="row blog-detail-mate">
              <span class="avatar inline-avatar">
-                <a :href="settings.me.refer.url" target="_blank">
-                    <img alt="..." :src="settings.me.refer.avatar">
+                <a :href="settings.profile.url" target="_blank">
+                    <img alt="..." :src="settings.profile.avatar">
                 </a>
             </span>
             <span class="refer-me">
-                By <a :href="settings.me.refer.url" target="_blank">{{settings.me.refer.name}}</a>&nbsp;·&nbsp;</span>
+                By <a :href="settings.profile.url" target="_blank">{{settings.profile.name}}</a>&nbsp;·&nbsp;</span>
             <span class="label label-brand" title="2015-12-23">3天前</span>
         </div>
         <article class="row blog-article">
@@ -245,12 +243,12 @@
                 <div class="help-block pull-left"><code>支持Markdown输入</code></div>
                 <div class="pull-right">
                     <a title="预览" class="btn btn-flat btn-brand waves-attach waves-effect"><i class="material-icons">visibility</i></a>
-                    <a @click="submitComment" class="btn btn-brand btn-brand waves-attach waves-effect">发布</a>
+                    <a @click="submitComment" class="btn btn-brand  waves-attach waves-effect">发布</a>
                 </div>
             </div>
             <div class="clearfix"></div>
             <div style="height:8px"></div>
-            <div v-for="comment in comments" :class="{'comments-border':$index != 0}" class="clo-md-12 comment-item">
+            <div v-for="(comment_index,comment) in comments" :class="{'comments-border':comment_index != 0}" class="clo-md-12 comment-item">
                 <div class="comment-mate">
                      <span class="avatar inline-avatar">
                         <a :href="comment.user.url" target="_blank">
@@ -261,7 +259,7 @@
                         &nbsp;<a :href="comment.user.url" target="_blank">{{comment.user.name}}</a>&nbsp;
                     </span>
                     <span class="label label-brand" title="2015-12-23">{{comment.date}}</span>
-                    <a href="#" class="pull-right reply-refer">
+                    <a  @click="toggleReplyBox(comment_index,-1)" href="javascript:void(0)" class="pull-right reply-refer">
                         <i class="material-icons">reply</i><span>回复</span>
                     </a>
                 </div>
@@ -280,7 +278,7 @@
                                 &nbsp;<a :href="reply.user.url" target="_blank">{{reply.user.name}}</a>&nbsp;
                             </span>
                             <span class="label label-brand" title="2015-12-23">{{reply.date}}</span>
-                            <a :href="'javascript:alert('+$index+')'" class="pull-right reply-refer">
+                            <a @click="toggleReplyBox(comment_index,$index)" href="javascript:void(0)" class="pull-right reply-refer">
                                 <i class="material-icons">reply</i><span>回复</span>
                             </a>
                         </div>
@@ -289,8 +287,14 @@
                         </div>
                     </div>
                     <div v-show="comment.show_reply_box && is_auth" class="form-group form-group-label reply-box-form">
-                        <label class="floating-label" :for="'reply-box-'+$index">回复</label>
-                        <textarea class="form-control" :id="'reply-box-'+$index" rows="3"></textarea>
+                        <label class="floating-label" :for="'reply-box-'+comment_index">回复</label>
+                        <textarea v-model="comment.new_reply_content" class="form-control" :id="'reply-box-'+comment_index" rows="3"></textarea>
+                        <div class="pull-right">
+                            <a @click="cancelReply(comment_index)" title="取消" class="btn btn-flat btn-brand waves-attach waves-effect">
+                                <i class="material-icons">clear</i>
+                            </a>
+                            <a @click="submitReply(comment_index)" class="btn btn-brand waves-attach waves-effect">回复</a>
+                        </div>
                     </div>
                 </div>
             </div>

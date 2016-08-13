@@ -5,6 +5,7 @@ var settings = {};
 var NoAuthSnackBar = '<a data-dismiss="snackbar">Dismiss</a>' +
     '<div class="snackbar-text">你需要登录认证后才能添加评论.' +
     '(使用<a href="https://github.com" target="_blank">Github</a>账号登录)</div>';
+
 function init() {
     marked.setOptions({
         highlight: function (code) {
@@ -12,7 +13,7 @@ function init() {
         }
     });
     $("body").load("/static/t/index.html", function () {
-        $.get("/static/t/setting.json", function (data) {
+        $.get("/settings", function (data) {
             settings = data;
             settings.show_content_header = true;
 
@@ -52,7 +53,7 @@ function init() {
                             comments: [
                                 {
                                     user: {name: "he", url: "baidu.com", avatar: "/static/img/avatar.jpg"},
-                                    replies:[
+                                    replies: [
                                         {
                                             user: {name: "he", url: "baidu.com", avatar: "/static/img/avatar.jpg"},
                                             content: "Hello replies1",
@@ -66,16 +67,14 @@ function init() {
                                     ],
                                     content: "Hello Comment",
                                     date: "3天前",
-                                    new_reply:"",
-                                    show_reply_box:true
+                                    new_reply_content: ""
                                 },
                                 {
                                     user: {name: "he", url: "baidu.com", avatar: "/static/img/avatar.jpg"},
-                                    replies:[
-
-                                    ],
+                                    replies: [],
                                     content: "Hello Comment2",
-                                    date: "3天前"
+                                    date: "3天前",
+                                    new_reply_content: ""
                                 }
                             ]
                         }
@@ -99,6 +98,28 @@ function init() {
                                 return
                             }
                             console.log("here! ");
+                        },
+                        submitReply:function(commentIndex){
+                            console.log("submitReply! ");
+                        },
+                        cancelReply:function(commentIndex){
+                            this.comments[commentIndex].show_reply_box = false;
+                        },
+                        toggleReplyBox: function (commentIndex, replyIndex) { //-1 ->is comment
+                            var atOne;
+                            if (replyIndex < 0) {
+                                atOne = this.comments[commentIndex].user.name
+                            } else {
+                                atOne = this.comments[commentIndex].replies[replyIndex].user.name
+                            }
+                            this.comments[commentIndex].show_reply_box = true;
+                            this.comments[commentIndex].new_reply_content = "@" + atOne;
+                            // console.log($("#reply-box-"+commentIndex));
+                            setTimeout(function () {
+                                var box = $("#reply-box-" + commentIndex);
+                                box.trigger("change");
+                                box.trigger("focus");
+                            }, 200);
                         }
                     },
                     ready: function () {

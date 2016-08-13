@@ -1,0 +1,19 @@
+{
+  "menus": [
+    {
+      "name": "编程语言",
+      "submenu": [
+        {
+          "name": "Java",
+          "url": "/java"
+        }
+      ]
+    }
+  ],
+  "profile": {
+    "avatar": "https://avatars2.githubusercontent.com/u/11265498?v=3&s=460",
+    "name": "genshen",
+    "url": "https://github.com/genshen/",
+    "bio": "I can eat glass, it doesn't hurt me."
+  }
+}
