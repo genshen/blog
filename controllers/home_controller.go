@@ -10,7 +10,7 @@ type HomeController struct {
 }
 
 func (this *HomeController) Get() {
-	//c.Ctx.ResponseWriter.
+	//this.Ctx.Input.
 	this.Data["Email"] = "astaxie@gmail.com"
 	this.EnableRender = true
 	this.TplName = "home/index.html"
