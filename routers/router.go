@@ -6,8 +6,7 @@ import (
 	"gensh.me/blog/controllers/admin"
 )
 
-var adminPrefix string
-var adminAuthUri string
+var adminPrefix, adminAuthUri string
 
 func init() {
 	adminAuthUri = beego.AppConfig.String("admin_auth_path")
@@ -22,5 +21,6 @@ func initRouter() {
 	beego.Router("/settings", &controllers.HomeController{}, "get:Settings")
 
 	beego.Router(adminPrefix, &admin.PanelController{}, "get:Get")
-	beego.Router(adminAuthUri, &admin.AuthController{}, "get:SignIn;post:SignIn_POST")
+	beego.Router(adminPrefix + "/auth/signout", &admin.AuthController{}, "get:SignOut")
+	beego.Router(adminAuthUri, &admin.AuthController{}, "get,post:SignIn")
 }

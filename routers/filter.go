@@ -9,8 +9,8 @@ import (
 func intiFilter() {
 	var FilterUser = func(ctx *context.Context) {
 		if ctx.Request.RequestURI != adminAuthUri {
-			is_auth, ok := ctx.Input.Session(admin.UserId).(bool)
-			if !ok || !is_auth {
+			_, ok := ctx.Input.Session(admin.UserId).(string)
+			if !ok {
 				ctx.Redirect(302, adminAuthUri)
 			}
 		}

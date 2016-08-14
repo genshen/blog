@@ -1,19 +1,19 @@
 {
   "layouts": [
-    "layouts/header.html",
-    "layouts/header_foo.html",
-    "layouts/navbar.html",
-    "layouts/center_script.html",
-    "layouts/footer.html"
+    "admin/layouts/start.html",
+    "admin/layouts/header.html",
+    "admin/layouts/scripts.html",
+    "admin/layouts/footer.html",
+    "admin/layouts/end.html"
   ],
   "template": {
-    "home/index.html": {
-      "title": "首页"
+    "admin/auth/sign_in.html": {
+      "title": "<title>登录</title>"
     }
   },
   "watched_folder": [
     {
-      "folder": "home"
+      "folder": "admin/auth"
     }
   ]
 }
