@@ -30,7 +30,7 @@ func (this *AuthController) SignIn() {
 			if len(next) > 0 && next[0] != '/' {
 				next = "/" + next
 			} else if next == "" {
-				next = adminAuthUri
+				next = AdminAuthUri
 			}
 			this.Data["json"] = &utils.SimpleJsonResponse{Status:1, Addition:next}
 		}
@@ -43,7 +43,7 @@ func (this *AuthController) SignIn() {
 func (this *AuthController) SignOut() {
 	this.DelSession(UserId)
 	this.DelSession(Username)
-	this.Redirect(adminAuthUri, 302)
+	this.Redirect(AdminAuthUri, 302)
 }
 
 func (this *AuthController) LoginUser(id string, username string) {
