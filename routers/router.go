@@ -6,11 +6,11 @@ import (
 	"gensh.me/blog/controllers/admin"
 )
 
-//var adminPrefix, adminAuthUri,adminSignOutUri string
+var adminStaticPrefix, adminApi string
 
 func init() {
-	//adminAuthUri = beego.AppConfig.String("admin_auth_path")
-	//adminPrefix = beego.AppConfig.String("admin_prefix")
+	adminApi = beego.AppConfig.String("admin_api")
+	adminStaticPrefix = beego.AppConfig.String("admin_static_prefix")
 
 	initRouter()
 	intiFilter()

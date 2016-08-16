@@ -8,12 +8,23 @@
   ],
   "template": {
     "admin/auth/sign_in.html": {
-      "title": "<title>登录</title>"
+      "data": {
+        "title": "<title>登录</title>",
+        "is_auth_page":true
+      }
+    },
+    "admin/panel/index.html": {
+      "data": {
+        "title": "<title>管理首页</title>",
+        "is_auth_page":false
+      }
     }
   },
   "watched_folder": [
     {
       "folder": "admin/auth"
+    },{
+      "folder": "admin/panel"
     }
   ]
 }

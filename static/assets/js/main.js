@@ -12,7 +12,7 @@ function init() {
             return hljs.highlightAuto(code).value;
         }
     });
-    $("body").load("/static/t/index.html", function () {
+    $("body").load("/assets/t/index.html", function () {
         $.get("/settings", function (data) {
             settings = data;
             settings.show_content_header = true;
@@ -30,7 +30,7 @@ function init() {
                                 date: "3天前",
                                 title: "Hello World",
                                 summary: "Lorem ipsum dolor sit amet.Consectetur adipiscing elit.",
-                                img: "/static/img/brand.jpg"
+                                img: "/assets/img/brand.jpg"
                             }]
                         };
                     },
@@ -52,28 +52,30 @@ function init() {
                             article: "# Marked in browser\n\nRendered by **marked**.\n```c\n int main(){\r\n if(i<o){j++;\r\nreturn 0}}\n```",
                             comments: [
                                 {
-                                    user: {name: "he", url: "baidu.com", avatar: "/static/img/avatar.jpg"},
+                                    user: {name: "he", url: "baidu.com", avatar: "/assets/img/avatar.jpg"},
                                     replies: [
                                         {
-                                            user: {name: "he", url: "baidu.com", avatar: "/static/img/avatar.jpg"},
+                                            user: {name: "he", url: "baidu.com", avatar: "/assets/img/avatar.jpg"},
                                             content: "Hello replies1",
                                             date: "3天前"
                                         },
                                         {
-                                            user: {name: "he", url: "baidu.com", avatar: "/static/img/avatar.jpg"},
+                                            user: {name: "he", url: "baidu.com", avatar: "/assets/img/avatar.jpg"},
                                             content: "Hello replies2",
                                             date: "3天前"
                                         }
                                     ],
                                     content: "Hello Comment",
                                     date: "3天前",
+                                    show_reply_box: false,
                                     new_reply_content: ""
                                 },
                                 {
-                                    user: {name: "he", url: "baidu.com", avatar: "/static/img/avatar.jpg"},
+                                    user: {name: "he", url: "baidu.com", avatar: "/assets/img/avatar.jpg"},
                                     replies: [],
                                     content: "Hello Comment2",
                                     date: "3天前",
+                                    show_reply_box: false,
                                     new_reply_content: ""
                                 }
                             ]
