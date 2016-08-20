@@ -1,16 +1,15 @@
 package controllers
 
 import (
-	"github.com/astaxie/beego"
 	"gensh.me/blog/components/context/settings"
 )
 
 type HomeController struct {
-	beego.Controller
+	BaseController
 }
 
 func (this *HomeController) Get() {
-	//this.Ctx.Input.
+	//this.ServeStaticView()
 	this.Data["Email"] = "astaxie@gmail.com"
 	this.EnableRender = true
 	this.TplName = "home/index.html"

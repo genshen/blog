@@ -12,7 +12,10 @@ function init() {
             return hljs.highlightAuto(code).value;
         }
     });
-    $("body").load("/assets/t/index.html", function () {
+    $.get("/assets/t/index.html", function (data) {
+        $("div").remove();
+        document.getElementById("template-container").outerHTML = data;
+
         $.get("/settings", function (data) {
             settings = data;
             settings.show_content_header = true;

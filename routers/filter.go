@@ -11,7 +11,11 @@ import (
 
 func intiFilter() {
 	beego.InsertFilter(admin.AdminPrefix + "/*", beego.BeforeRouter, FilterAuth)
-	beego.InsertFilter(adminStaticPrefix + "/*", beego.BeforeRouter, ServeAdminStatic)
+	if beego.BConfig.RunMode == beego.DEV{
+		beego.InsertFilter(adminStaticPrefix + "/*", beego.BeforeRouter, ServeAdminStaticDev)
+	}else{
+		//beego.InsertFilter(adminStaticPrefix + "/*", beego.BeforeRouter, ServeAdminStatic)
+	}
 }
 
 func FilterAuth(ctx *context.Context) {
@@ -37,7 +41,7 @@ func FilterAuth(ctx *context.Context) {
 
 //for controller,if some output has sent,the code will not run
 //so context.Abort is net necessary
-func ServeAdminStatic(context *context.Context) {
+func ServeAdminStaticDev(context *context.Context) {
 	if _, ok := context.Input.Session(admin.UserId).(string); !ok {
 		context.Output.Status = 401
 		context.Output.Body([]byte("UnAuthenticated"))
@@ -52,6 +56,9 @@ func ServeAdminStatic(context *context.Context) {
 		}
 		file, _ := os.Open("static"+context.Request.RequestURI)
 		defer file.Close()
+		if strings.HasSuffix(context.Request.RequestURI,"css"){
+			context.Output.Header("Content-Type", "text/css; charset=utf-8")
+		}
 		http.ServeContent(context.ResponseWriter, context.Request, "", fi.ModTime(), file)
 	}
 }
