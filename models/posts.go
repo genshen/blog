@@ -2,7 +2,12 @@ package models
 
 import "gopkg.in/mgo.v2/bson"
 
-type Admin struct {
+const(
+	PostStatusDraft = iota
+	PostStatusActive
+    PostStatusDeleted
+)
+type Posts struct {
 	Id           bson.ObjectId `bson:"_id,omitempty"`
 	Title        string
 	Content      string
