@@ -27,6 +27,19 @@
     left: 0;
 }
 
+/*markdown style */
+.markdown-preview code{
+    border:none;
+}
+.markdown-preview h1, .markdown-preview h2,.markdown-preview h3,.markdown-preview h4,.markdown-preview h5,.markdown-preview h6{
+    margin-top: 12px;
+}
+
+.markdown-preview img {
+    max-width: 100%;
+    overflow-x: scroll;
+}
+
 .blog-detail-mate {
     margin-top: 16px;
 }
@@ -46,9 +59,6 @@
 }
 .blog-article{
     margin-top:2em;
-}
-.blog-article code{
-    border:none;
 }
 
 .comment-area .comment-form{

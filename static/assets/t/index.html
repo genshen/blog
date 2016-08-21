@@ -230,9 +230,8 @@
                 By <a :href="settings.profile.url" target="_blank">{{settings.profile.name}}</a>&nbsp;·&nbsp;</span>
             <span class="label label-brand" title="2015-12-23">3天前</span>
         </div>
-        <article class="row blog-article">
-            <div class="col-md-12" v-html="article | marked">
-            </div>
+        <article class="row blog-article markdown-preview">
+            <div class="col-md-12" v-html="article | marked"></div>
         </article>
         <div class="row comment-area">
             <p><b>12条评论</b></p>

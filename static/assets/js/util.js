@@ -2,6 +2,7 @@
  * including:
  * 1.base64_decode
  * 2.jquery.cookie.js
+ * 3.js load
  * */
 
 //base64_decode
@@ -254,7 +255,7 @@ var Util = {
                     this.options.errorCallback(error);
                     return false;
                 case 1:
-                    if(this.options.onSuccess != null){
+                    if (this.options.onSuccess != null) {
                         this.options.onSuccess();
                     }
                     return true;
@@ -265,3 +266,39 @@ var Util = {
         }
     }
 };
+
+//js load
+function loadJS(srcs, cb) {
+    "use strict";
+    var total = srcs.length;
+    var hasLoadedCount = 0;
+    function onLoadCallback() {
+        hasLoadedCount++;
+        if (total == hasLoadedCount && cb && typeof(cb) === "function") {
+            cb();
+        }
+    }
+
+    for (var index in srcs) {
+        var src= srcs[index];
+        var ref = document.getElementsByTagName("script")[0];
+        var script = document.createElement("script");
+        script.src = src;
+        script.async = true;
+        ref.parentNode.insertBefore(script, ref);
+        script.onload = onLoadCallback;
+    }
+}
+function loadCSS(src, cb) {
+    "use strict";
+    var head = document.getElementsByTagName('HEAD').item(0);
+    var style = document.createElement('link');
+    style.href = src;
+    style.rel = 'stylesheet';
+    style.type = 'text/css';
+    head.appendChild(style);
+    if (cb && typeof(cb) === "function") {
+        style.onload = cb;
+    }
+    return style;
+}

@@ -7,7 +7,7 @@
         </li>
     </ul>
     <a class="header-logo header-affix-hide margin-left-no margin-right-no" data-offset-top="213"
-       data-spy="affix" href="/admin">Admin Home</a>
+       @click="changeView('menu-container')" data-spy="affix" href="javascript:void(0)">Admin Home</a>
     <ul class="nav nav-list pull-right">
         <li class="dropdown header-nav-menu">
             <a class="btn btn-flat btn-brand waves-attach waves-effect" href="#">
@@ -79,12 +79,99 @@
     </div>
 </nav>
 <main id="app" class="ui-admin-content">
-    <div class="container">
-        OK
-    </div>
+    <!--<menu-container :show.sync="visible.menu"></menu-container>-->
+    <component :is="currentView" transition="fade" transition-mode="out-in"></component>
 </main>
 <footer class="footer ui-footer">
     <div class="container">
         <p>Material</p>
     </div>
 </footer>
+
+<template id="menu-container">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-main">
+                        <div class="card-inner">
+                            <p class="card-heading text-brand">文章</p>
+                            <a @click="this.$parent.changeView('article-list')"
+                               class="btn btn-brand waves-attach waves-effect">
+                                <i class="material-icons">list</i><br>
+                                <span>文章列表</span>
+                            </a>
+                            <a @click="this.$parent.changeView('article-edit')"
+                               class="btn btn-brand waves-attach waves-effect">
+                                <i class="material-icons">create</i><br>
+                                <span>撰写文章</span>
+                            </a>
+                            <a class="btn btn-brand waves-attach waves-effect">
+                                <i class="material-icons">drafts</i><br>
+                                <span>草稿箱</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div><!---row-->
+        <div class="row">
+            <!--<h2 class="content-sub-heading">文章</h2>-->
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-main">
+                        <div class="card-inner">
+                            <p class="card-heading text-brand">应用与作品</p>
+                            <a class="btn btn-brand waves-attach waves-effect">
+                                <i class="material-icons">palette</i><br>
+                                <span>HelloUSTB</span>
+                            </a>
+                            <a class="btn btn-brand waves-attach waves-effect">
+                                <i class="material-icons">palette</i><br>
+                                <span>Match</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div><!---row-->
+    </div>
+</template>
+
+<template id="article-list">
+    <div> Hello</div>
+</template>
+
+<template id="article-edit">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <nav class="tab-nav tab-nav-green margin-top-no">
+                    <ul class="nav nav-justified">
+                        <li class="active">
+                            <a class="waves-attach waves-effect" data-toggle="tab" href="#article_edit_area">编辑</a>
+                        </li>
+                        <li>
+                            <a class="waves-attach waves-effect" data-toggle="tab" href="#article_edit_preview">预览</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+            <div class="col-md-12">
+                <div class="tab-content">
+                    <div class="tab-pane fade active in" id="article_edit_area">
+                        <div class="form-group form-group-label">
+                            <label class="floating-label" for="article_edit_textarea">编辑</label>
+                            <textarea v-model="input" class="form-control" id="article_edit_textarea"
+                                      rows="8"></textarea>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="article_edit_preview">
+                        <div class="markdown-preview" v-html="input | markdown"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+</template>
