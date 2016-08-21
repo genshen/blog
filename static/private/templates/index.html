@@ -162,8 +162,25 @@
                     <div class="tab-pane fade active in" id="article_edit_area">
                         <div class="form-group form-group-label">
                             <label class="floating-label" for="article_edit_textarea">编辑</label>
-                            <textarea v-model="input" class="form-control" id="article_edit_textarea"
-                                      rows="8"></textarea>
+                            <textarea v-model="input" class="form-control" id="article_edit_textarea" rows="12"></textarea>
+                        </div>
+                        <div class="article-edit-footer">
+                            <ul class="nav nav-list margin-no pull-left">
+                                <li class="dropdown">
+                                    <a class="dropdown-toggle text-black waves-attach waves-effect" data-toggle="dropdown"><span class="icon">more_vert</span></a>
+                                    <ul class="dropdown-menu">
+                                        <li>
+                                            <a class="waves-attach waves-effect" href="javascript:void(0)"><span class="icon margin-right-sm">file_upload</span>&nbsp;上传图片</a>
+                                        </li>
+                                        <li>
+                                            <a class="waves-attach waves-effect" href="javascript:void(0)"><span class="icon margin-right-sm">drafts</span>&nbsp;存为草稿</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                            <div class="pull-right">
+                                <a class="btn btn-flat btn-brand waves-attach waves-effect">提交</a>
+                            </div>
                         </div>
                     </div>
                     <div class="tab-pane fade" id="article_edit_preview">

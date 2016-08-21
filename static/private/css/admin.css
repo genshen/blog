@@ -36,6 +36,12 @@ textarea{
 .markdown-preview img {
     max-width: 100%;
 }
+
+/*article edit*/
+#article_edit_area .form-group{
+     margin-top: 12px;
+     margin-bottom: 8px;
+}
 /*
     based on Paraíso (light)
     Created by Jan T. Sott (http://github.com/idleberg)
