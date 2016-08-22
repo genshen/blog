@@ -28,10 +28,11 @@ func FilterAuth(ctx *context.Context) {
 	if baseUri != admin.AdminAuthUri && baseUri != admin.AdminSignOutUri {
 		_, ok := ctx.Input.Session(admin.UserId).(string)
 		if !ok {
-			var urlTail = ctx.Request.RequestURI[len(admin.AdminPrefix):]
+			var urlTail = ctx.Request.RequestURI[len(admin.AdminPrefix):] //thr router filter means len(RequestURI)>= len(AdminPrefix)
 			if strings.HasPrefix(urlTail, adminApi) {
 				ctx.Output.Status = 401
-				ctx.Output.Body([]byte("lll"))
+				ctx.Output.Header("Content-type","application/json")
+				ctx.Output.Body([]byte("{\"Ststau\":2,\"Error\":\"需要登录后才能操作\"}")) //todo
 			} else {
 				ctx.Redirect(302, admin.AdminAuthUri + "?next=" + ctx.Request.RequestURI)
 			}

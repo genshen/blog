@@ -210,43 +210,97 @@ function base64_decode(encodedData) {
 }));
 
 var Util = {
-    parseError: {
-        options: {},
-        init: function (errors, options) {
-            this.options = $.extend({}, { //default options
-                aliveTime: 3000,
-                errorCallback: function (message, name) {
-                    $("body").snackbar({content: message, alive: this.aliveTime})
-                }
-            }, options);
-            this.execute(errors)
+    postData: {
+        config: {
+            authUrl: "" //todo
         },
-        execute: function (Errors) {
-            for (var key in Errors) {
-                var err = Errors[key].Errors;
-                if (err.length > 0) {
-                    this.options.errorCallback(err[0].Message, err[0].Name); //Name == key
-                    return false
+        init: function (url, data, o, onPostSuccess, onUnAuth, onPostError, onError) {
+            var options = $.extend({}, {snackBarAlive: 4000,multiError:true, showNext: false, authUrl: this.config.authUrl}, o);
+            if (!onError) {
+                onError = function () {
+                    $("body").snackbar({
+                        content: "出了点错误,请<a href='" + window.location.href + "'>刷新</a>重试",
+                        alive: options.snackBarAlive
+                    });
                 }
             }
-            return true;
+            if (!onPostError) {
+                if(options.multiError){
+                    onPostError = function (Errors) {
+                        for (var key in Errors) {
+                            var err = Errors[key].Errors;
+                            if (err.length > 0) {
+                                $("body").snackbar({content:err[0].Message, alive: options.snackBarAlive});
+                                return;
+                            }
+                        }
+                    }
+                }else{
+                    onPostError = function (error) {
+                        $("body").snackbar({content: error, alive: options.snackBarAlive});
+                    }
+                }
+            }
+            if (!onUnAuth) {
+                onUnAuth = function () {
+                    var url;
+                    if (options.showNext) {
+                        url = options.authUrl + "?next=" + +document.location.pathname;
+                    } else {
+                        url = options.authUrl;
+                    }
+                    $("body").snackbar({content: "请<a href='" + url + "'>登录</a>后进行操作", alive: options.snackBarAlive});
+                }
+            }
+            this.execute(url, data, onPostSuccess, onUnAuth, onPostError, onError);
+        },
+        execute: function (url, data, onPostSuccess, onUnAuth, onPostError, onError) {
+            var xsrf;
+            try { //cookie may be null or something else bad data
+                xsrf = base64_decode(Cookies.get('_xsrf').split("|")[0]);
+            } catch (err) {
+                onError();
+                return;
+            }
+            $.ajax({
+                type: 'POST',
+                url: url,
+                data: $.extend({}, {_xsrf: xsrf}, data),
+                success: function (data) {
+                    try {
+                        switch (data.Status) {
+                            case 0:
+                                onPostError(data.Error);
+                                break;
+                            case 1:
+                                if (onPostSuccess) {
+                                    onPostSuccess();
+                                }
+                                break;
+                        }
+                    } catch (err) {
+                        onError();
+                    }
+                }, error: function (r, err) {
+                    if (r.status == 401) {
+                        onUnAuth();
+                    } else {
+                        onError();
+                    }
+                }
+            });
         }
     },
     simpleParseError: {
-        options: {
-            authUrl: "/account/signin",
-            snackAlive: 3000,
-            errorCallback: function (message) {
-                $.snackbar({content: message, timeout: this.snackTimeout})
-            },
-            onUnAuth: function () {
-                var url = this.authUrl + "?next=" + document.location.pathname;
-                $.snackbar({content: "请<a href='" + url + "'>登录</a>后进行该操作", timeout: this.snackAlive})
-            },
-            onSuccess: null
-        },
+        options: {},
         init: function (status, error, options) {
-            this.options = $.extend({}, this.options, options);
+            this.options = $.extend({}, {
+                snackAlive: 3000,
+                errorCallback: function (message) {
+                    $("body").snackbar({content: message, alive: this.snackTimeout})
+                },
+                onSuccess: null
+            }, options);
             this.execute(status, error)
         },
         execute: function (status, error) {
@@ -259,9 +313,6 @@ var Util = {
                         this.options.onSuccess();
                     }
                     return true;
-                case 3: //unauth
-                    this.options.onUnAuth();
-                    return false;
             }
         }
     }
@@ -272,6 +323,7 @@ function loadJS(srcs, cb) {
     "use strict";
     var total = srcs.length;
     var hasLoadedCount = 0;
+
     function onLoadCallback() {
         hasLoadedCount++;
         if (total == hasLoadedCount && cb && typeof(cb) === "function") {
@@ -280,7 +332,7 @@ function loadJS(srcs, cb) {
     }
 
     for (var index in srcs) {
-        var src= srcs[index];
+        var src = srcs[index];
         var ref = document.getElementsByTagName("script")[0];
         var script = document.createElement("script");
         script.src = src;

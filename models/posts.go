@@ -2,18 +2,24 @@ package models
 
 import "gopkg.in/mgo.v2/bson"
 
-const(
+const (
 	PostStatusDraft = iota
 	PostStatusActive
-    PostStatusDeleted
+	PostStatusDeleted
 )
+
+const (
+	CollectionName_Posts = "posts"
+)
+
 type Posts struct {
 	Id           bson.ObjectId `bson:"_id,omitempty"`
 	Title        string
 	Content      string
 	Summary      string
-	ViewCount    string `bson:"view_count"`
-	CommentCount string `bson:"comment_count"`
+	ViewCount    int `bson:"view_count"`
+	CommentCount int `bson:"comment_count"`
+	ReplyCount   int `bson:"reply_count"`
 	//Classify         string
 	//Tags         string
 	Status       int

@@ -1,7 +1,15 @@
 /**
  * Created by 根深 on 2016/8/14.
  */
+var CONFIG = {
+    adminRouter: "/admin",
+    apiPrefix: "/admin/api",
+    adminAuthPath: "/admin/auth/signin",
+    adminSignOutPath: "/admin/auth/signout"
+};
 function init() {
+    Util.postData.config.authUrl = CONFIG.adminAuthPath;
+
     $.get("/private/templates/index.html", function (data) {
         document.getElementById("template-container").outerHTML = data;
 
@@ -44,10 +52,27 @@ function registerComponent() {
         data: function () {
             return {
                 markedStatus: false,
-                input: ""
+                article_title: "",
+                article_content: ""
             }
         },
-        methods: {},
+        methods: {
+            submit: function () {
+                if (!this.article_title) {
+                    $("body").snackbar({content: "标题不能为空", alive: 4000});
+                    return;
+                } else if (!this.article_content) {
+                    $("body").snackbar({content: "内容不能为空", alive: 4000});
+                    return;
+                }
+                Util.postData.init(CONFIG.apiPrefix + "/post/add/", {
+                    title: this.article_title, content: this.article_content,
+                    summary: marked(this.article_content).replace(/<.*?>/ig, "")
+                }, null, function () {
+                    console.log("success");
+                });
+            }
+        },
         filters: {
             markdown: function (content) {
                 if (this.markedStatus) {

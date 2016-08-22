@@ -20,7 +20,13 @@ func initRouter() {
 	beego.Router("/", &controllers.HomeController{}, "get:Get")
 	beego.Router("/settings", &controllers.HomeController{}, "get:Settings")
 
-	beego.Router(admin.AdminPrefix, &admin.PanelController{}, "get:Get")
+	//admin router
 	beego.Router(admin.AdminSignOutUri, &admin.AuthController{}, "get:SignOut")
 	beego.Router(admin.AdminAuthUri, &admin.AuthController{}, "get,post:SignIn")
+
+	beego.Router(admin.AdminPrefix, &admin.PanelController{}, "get:Get")
+
+	beego.Router(admin.AdminPrefix + adminApi + "/post", &admin.PostsController{}, "get:List")
+	beego.Router(admin.AdminPrefix + adminApi + "/post/add", &admin.PostsController{}, "post:Add")
+	//beego.Router(admin.AdminPrefix+"/post/delete", &admin.PostsController{}, "post:Del")
 }
