@@ -5,12 +5,14 @@ var CONFIG = {
     adminRouter: "/admin",
     apiPrefix: "/admin/api",
     adminAuthPath: "/admin/auth/signin",
-    adminSignOutPath: "/admin/auth/signout"
+    adminSignOutPath: "/admin/auth/signout",
+    adminStaticPrefix: "/private"
 };
+
 function init() {
     Util.postData.config.authUrl = CONFIG.adminAuthPath;
 
-    $.get("/private/templates/index.html", function (data) {
+    $.get(CONFIG.adminStaticPrefix + "/templates/index.html", function (data) {
         document.getElementById("template-container").outerHTML = data;
 
         registerComponent();
@@ -65,11 +67,14 @@ function registerComponent() {
                     $("body").snackbar({content: "内容不能为空", alive: 4000});
                     return;
                 }
+                var self = this;
                 Util.postData.init(CONFIG.apiPrefix + "/post/add/", {
                     title: this.article_title, content: this.article_content,
                     summary: marked(this.article_content).replace(/<.*?>/ig, "")
                 }, null, function () {
-                    console.log("success");
+                    $("body").snackbar({content: "文章发布成功", alive: 4000});
+                    self.article_title = "";
+                    self.article_content = ""
                 });
             }
         },

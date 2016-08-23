@@ -4,6 +4,7 @@ import (
 	"github.com/astaxie/beego/validation"
 	"gensh.me/blog/models/database"
 	"gensh.me/blog/models"
+	"time"
 )
 
 type PostAddForm struct {
@@ -25,12 +26,13 @@ func (this *PostAddForm)ValidAndSave() []*validation.Error {
 }
 
 func (this *PostAddForm) save(v *validation.Validation) []*validation.Error {
-	m := models.Posts{Title:this.Title,Content:this.Content,Summary:this.Summary,
-	Status:models.PostStatusActive}
+	now := time.Now()
+	m := models.Posts{Title:this.Title, Content:this.Content, Summary:this.Summary,
+		Status:models.PostStatusActive, CreatedAt:now, UpdatedAt:now}
 	err := database.DB.C(models.CollectionName_Posts).Insert(&m)
 	if err != nil {
-		v.SetError("title","保存失败,请重试")
-		v.SetError("content","保存失败,请重试")
+		v.SetError("title", "保存失败,请重试")
+		v.SetError("content", "保存失败,请重试")
 		return v.Errors
 	}
 	return nil

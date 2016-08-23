@@ -104,10 +104,10 @@ function init() {
                             }
                             console.log("here! ");
                         },
-                        submitReply:function(commentIndex){
+                        submitReply: function (commentIndex) {
                             console.log("submitReply! ");
                         },
-                        cancelReply:function(commentIndex){
+                        cancelReply: function (commentIndex) {
                             this.comments[commentIndex].show_reply_box = false;
                         },
                         toggleReplyBox: function (commentIndex, replyIndex) { //-1 ->is comment
@@ -128,7 +128,7 @@ function init() {
                         }
                     },
                     ready: function () {
-
+                        console.log("detail");
                     }
                 });
             })();
@@ -138,15 +138,14 @@ function init() {
                 data: {
                     settings: settings,
                     title: "哈哈哈",
-                    list: {show: false},
-                    detail: {show: true, is_auth: true}
-                },
-                ready: function () {
+                    list: {show: true},
+                    detail: {show: false, is_auth: true}
+                }, ready: function () {
                 },
                 methods: {
                     openGithub: function () {
                         window.open("https://github.com");
-                        $('#auth_model').modal('hide')
+                        $('#auth_model').modal('hide');
                     }
                 }
             });

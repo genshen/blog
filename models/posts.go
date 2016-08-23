@@ -1,6 +1,9 @@
 package models
 
-import "gopkg.in/mgo.v2/bson"
+import (
+	"gopkg.in/mgo.v2/bson"
+	"time"
+)
 
 const (
 	PostStatusDraft = iota
@@ -23,4 +26,6 @@ type Posts struct {
 	//Classify         string
 	//Tags         string
 	Status       int
+	CreatedAt    time.Time `bson:"created_at"`
+	UpdatedAt    time.Time `bson:"updated_at"`
 }
