@@ -2,6 +2,9 @@
  * Created by 根深 on 2016/8/11.
  */
 var settings = {};
+var Config = {
+    apiPrefix: "/at"
+};
 var NoAuthSnackBar = '<a data-dismiss="snackbar">Dismiss</a>' +
     '<div class="snackbar-text">你需要登录认证后才能添加评论.' +
     '(使用<a href="https://github.com" target="_blank">Github</a>账号登录)</div>';
@@ -43,19 +46,32 @@ function init() {
                     template: '#list-template',
                     data: function () {
                         return {
-                            settings:settings,
-                            lists: [{
-                                date: "3天前",
-                                title: "Hello World",
-                                summary: "Lorem ipsum dolor sit amet.Consectetur adipiscing elit.",
-                                img: "/assets/img/brand.jpg"
-                            }]
+                            settings: settings,
+                            lists: []
                         };
                     },
                     computed: {},
                     methods: {},
-                    ready: function () {
+                    created: function () {
+                        var self = this;
+                        $.ajax({
+                            url: Config.apiPrefix + "/category",
+                            success: function (data) { //if it is not json?
+                                try {
+                                    data.forEach(function (e) {
+                                        if (!e.cover) {
+                                            e.cover = "/assets/img/brand.jpg";
+                                        }
+                                        self.lists.push(e);
+                                    })
+                                } catch (err) { //todo
+                                    console.log(err);
+                                }
 
+                            }, error: function (err) { //todo
+                                console.log(err);
+                            }
+                        });
                     }
                 });
 
@@ -66,7 +82,7 @@ function init() {
                     },
                     data: function () {
                         return {
-                            settings:settings,
+                            settings: settings,
                             article: "# Marked in browser\n\nRendered by **marked**.\n```c\n int main(){\r\n if(i<o){j++;\r\nreturn 0}}\n```",
                             comments: [
                                 {
@@ -125,7 +141,7 @@ function init() {
                         cancelReply: function (commentIndex) {
                             this.comments[commentIndex].show_reply_box = false;
                         },
-                        toggleReplyBox: function (commentIndex, replyIndex) { //-1 ->is comment
+                        toggleReplyBox: function (commentIndex, replyIndex) { //-1 ->is comment //todo isAuth
                             var atOne;
                             if (replyIndex < 0) {
                                 atOne = this.comments[commentIndex].user.name
@@ -142,18 +158,19 @@ function init() {
                             }, 200);
                         }
                     },
-                    ready: function () {
+                    created: function () {
                         console.log("detail");
                     }
                 });
 
 
-                var router = new VueRouter({hashbang:false,history:true});
+                var router = new VueRouter({hashbang: false, history: true});
                 router.map({
                     '/': {
                         component: List
                     },
-                    '/detail': {
+                    '/detail/:id': {
+                        name:"detail",
                         component: Detail
                     }
                 });

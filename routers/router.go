@@ -18,8 +18,10 @@ func init() {
 
 func initRouter() {
 	beego.Router("/", &controllers.HomeController{}, "get:Get")
-	beego.Router("/detail", &controllers.HomeController{}, "get:Get")
+	beego.Router("/detail/:id[0-9A-Fa-f]", &controllers.HomeController{}, "get:Get")
 	beego.Router("/settings", &controllers.HomeController{}, "get:Settings")
+
+	beego.Router("/at/category", &controllers.PostsController{}, "get:Category")
 
 	//admin router
 	beego.Router(admin.AdminSignOutUri, &admin.AuthController{}, "get:SignOut")

@@ -154,7 +154,7 @@
     </main>
     <footer class="ui-footer footer">
         <div class="container">
-            <p><a v-link="{ path: '/' }">Material</a></p>
+            <p>Material</p>
         </div>
     </footer>
     <div class="fbtn-container">
@@ -187,18 +187,18 @@
                     <div class="card-main">
                         <div class="card-header">
                             <div class="card-header-side pull-left">
-                                <span>{{blog.date}}</span>
+                                <span>{{blog.create_at}}</span>
                             </div>
                             <div class="card-inner">
-                                <a href="#" class="card-heading">{{blog.title}}</a>
+                                <a v-link="{name:'detail',params:{id:blog.id}}" class="card-heading">{{blog.title}}</a>
                             </div>
                         </div>
                         <div class="card-img">
-                            <img alt="alt text" :src="blog.img" style="width: 100%;">
-                            <p class="card-img-heading">{{blog.summary}}</p>
+                            <img alt="alt text" :src="blog.cover" style="width: 100%;">
+                            <!--<p class="card-img-heading"></p>-->
                         </div>
                         <div class="card-inner">
-                            <p>Lorem ipsum dolor sit amet.<br>Consectetur adipiscing elit.</p>
+                            <p>{{blog.summary}}</p>
                         </div>
                         <div class="card-action">
                             <div class="card-action-btn pull-left">
@@ -292,7 +292,7 @@
                             {{reply.content}}
                         </div>
                     </div>
-                    <div v-show="comment.show_reply_box && is_auth" class="form-group form-group-label reply-box-form">
+                    <div v-show="comment.show_reply_box" class="form-group form-group-label reply-box-form">
                         <label class="floating-label" :for="'reply-box-'+comment_index">回复</label>
                         <textarea v-model="comment.new_reply_content" class="form-control"
                                   :id="'reply-box-'+comment_index" rows="3"></textarea>
