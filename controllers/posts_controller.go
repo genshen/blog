@@ -9,7 +9,12 @@ type PostsController struct {
 }
 
 func (this *PostsController) Category() {
-	posts := posts.LoadPostLists()
-	this.Data["json"] = posts
+	this.Data["json"] = posts.LoadPostLists()
+	this.ServeJSON()
+}
+
+func (this *PostsController) Detail() {
+	id := this.Ctx.Input.Param(":id")
+	this.Data["json"] =  posts.LoadPostDetail(id)
 	this.ServeJSON()
 }

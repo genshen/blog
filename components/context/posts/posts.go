@@ -29,3 +29,10 @@ func LoadPostLists() *[]PostLists {
 	}
 	return &list
 }
+
+func LoadPostDetail(id string) *models.Posts {
+	post := models.Posts{}
+	objId := bson.ObjectIdHex(id)
+	database.DB.C(models.CollectionName_Posts).FindId(objId).One(&post)
+	return &post
+}

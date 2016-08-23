@@ -8,7 +8,7 @@
             </li>
         </ul>
         <a class="header-logo header-affix-hide margin-left-no margin-right-no" data-offset-top="213"
-           data-spy="affix" href="index.html">Material</a>
+           data-spy="affix" v-link="{ name: 'home'}">Material</a>
         <ul class="nav nav-list pull-right">
             <li class="dropdown margin-right">
                 <a class="dropdown-toggle text-black waves-attach waves-effect"
@@ -43,7 +43,7 @@
     <nav aria-hidden="true" tabindex="-1" class="menu " id="ui_menu">
         <div class="menu-scroll">
             <div class="menu-content">
-                <a class="menu-logo" href="index.html">Material</a>
+                <a class="menu-logo"  v-link="{ name: 'home'}">Material</a>
                 <ul class="nav">
                     <li class="nav-search-box">
                         <div class="form-group form-group-label">
@@ -146,7 +146,6 @@
                 </div>
             </div>
         </div>
-    </div>
     </div><!--model-->
 
     <main id="app" class="ui-main-content">
@@ -187,7 +186,7 @@
                     <div class="card-main">
                         <div class="card-header">
                             <div class="card-header-side pull-left">
-                                <span>{{blog.create_at}}</span>
+                                <span>{{blog.create_at | formatTime}}</span>
                             </div>
                             <div class="card-inner">
                                 <a v-link="{name:'detail',params:{id:blog.id}}" class="card-heading">{{blog.title}}</a>
@@ -202,7 +201,7 @@
                         </div>
                         <div class="card-action">
                             <div class="card-action-btn pull-left">
-                                <a v-link="'detail'" class="btn btn-flat waves-effect waves-attach"
+                                <a v-link="{name:'detail',params:{id:blog.id}}" class="btn btn-flat waves-effect waves-attach"
                                    href="javascript:void(0)">
                                     <span class="icon">more_vert</span>&nbsp;Read More</a>
                             </div>
@@ -218,7 +217,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-6 col-lg-offset-3 col-md-10 col-md-offset-1">
-                    <h1 class="content-heading">Navigation Drawers</h1>
+                    <h1 class="content-heading">{{article.title}}</h1>
                 </div>
             </div>
         </div>
@@ -227,15 +226,15 @@
         <div class="blog-detail-mate">
              <span class="avatar inline-avatar">
                 <a :href="settings.profile.url" target="_blank">
-                    <img alt="..." :src="settings.profile.avatar">
+                    <img :src="settings.profile.avatar">
                 </a>
             </span>
             <span class="refer-me">
                 By <a :href="settings.profile.url" target="_blank">{{settings.profile.name}}</a>&nbsp;·&nbsp;</span>
-            <span class="label label-brand" title="2015-12-23">3天前</span>
+            <span class="label label-brand" title="2015-12-23">{{article.created_at | formatTime}}</span>
         </div>
         <article class="row blog-article markdown-preview">
-            <div class="col-md-12" v-html="article | marked"></div>
+            <div class="col-md-12" v-html="article.content | marked"></div>
         </article>
         <div class="row comment-area">
             <p class="col-md-12"><b>12条评论</b></p>

@@ -23,6 +23,7 @@ function init() {
             settings = data;
 
             (function () {
+                Vue.filter('formatTime', formatTime);
 
                 var App = Vue.extend({
                     template: '#app_template',
@@ -83,7 +84,10 @@ function init() {
                     data: function () {
                         return {
                             settings: settings,
-                            article: "# Marked in browser\n\nRendered by **marked**.\n```c\n int main(){\r\n if(i<o){j++;\r\nreturn 0}}\n```",
+                            article: {
+                                id: "", title: "", content: "", summary: "", cover: "",
+                                view_count: 0, comment_count: 0, reply_count: 0, created_at: "", updated_at: ""
+                            },
                             comments: [
                                 {
                                     user: {name: "he", url: "baidu.com", avatar: "/assets/img/avatar.jpg"},
@@ -159,18 +163,38 @@ function init() {
                         }
                     },
                     created: function () {
-                        console.log("detail");
+                        var self = this;
+                        $.ajax({
+                            url: Config.apiPrefix + "/detail/" + this.$route.params.id,
+                            success: function (data) { //if it is not json?
+                                try {
+                                    if (!data.id) {
+                                        $("body").snackbar({alive: 4000, content: "Oh,Snap! 查看的文章不存在"});
+                                        return;
+                                    }
+                                    if (!data.cover) {
+                                        data.cover = "/assets/img/brand.jpg";
+                                    }
+                                    self.article = data; //todo move comments
+                                } catch (err) { //todo
+                                    console.log(err);
+                                }
+
+                            }, error: function (err) { //todo
+                                console.log(err);
+                            }
+                        });
                     }
                 });
-
 
                 var router = new VueRouter({hashbang: false, history: true});
                 router.map({
                     '/': {
+                        name: 'home',
                         component: List
                     },
                     '/detail/:id': {
-                        name:"detail",
+                        name: "detail",
                         component: Detail
                     }
                 });
@@ -178,4 +202,9 @@ function init() {
             })();
         });
     });
+}
+
+
+function formatTime(value) {
+    return "三天前";
 }
