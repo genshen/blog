@@ -66,9 +66,6 @@
     margin-bottom: 6px
 }
 
-.comment-area .comment-item{
-    padding: 6px 0;
-}
 .comment-item.comments-border{
     border-top: 1px solid rgba(0,0,0,0.12);
 }

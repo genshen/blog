@@ -18,6 +18,7 @@ func init() {
 
 func initRouter() {
 	beego.Router("/", &controllers.HomeController{}, "get:Get")
+	beego.Router("/detail", &controllers.HomeController{}, "get:Get")
 	beego.Router("/settings", &controllers.HomeController{}, "get:Settings")
 
 	//admin router

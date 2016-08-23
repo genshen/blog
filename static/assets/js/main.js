@@ -18,17 +18,32 @@ function init() {
 
         $.get("/settings", function (data) {
             settings = data;
-            settings.show_content_header = true;
 
             (function () {
-                Vue.component('list-grid', {
-                    template: '#list-template',
-                    props: {
-                        settings: Object,
-                        show: Boolean
-                    },
+
+                var App = Vue.extend({
+                    template: '#app_template',
                     data: function () {
                         return {
+                            settings: settings,
+                            title: "哈哈哈",
+                            detail: {is_auth: true}
+                        }
+                    }, ready: function () {
+                    },
+                    methods: {
+                        openGithub: function () {
+                            window.open("https://github.com");
+                            $('#auth_model').modal('hide');
+                        }
+                    }
+                });
+
+                var List = Vue.extend({
+                    template: '#list-template',
+                    data: function () {
+                        return {
+                            settings:settings,
                             lists: [{
                                 date: "3天前",
                                 title: "Hello World",
@@ -43,15 +58,15 @@ function init() {
 
                     }
                 });
-                Vue.component('detail-grid', {
+
+                var Detail = Vue.extend({
                     template: '#detail-template',
                     props: {
-                        settings: Object,
-                        show: Boolean,
                         is_auth: Boolean //sync
                     },
                     data: function () {
                         return {
+                            settings:settings,
                             article: "# Marked in browser\n\nRendered by **marked**.\n```c\n int main(){\r\n if(i<o){j++;\r\nreturn 0}}\n```",
                             comments: [
                                 {
@@ -131,24 +146,19 @@ function init() {
                         console.log("detail");
                     }
                 });
-            })();
 
-            new Vue({
-                el: "html",
-                data: {
-                    settings: settings,
-                    title: "哈哈哈",
-                    list: {show: true},
-                    detail: {show: false, is_auth: true}
-                }, ready: function () {
-                },
-                methods: {
-                    openGithub: function () {
-                        window.open("https://github.com");
-                        $('#auth_model').modal('hide');
+
+                var router = new VueRouter({hashbang:false,history:true});
+                router.map({
+                    '/': {
+                        component: List
+                    },
+                    '/detail': {
+                        component: Detail
                     }
-                }
-            });
+                });
+                router.start(App, 'template');
+            })();
         });
     });
 }
