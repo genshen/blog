@@ -6,14 +6,15 @@ import (
 	"io/ioutil"
 	"encoding/json"
 )
-//todo 并发
+
 const (
 	settings_path = "gensh.me/blog/conf/settings.json"
 )
 
 type Setting struct {
-	Menus   []Menu  `json:"menus"`
-	Profile Profile `json:"profile"`
+	Menus     []Menu          `json:"menus"`
+	Profile   Profile         `json:"profile"`
+	AuthSites map[string]Auth `json:"auth_sites"`
 }
 
 type Profile struct {
@@ -31,6 +32,11 @@ type Menu struct {
 type SubMenu struct {
 	Name string  `json:"name"`
 	Url  string  `json:"url"`
+}
+
+type Auth struct {
+	ClientId string `json:"client_id"`
+	Url      string `json:"url"`
 }
 
 var S Setting

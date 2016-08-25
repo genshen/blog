@@ -24,6 +24,8 @@ func initRouter() {
 	beego.Router("/at/category", &controllers.PostsController{}, "get:Category")
 	beego.Router("/at/detail/:id([0-9A-Fa-f]{24,24})", &controllers.PostsController{}, "get:Detail")
 
+	beego.Router("/auth/callback", &controllers.AuthController{}, "get:Callback")
+
 	//admin router
 	beego.Router(admin.AdminSignOutUri, &admin.AuthController{}, "get:SignOut")
 	beego.Router(admin.AdminAuthUri, &admin.AuthController{}, "get,post:SignIn")

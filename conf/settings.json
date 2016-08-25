@@ -15,5 +15,11 @@
     "name": "genshen",
     "url": "https://github.com/genshen/",
     "bio": "I can eat glass, it doesn't hurt me."
+  },
+  "auth_sites": {
+    "github": {
+      "client_id":"d4c955e2a35bdfb47c2b",
+      "url":"https://github.com/login/oauth/authorize?client_id="
+    }
   }
 }

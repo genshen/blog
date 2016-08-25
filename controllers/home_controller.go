@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"gensh.me/blog/components/context/settings"
+	"gensh.me/blog/components/auth"
 )
 
 type HomeController struct {
@@ -15,7 +16,19 @@ func (this *HomeController) Get() {
 	this.TplName = "home/index.html"
 }
 
+type SettingData struct {
+	IsAuth   bool               `json:"is_auth"`
+	User     *auth.User	    `json:"user"`
+	Settings *settings.Setting  `json:"settings"`
+}
+
 func (this  *HomeController)Settings() {
-	this.Data["json"] = &settings.S
+	settingData := SettingData{IsAuth:false, Settings:&settings.S}
+	if this.HasAuth() {
+		u := this.GetUserData()
+		settingData.User = &u
+		settingData.IsAuth = true
+	}
+	this.Data["json"] = &settingData
 	this.ServeJSON()
 }

@@ -1,10 +1,11 @@
 /**
  * Created by 根深 on 2016/8/11.
  */
-var settings = {};
+var settings = {}; //referred to vue(read only)
 var Config = {
     apiPrefix: "/at"
 };
+
 var NoAuthSnackBar = '<a data-dismiss="snackbar">Dismiss</a>' +
     '<div class="snackbar-text">你需要登录认证后才能添加评论.' +
     '(使用<a href="https://github.com" target="_blank">Github</a>账号登录)</div>';
@@ -20,7 +21,8 @@ function init() {
         document.getElementById("template-container").outerHTML = data;
 
         $.get("/settings", function (data) {
-            settings = data;
+            settings = data.settings;
+            settings.is_auth = data.is_auth;
 
             (function () {
                 Vue.filter('formatTime', formatTime);
@@ -37,7 +39,8 @@ function init() {
                     },
                     methods: {
                         openGithub: function () {
-                            window.open("https://github.com");
+                            var url = this.settings.auth_sites.github.url + this.settings.auth_sites.github.client_id;
+                            window.open(url, "", ",location=no,status=no");
                             $('#auth_model').modal('hide');
                         }
                     }
@@ -127,7 +130,7 @@ function init() {
                     },
                     methods: {
                         checkAuth: function () {
-                            if (this.is_auth) {
+                            if (this.settings.is_auth) {
                                 return
                             }
                             $('#auth_model').modal('show')
@@ -179,7 +182,6 @@ function init() {
                                 } catch (err) { //todo
                                     console.log(err);
                                 }
-
                             }, error: function (err) { //todo
                                 console.log(err);
                             }
@@ -204,6 +206,17 @@ function init() {
     });
 }
 
+window.addEventListener('message', function (e) {
+    console.log(e.origin);
+    if (e.origin == location.origin) {
+        var data = e.data;
+        console.log(e.data);
+        if (data.status == 1) {
+            settings.is_auth = true;
+            settings.user = data;
+        }
+    }
+});
 
 function formatTime(value) {
     return "三天前";
