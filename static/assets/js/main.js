@@ -6,9 +6,9 @@ var Config = {
     apiPrefix: "/at"
 };
 
-var NoAuthSnackBar = '<a data-dismiss="snackbar">Dismiss</a>' +
-    '<div class="snackbar-text">你需要登录认证后才能添加评论.' +
-    '(使用<a href="https://github.com" target="_blank">Github</a>账号登录)</div>';
+var NoAuthCommentSnackBar = '<a data-dismiss="snackbar">Dismiss</a>' +
+    '<div class="snackbar-text">你需要' +
+    '<a data-toggle="modal" data-target="#auth_model">登录认证</a>' + '后才能添加评论.</div>';
 
 function init() {
     marked.setOptions({
@@ -87,6 +87,7 @@ function init() {
                     data: function () {
                         return {
                             settings: settings,
+                            comment_text: "",
                             article: {
                                 id: "", title: "", content: "", summary: "", cover: "",
                                 view_count: 0, comment_count: 0, reply_count: 0, created_at: "", updated_at: ""
@@ -122,7 +123,6 @@ function init() {
                             ]
                         }
                     },
-                    computed: {},
                     filters: {
                         marked: function (value) {
                             return marked(value);
@@ -136,11 +136,23 @@ function init() {
                             $('#auth_model').modal('show')
                         },
                         submitComment: function () {
-                            if (!this.is_auth) {
-                                $("body").snackbar({alive: 4000, content: NoAuthSnackBar});
+                            if (this.comment_text == "") {
+                                $("body").snackbar({alive: 3000, content: "评论内容不能为空"});
                                 return
                             }
-                            console.log("here! ");
+                            if (!this.settings.is_auth) {
+                                $("body").snackbar({alive: 3000, content: NoAuthCommentSnackBar});
+                                return
+                            }
+                            var self = this;
+                            Util.postData.init(Config.apiPrefix + "/comment/add/", {
+                                post_id: this.article.id, content: this.comment_text
+                            }, null, function () {
+                                self.comment_text = "";
+                                $("body").snackbar({content: "评论成功", alive: 3000});
+                            }, function (error) {
+                                $("body").snackbar({alive: 3000, content: NoAuthCommentSnackBar});
+                            });
                         },
                         submitReply: function (commentIndex) {
                             console.log("submitReply! ");
@@ -207,10 +219,8 @@ function init() {
 }
 
 window.addEventListener('message', function (e) {
-    console.log(e.origin);
     if (e.origin == location.origin) {
         var data = e.data;
-        console.log(e.data);
         if (data.status == 1) {
             settings.is_auth = true;
             settings.user = data;

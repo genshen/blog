@@ -239,8 +239,7 @@
             <p class="col-md-12"><b>12条评论</b></p>
             <div class="col-md-12 form-group form-group-label comment-form">
                 <label class="floating-label" for="comment-input" style="left:auto;">你的评论</label>
-                <textarea @focus="checkAuth" class="form-control" id="comment-input" rows="4"
-                          style="resize: none"></textarea>
+                <textarea @focus="checkAuth" v-model="comment_text" class="form-control" id="comment-input" rows="4" style="resize: none"></textarea>
                 <div class="help-block pull-left"><code>支持Markdown输入</code></div>
                 <div class="pull-right">
                     <a title="预览" class="btn btn-flat btn-brand waves-attach waves-effect"><i class="material-icons">visibility</i></a>
