@@ -66,6 +66,11 @@
     margin-bottom: 6px
 }
 
+.comment-item{
+    padding-top:6px;
+    padding-bottom:6px;
+}
+
 .comment-item.comments-border{
     border-top: 1px solid rgba(0,0,0,0.12);
 }
@@ -81,7 +86,7 @@
     padding-right: 10px;  /*10 + 6 = 16*/
 }
 .reply-area .reply-item{
-    padding: 8px 6px 8px 6px;/*10 + 6(2nd) = 16*/
+    padding: 4px 6px 4px 6px;/*10 + 6(2nd) = 16*/
     border:solid transparent 1px;
 }
 .reply-area .reply-item:hover{

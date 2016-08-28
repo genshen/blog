@@ -34,8 +34,8 @@ type AuthInterface interface {
 
 func (g GithubAuthUser) GetAccessToken(code string) string {
 	req := httplib.Post("https://github.com/login/oauth/access_token")
-	req.Param("client_id", "d4c955e2a35bdfb47c2b")
-	req.Param("client_secret", "f4282605c420b5667138f05fb865452e8e3efd80")
+	req.Param("client_id", "")
+	req.Param("client_secret", "")
 	req.Param("code", code)
 	req.Param("accept", "json")
 

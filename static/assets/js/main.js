@@ -3,12 +3,21 @@
  */
 var settings = {}; //referred to vue(read only)
 var Config = {
-    apiPrefix: "/at"
+    apiPrefix: "/at",
+    MaxCommentLength:3
 };
+
+var NormalErrorSnackBar = '<a data-dismiss="snackbar">Dismiss</a>' +
+    '<div class="snackbar-text">Oh,Snap! 出了点错误,请' +
+    '<a href="javascript:location.reload() ">刷新</a>' + '后重试.</div>';
 
 var NoAuthCommentSnackBar = '<a data-dismiss="snackbar">Dismiss</a>' +
     '<div class="snackbar-text">你需要' +
     '<a data-toggle="modal" data-target="#auth_model">登录认证</a>' + '后才能添加评论.</div>';
+
+var NoAuthReplySnackBar = '<a data-dismiss="snackbar">Dismiss</a>' +
+    '<div class="snackbar-text">你需要' +
+    '<a data-toggle="modal" data-target="#auth_model">登录认证</a>' + '后才能添加回复.</div>';
 
 function init() {
     marked.setOptions({
@@ -23,6 +32,9 @@ function init() {
         $.get("/settings", function (data) {
             settings = data.settings;
             settings.is_auth = data.is_auth;
+            if (data.user) {
+                settings.user = data.user;
+            }
 
             (function () {
                 Vue.filter('formatTime', formatTime);
@@ -87,40 +99,15 @@ function init() {
                     data: function () {
                         return {
                             settings: settings,
-                            comment_text: "",
                             article: {
                                 id: "", title: "", content: "", summary: "", cover: "",
                                 view_count: 0, comment_count: 0, reply_count: 0, created_at: "", updated_at: ""
                             },
-                            comments: [
-                                {
-                                    user: {name: "he", url: "baidu.com", avatar: "/assets/img/avatar.jpg"},
-                                    replies: [
-                                        {
-                                            user: {name: "he", url: "baidu.com", avatar: "/assets/img/avatar.jpg"},
-                                            content: "Hello replies1",
-                                            date: "3天前"
-                                        },
-                                        {
-                                            user: {name: "he", url: "baidu.com", avatar: "/assets/img/avatar.jpg"},
-                                            content: "Hello replies2",
-                                            date: "3天前"
-                                        }
-                                    ],
-                                    content: "Hello Comment",
-                                    date: "3天前",
-                                    show_reply_box: false,
-                                    new_reply_content: ""
-                                },
-                                {
-                                    user: {name: "he", url: "baidu.com", avatar: "/assets/img/avatar.jpg"},
-                                    replies: [],
-                                    content: "Hello Comment2",
-                                    date: "3天前",
-                                    show_reply_box: false,
-                                    new_reply_content: ""
-                                }
-                            ]
+                            comments: [],
+                            comments_loaded_count: 0,
+                            comment_load_status: -1, //0 for loading(init),1 for loading, 2 for loaded(has more),
+                            // 3 for loaded(no more),4 for failed to load(init),5 for failed to load
+                            comment_text: ""
                         }
                     },
                     filters: {
@@ -129,25 +116,82 @@ function init() {
                         }
                     },
                     methods: {
-                        checkAuth: function () {
-                            if (this.settings.is_auth) {
-                                return
+                        setCommentLoad: function () {
+                            if (document.getElementById("comment-flag").offsetTop < document.documentElement.clientHeight) {
+                                this.loadComment();
+                            } else {
+                                var self = this;
+                                $(window).scroll(function () {
+                                    if (document.getElementById("comment-flag").offsetTop - document.body.scrollTop <
+                                        document.documentElement.clientHeight) {
+                                        $(window).unbind('scroll');
+                                        self.loadComment();
+                                    }
+                                });
                             }
-                            $('#auth_model').modal('show')
+                        },
+                        loadComment: function () {
+                            if (this.comment_load_status == 0 || this.comment_load_status == 1) {
+                                return;
+                            }
+                            var start = this.comments_loaded_count;
+                            this.comment_load_status = start == 0 ? 0 : 1;
+                            var self = this;
+                            $.ajax({
+                                url: Config.apiPrefix + "/comments/" + this.$route.params.id + "/" + start,
+                                success: function (data) {
+                                    try {
+                                        data.forEach(function (e) {
+                                            if (!self.containsComment(e.id)) {
+                                                e.show_reply_box = false;
+                                                e.new_reply_content = "";
+                                                self.comments.unshift(e);
+                                            }
+                                        });
+                                        self.comments_loaded_count += data.length;
+                                        self.comment_load_status = data.length == Config.MaxCommentLength ? 2 : 3; //2(has more) or 3(not more)
+                                    } catch (err) {
+                                        self.comment_load_status = start == 0 ? 4 : 5;
+                                    }
+                                }, error: function (r, err) {
+                                    self.comment_load_status = start == 0 ? 4 : 5; //4 or 5
+                                }
+                            });
+                        },
+                        containsComment: function (id) {
+                            var h = this.comments.length - 1, l = 0;
+                            while (l <= h) {
+                                var m = Math.floor((h + l) / 2);
+                                if (this.comments[m].id == id) {
+                                    return true;
+                                }
+                                if (id > this.comments[m].id) {
+                                    l = m + 1;
+                                } else {
+                                    h = m - 1;
+                                }
+                            }
+                            return false;
                         },
                         submitComment: function () {
                             if (this.comment_text == "") {
                                 $("body").snackbar({alive: 3000, content: "评论内容不能为空"});
-                                return
+                                return;
                             }
                             if (!this.settings.is_auth) {
-                                $("body").snackbar({alive: 3000, content: NoAuthCommentSnackBar});
-                                return
+                                $('#auth_model').modal('show');
+                                return;
                             }
+
                             var self = this;
                             Util.postData.init(Config.apiPrefix + "/comment/add/", {
                                 post_id: this.article.id, content: this.comment_text
-                            }, null, function () {
+                            }, null, function (data) {
+                                self.comments.unshift({
+                                    content: self.comment_text, create_at: "2016-08-29T12:36:53.111+08:00",
+                                    id: data.Addition, replies: [], status: 1, user: settings.user,
+                                    show_reply_box: false, new_reply_content: ""
+                                }); //todo create_at
                                 self.comment_text = "";
                                 $("body").snackbar({content: "评论成功", alive: 3000});
                             }, function (error) {
@@ -155,17 +199,43 @@ function init() {
                             });
                         },
                         submitReply: function (commentIndex) {
-                            console.log("submitReply! ");
+                            var self = this.comments[commentIndex];
+                            if (self.new_reply_content == "") {
+                                $("body").snackbar({alive: 3000, content: "回复内容不能为空"});
+                                return;
+                            }
+                            if (!this.settings.is_auth) {
+                                $('#auth_model').modal('show');
+                                return;
+                            }
+
+                            Util.postData.init(Config.apiPrefix + "/reply/add/", {
+                                comment_id: self.id, content: self.new_reply_content
+                            }, null, function (data) {
+                                try {
+                                    self.replies.push({
+                                        content: self.new_reply_content, create_at: "2016-08-29T12:36:53.111+08:00",
+                                        id: data.Addition, status: 1, user: settings.user
+                                    }); //todo create_at
+                                    self.new_reply_content = "";
+                                    self.show_reply_box = false;
+                                    $("body").snackbar({content: "回复成功", alive: 3000});
+                                } catch (e) {
+                                    $("body").snackbar({content: "出了点错误,请重试", alive: 3000});
+                                }
+                            }, function (error) {
+                                $("body").snackbar({alive: 3000, content: NoAuthReplySnackBar});
+                            });
                         },
                         cancelReply: function (commentIndex) {
                             this.comments[commentIndex].show_reply_box = false;
                         },
-                        toggleReplyBox: function (commentIndex, replyIndex) { //-1 ->is comment //todo isAuth
+                        toggleReplyBox: function (commentIndex, replyIndex) { //-1 ->is comment
                             var atOne;
                             if (replyIndex < 0) {
-                                atOne = this.comments[commentIndex].user.name
+                                atOne = this.comments[commentIndex].user.name;
                             } else {
-                                atOne = this.comments[commentIndex].replies[replyIndex].user.name
+                                atOne = this.comments[commentIndex].replies[replyIndex].user.name;
                             }
                             this.comments[commentIndex].show_reply_box = true;
                             this.comments[commentIndex].new_reply_content = "@" + atOne;
@@ -190,14 +260,17 @@ function init() {
                                     if (!data.cover) {
                                         data.cover = "/assets/img/brand.jpg";
                                     }
-                                    self.article = data; //todo move comments
-                                } catch (err) { //todo
-                                    console.log(err);
+                                    self.article = data;
+                                } catch (err) {
+                                    $("body").snackbar({alive: 3000, content: NormalErrorSnackBar});
                                 }
-                            }, error: function (err) { //todo
-                                console.log(err);
+                            }, error: function (err) {
+                                $("body").snackbar({alive: 3000, content: NormalErrorSnackBar});
                             }
                         });
+                    },
+                    ready: function () {
+                        setTimeout(this.setCommentLoad, 100);
                     }
                 });
 
@@ -224,6 +297,7 @@ window.addEventListener('message', function (e) {
         if (data.status == 1) {
             settings.is_auth = true;
             settings.user = data;
+            $("body").snackbar({alive: 3000, content: "登录认证成功"});
         }
     }
 });

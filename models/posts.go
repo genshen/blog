@@ -16,14 +16,14 @@ const (
 )
 
 type Posts struct {
-	Id           bson.ObjectId `bson:"_id,omitempty" json:"id"`
-	Title        string           `json:"title"`
-	Content      string           `json:"content"`
-	Summary      string           `json:"summary"`
-	Cover        string           `json:"cover"`
-	ViewCount    int           `bson:"view_count" json:"view_count"`
-	CommentCount int           `bson:"comment_count" json:"comment_count"`
-	ReplyCount   int           `bson:"reply_count" json:"reply_count"`
+	Id           bson.ObjectId  `bson:"_id,omitempty" json:"id"`
+	Title        string         `json:"title"`
+	Content      string         `json:"content"`
+	Summary      string         `json:"summary"`
+	Cover        string         `json:"cover"`
+	ViewCount    int            `bson:"view_count" json:"view_count"`
+	CommentCount int            `bson:"comment_count" json:"comment_count"`
+	ReplyCount   int            `bson:"reply_count" json:"reply_count"`
 	//Classify
 	//Tags
 	Status       int

@@ -274,7 +274,7 @@ var Util = {
                                 break;
                             case 1:
                                 if (onPostSuccess) {
-                                    onPostSuccess();
+                                    onPostSuccess(data);
                                 }
                                 break;
                         }
