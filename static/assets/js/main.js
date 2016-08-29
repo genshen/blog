@@ -4,7 +4,7 @@
 var settings = {}; //referred to vue(read only)
 var Config = {
     apiPrefix: "/at",
-    MaxCommentLength:3
+    MaxCommentLength: 20
 };
 
 var NormalErrorSnackBar = '<a data-dismiss="snackbar">Dismiss</a>' +
@@ -80,12 +80,11 @@ function init() {
                                         }
                                         self.lists.push(e);
                                     })
-                                } catch (err) { //todo
-                                    console.log(err);
+                                } catch (err) {
+                                    $("body").snackbar({alive: 3000, content: NormalErrorSnackBar});
                                 }
-
-                            }, error: function (err) { //todo
-                                console.log(err);
+                            }, error: function (err) {
+                                $("body").snackbar({alive: 3000, content: NormalErrorSnackBar});
                             }
                         });
                     }
@@ -188,10 +187,10 @@ function init() {
                                 post_id: this.article.id, content: this.comment_text
                             }, null, function (data) {
                                 self.comments.unshift({
-                                    content: self.comment_text, create_at: "2016-08-29T12:36:53.111+08:00",
+                                    content: self.comment_text, create_at: (new Date()).getTime(),
                                     id: data.Addition, replies: [], status: 1, user: settings.user,
                                     show_reply_box: false, new_reply_content: ""
-                                }); //todo create_at
+                                });
                                 self.comment_text = "";
                                 $("body").snackbar({content: "评论成功", alive: 3000});
                             }, function (error) {
@@ -214,9 +213,9 @@ function init() {
                             }, null, function (data) {
                                 try {
                                     self.replies.push({
-                                        content: self.new_reply_content, create_at: "2016-08-29T12:36:53.111+08:00",
+                                        content: self.new_reply_content, create_at: (new Date()).getTime(),
                                         id: data.Addition, status: 1, user: settings.user
-                                    }); //todo create_at
+                                    });
                                     self.new_reply_content = "";
                                     self.show_reply_box = false;
                                     $("body").snackbar({content: "回复成功", alive: 3000});
@@ -303,5 +302,30 @@ window.addEventListener('message', function (e) {
 });
 
 function formatTime(value) {
-    return "三天前";
+    if (typeof value != "number") {
+        var v = Date.parse(value);
+        if (isNaN(v)) {
+            value = (new Date).getTime();
+        } else {
+            value = v;
+        }
+    }
+    now = (new Date).getTime();
+    if (now - value < 60 * 1000) {
+        return "刚刚";
+    }
+    if (now - value < 60 * 60 * 1000) {
+        var min = parseInt((now - value) / (60 * 1000));
+        return min + "分钟前";
+    }
+    if (now - value < 24 * 60 * 60 * 1000) {
+        var hour = parseInt((now - value) / (60 * 60 * 1000));
+        return hour + "小时前";
+    }
+    if (now - value < 20 * 24 * 60 * 60 * 1000) {
+        var day = parseInt((now - value) / (24 * 60 * 60 * 1000));
+        return day + "天前";
+    }
+    var d = new Date(value);
+    return d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate();
 }

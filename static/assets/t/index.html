@@ -43,7 +43,7 @@
     <nav aria-hidden="true" tabindex="-1" class="menu " id="ui_menu">
         <div class="menu-scroll">
             <div class="menu-content">
-                <a class="menu-logo" v-link="{ name: 'home'}">Material</a>
+                <a class="menu-logo" v-link="{name: 'home'}">Material</a>
                 <ul class="nav">
                     <li class="nav-search-box">
                         <div class="form-group form-group-label">
@@ -52,14 +52,13 @@
                         </div>
                     </li>
                     <li>
-                        <a class="collapsed waves-attach waves-effect" data-toggle="collapse" href="#ui_menu_samples">Sample
-                            Pages</a>
+                        <a class="collapsed waves-attach waves-effect" data-toggle="collapse" href="#ui_menu_samples">SamplePages</a>
                         <ul class="menu-collapse collapse" id="ui_menu_samples">
                             <li>
-                                <a class="waves-attach waves-effect" href="page-login.html">Login Page</a>
+                                <a class="waves-attach waves-effect" href="#">Login Page</a>
                             </li>
                             <li>
-                                <a class="waves-attach waves-effect" href="page-picker.html">Picker Page</a>
+                                <a class="waves-attach waves-effect" href="#">Picker Page</a>
                             </li>
                         </ul>
                     </li>
@@ -121,6 +120,7 @@
             </div>
         </div>
     </nav>
+
     <div aria-hidden="true" class="modal modal-va-middle fade" id="auth_model" role="dialog" tabindex="-1">
         <div class="modal-dialog modal-xs">
             <div class="modal-content">
@@ -201,9 +201,7 @@
                         </div>
                         <div class="card-action">
                             <div class="card-action-btn pull-left">
-                                <a v-link="{name:'detail',params:{id:blog.id}}"
-                                   class="btn btn-flat waves-effect waves-attach"
-                                   href="javascript:void(0)">
+                                <a v-link="{name:'detail',params:{id:blog.id}}" class="btn btn-flat waves-effect waves-attach" href="javascript:void(0)">
                                     <span class="icon">more_vert</span>&nbsp;Read More</a>
                             </div>
                         </div>
