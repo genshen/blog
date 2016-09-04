@@ -15,22 +15,21 @@ function init() {
     $.get(CONFIG.adminStaticPrefix + "/templates/index.html", function (data) {
         document.getElementById("template-container").outerHTML = data;
 
-        registerComponent();
-        new Vue({
-            el: 'html',
-            data: {
-                currentView: "menu-container"
-            }, methods: {
-                changeView: function (viewName) {
-                    this.currentView = viewName;
-                }
-            }
-        })
+        registerVueRouter();
     });
 }
 
-function registerComponent() {
-    Vue.component('menu-container', {
+function registerVueRouter() {
+    var App = Vue.extend({
+        template: '#app_template',
+        data: function () {
+            return {}
+        }, ready: function () {
+        },
+        methods: {}
+    });
+
+    var Menu = Vue.extend({
         template: '#menu-container',
         props: {},
         methods: {},
@@ -39,7 +38,7 @@ function registerComponent() {
         }
     });
 
-    Vue.component('article-list', {
+    var ArticleList = Vue.extend({
         template: '#article-list',
         props: {},
         methods: {},
@@ -48,7 +47,7 @@ function registerComponent() {
         }
     });
 
-    Vue.component('article-edit', {
+    var ArticleEdit = Vue.extend({
         template: '#article-edit',
         props: {},
         data: function () {
@@ -102,4 +101,23 @@ function registerComponent() {
             }
         }
     });
+
+    var router = new VueRouter({root: "/admin", hashbang: false, history: true});
+    router.map({
+        '/': {
+            name: 'menu',
+            component: Menu
+        },
+        '/article/list': {
+            name: "article_list",
+            component: ArticleList
+        }, '/article/edit': {
+            name: "article_edit",
+            component: ArticleEdit
+        }
+    });
+    router.start(App, 'template');
+    if (document.location.pathname == "/admin") {
+        router.go({name: "menu"})
+    }
 }

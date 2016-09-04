@@ -22,6 +22,7 @@ func initRouter() {
 	beego.Router("/settings", &controllers.HomeController{}, "get:Settings")
 
 	beego.Router("/at/category", &controllers.PostsController{}, "get:Category")
+
 	beego.Router("/at/detail/:id([0-9A-Fa-f]{24,24})", &controllers.PostsController{}, "get:Detail")
 	beego.Router("/at/comment/add", &controllers.CommentController{}, "post:Add")
 	beego.Router("/at/comments/:post_id([0-9A-Fa-f]{24,24})/:start([0-9]+)", &controllers.CommentController{}, "get:Load")
@@ -33,7 +34,7 @@ func initRouter() {
 	beego.Router(admin.AdminSignOutUri, &admin.AuthController{}, "get:SignOut")
 	beego.Router(admin.AdminAuthUri, &admin.AuthController{}, "get,post:SignIn")
 
-	beego.Router(admin.AdminPrefix, &admin.PanelController{}, "get:Get")
+	beego.Router(admin.AdminPrefix+"/*", &admin.PanelController{}, "get:Get")
 
 	beego.Router(admin.AdminPrefix + adminApi + "/post", &admin.PostsController{}, "get:List")
 	beego.Router(admin.AdminPrefix + adminApi + "/post/add", &admin.PostsController{}, "post:Add")

@@ -10,7 +10,6 @@ type HomeController struct {
 }
 
 func (this *HomeController) Get() {
-	//this.ServeStaticView()
 	this.Data["Email"] = "astaxie@gmail.com"
 	this.EnableRender = true
 	this.TplName = "home/index.html"
@@ -19,11 +18,11 @@ func (this *HomeController) Get() {
 type SettingData struct {
 	IsAuth   bool               `json:"is_auth"`
 	User     *auth.User	    `json:"user"`
-	Settings *settings.Setting  `json:"settings"`
+	Settings settings.Setting  `json:"settings"`
 }
 
 func (this  *HomeController)Settings() {
-	settingData := SettingData{IsAuth:false, Settings:&settings.S}
+	settingData := SettingData{IsAuth:false, Settings:settings.GetSettings()}
 	if this.HasAuth() {
 		u := this.GetUserData()
 		settingData.User = &u

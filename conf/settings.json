@@ -1,15 +1,4 @@
 {
-  "menus": [
-    {
-      "name": "编程语言",
-      "submenu": [
-        {
-          "name": "Java",
-          "url": "/java"
-        }
-      ]
-    }
-  ],
   "profile": {
     "avatar": "https://avatars2.githubusercontent.com/u/11265498?v=3&s=460",
     "name": "genshen",
@@ -18,8 +7,8 @@
   },
   "auth_sites": {
     "github": {
-      "client_id":"d4c955e2a35bdfb47c2b",
-      "url":"https://github.com/login/oauth/authorize?client_id="
+      "client_id": "d4c955e2a35bdfb47c2b",
+      "url": "https://github.com/login/oauth/authorize?client_id="
     }
   }
 }

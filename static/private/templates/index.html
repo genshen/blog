@@ -1,53 +1,54 @@
-<header class="header header-brand header-waterfall ui-header">
-    <ul class="nav nav-list pull-left">
-        <li>
-            <a href="javascript:void(0)">
-                <span class="icon icon-lg">menu</span>
-            </a>
-        </li>
-    </ul>
-    <a class="header-logo header-affix-hide margin-left-no margin-right-no" data-offset-top="213"
-       @click="changeView('menu-container')" data-spy="affix" href="javascript:void(0)">Admin Home</a>
-    <ul class="nav nav-list pull-right">
-        <li class="dropdown header-nav-menu">
-            <a class="btn btn-flat btn-brand waves-attach waves-effect" href="#">
-                <i class="material-icons">face</i>
-            </a>
-        </li>
-        <li>
-            <a data-toggle="menu" href="#ui_menu_profile">
-                <span class="access-hide">John Smith</span>
-                <span class="avatar avatar-sm">
+<script type="text/x-template" id="app_template">
+    <header class="header header-brand header-waterfall ui-header">
+        <ul class="nav nav-list pull-left">
+            <li>
+                <a href="javascript:void(0)">
+                    <span class="icon icon-lg">menu</span>
+                </a>
+            </li>
+        </ul>
+        <a class="header-logo header-affix-hide margin-left-no margin-right-no" data-offset-top="213"
+           @click="changeView('menu-container')" data-spy="affix" href="javascript:void(0)">Admin Home</a>
+        <ul class="nav nav-list pull-right">
+            <li class="dropdown header-nav-menu">
+                <a class="btn btn-flat btn-brand waves-attach waves-effect" href="#">
+                    <i class="material-icons">face</i>
+                </a>
+            </li>
+            <li>
+                <a data-toggle="menu" href="#ui_menu_profile">
+                    <span class="access-hide">John Smith</span>
+                    <span class="avatar avatar-sm">
                      <img alt="avatar" src="/assets/img/avatar.jpg">
                 </span>
-            </a>
-        </li>
-    </ul>
-</header>
-<nav aria-hidden="true" class="menu menu-right" id="ui_menu_profile" tabindex="-1">
-    <div class="menu-scroll">
-        <div class="menu-top">
-            <div class="menu-top-img">
-                <img alt="landscape" src="/assets/img/landscape.jpg">
-            </div>
-            <div class="menu-top-info">
-                <a class="menu-top-user" href="javascript:void(0)">
+                </a>
+            </li>
+        </ul>
+    </header>
+    <nav aria-hidden="true" class="menu menu-right" id="ui_menu_profile" tabindex="-1">
+        <div class="menu-scroll">
+            <div class="menu-top">
+                <div class="menu-top-img">
+                    <img alt="landscape" src="/assets/img/landscape.jpg">
+                </div>
+                <div class="menu-top-info">
+                    <a class="menu-top-user" href="javascript:void(0)">
                     <span class="avatar avatar-inline margin-right">
                    <img alt="avatar" src="/assets/img/avatar.jpg">
                     </span><span>Admin</span>
-                </a>
+                    </a>
+                </div>
+                <div class="menu-top-info-sub">
+                    <small>here nothing</small>
+                </div>
             </div>
-            <div class="menu-top-info-sub">
-                <small>here nothing</small>
-            </div>
-        </div>
-        <div class="menu-content">
-            <ul class="nav">
-                <li>
-                    <a class="waves-attach waves-effect" href="javascript:void(0)">
-                        Profile Settings
-                        <span class="menu-collapse-toggle collapsed waves-attach waves-effect"
-                              data-target="#ui_menu_profile_settings" data-toggle="collapse">
+            <div class="menu-content">
+                <ul class="nav">
+                    <li>
+                        <a class="waves-attach waves-effect" href="javascript:void(0)">
+                            Profile Settings
+                            <span class="menu-collapse-toggle collapsed waves-attach waves-effect"
+                                  data-target="#ui_menu_profile_settings" data-toggle="collapse">
 								<div class="menu-collapse-toggle-close">
 									<i class="icon icon-lg">close</i>
 								</div>
@@ -55,40 +56,40 @@
 									<i class="icon icon-lg">add</i>
 								</div>
 							</span>
-                    </a>
-                    <ul class="menu-collapse collapse" id="ui_menu_profile_settings">
-                        <li>
-                            <a class="waves-attach waves-effect" href="javascript:void(0)">First Item</a>
-                        </li>
-                        <li>
-                            <a class="waves-attach waves-effect" href="javascript:void(0)">Another Item</a>
-                        </li>
-                        <li>
-                            <a class="waves-attach waves-effect" href="javascript:void(0)">Something Else</a>
-                        </li>
-                    </ul>
-                </li>
-                <li>
-                    <a class="waves-attach waves-effect" href="javascript:void(0)">Upload Photo</a>
-                </li>
-                <li>
-                    <a class="waves-attach waves-effect" href="/admin/auth/signout">signout</a>
-                </li>
-            </ul>
+                        </a>
+                        <ul class="menu-collapse collapse" id="ui_menu_profile_settings">
+                            <li>
+                                <a class="waves-attach waves-effect" href="javascript:void(0)">First Item</a>
+                            </li>
+                            <li>
+                                <a class="waves-attach waves-effect" href="javascript:void(0)">Another Item</a>
+                            </li>
+                            <li>
+                                <a class="waves-attach waves-effect" href="javascript:void(0)">Something Else</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a class="waves-attach waves-effect" href="javascript:void(0)">Upload Photo</a>
+                    </li>
+                    <li>
+                        <a class="waves-attach waves-effect" href="/admin/auth/signout">signout</a>
+                    </li>
+                </ul>
+            </div>
         </div>
-    </div>
-</nav>
-<main id="app" class="ui-admin-content">
-    <!--<menu-container :show.sync="visible.menu"></menu-container>-->
-    <component :is="currentView" transition="fade" transition-mode="out-in"></component>
-</main>
-<footer class="footer ui-footer">
-    <div class="container">
-        <p>Material</p>
-    </div>
-</footer>
+    </nav>
+    <main id="app" class="ui-admin-content">
+        <router-view></router-view>
+    </main>
+    <footer class="footer ui-footer">
+        <div class="container">
+            <p>Material</p>
+        </div>
+    </footer>
+</script>
 
-<template id="menu-container">
+<script type="text/x-template" id="menu-container">
     <div class="container">
         <div class="row">
             <div class="col-md-12">
@@ -96,12 +97,12 @@
                     <div class="card-main">
                         <div class="card-inner">
                             <p class="card-heading text-brand">文章</p>
-                            <a @click="this.$parent.changeView('article-list')"
+                            <a v-link="{name: 'article_list'}"
                                class="btn btn-brand waves-attach waves-effect">
                                 <i class="material-icons">list</i><br>
                                 <span>文章列表</span>
                             </a>
-                            <a @click="this.$parent.changeView('article-edit')"
+                            <a  v-link="{name: 'article_edit'}"
                                class="btn btn-brand waves-attach waves-effect">
                                 <i class="material-icons">create</i><br>
                                 <span>撰写文章</span>
@@ -116,7 +117,6 @@
             </div>
         </div><!---row-->
         <div class="row">
-            <!--<h2 class="content-sub-heading">文章</h2>-->
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-main">
@@ -136,13 +136,13 @@
             </div>
         </div><!---row-->
     </div>
-</template>
+</script>
 
-<template id="article-list">
+<script type="text/x-template" id="article-list">
     <div> Hello</div>
-</template>
+</script>
 
-<template id="article-edit">
+<script  type="text/x-template" id="article-edit">
     <div class="container">
         <div class="row">
             <div class="col-md-12">
@@ -166,18 +166,22 @@
                         </div>
                         <div class="form-group form-group-label">
                             <label class="floating-label" for="article_edit_content">编辑</label>
-                            <textarea v-model="article_content" class="form-control" id="article_edit_content" rows="12"></textarea>
+                            <textarea v-model="article_content" class="form-control" id="article_edit_content"
+                                      rows="12"></textarea>
                         </div>
                         <div class="article-edit-footer">
                             <ul class="nav nav-list margin-no pull-left">
                                 <li class="dropdown">
-                                    <a class="dropdown-toggle text-black waves-attach waves-effect" data-toggle="dropdown"><span class="icon">more_vert</span></a>
+                                    <a class="dropdown-toggle text-black waves-attach waves-effect"
+                                       data-toggle="dropdown"><span class="icon">more_vert</span></a>
                                     <ul class="dropdown-menu">
                                         <li>
-                                            <a class="waves-attach waves-effect" href="javascript:void(0)"><span class="icon margin-right-sm">file_upload</span>&nbsp;上传图片</a>
+                                            <a class="waves-attach waves-effect" href="javascript:void(0)"><span
+                                                    class="icon margin-right-sm">file_upload</span>&nbsp;上传图片</a>
                                         </li>
                                         <li>
-                                            <a class="waves-attach waves-effect" href="javascript:void(0)"><span class="icon margin-right-sm">drafts</span>&nbsp;存为草稿</a>
+                                            <a class="waves-attach waves-effect" href="javascript:void(0)"><span
+                                                    class="icon margin-right-sm">drafts</span>&nbsp;存为草稿</a>
                                         </li>
                                     </ul>
                                 </li>
@@ -194,4 +198,4 @@
             </div> <!---/col-md-12--->
         </div>
     </div>
-</template>
+</script>

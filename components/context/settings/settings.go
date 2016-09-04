@@ -3,8 +3,10 @@ package settings
 import (
 	"os"
 	"log"
+	"sync"
 	"io/ioutil"
 	"encoding/json"
+	"gensh.me/blog/models"
 )
 
 const (
@@ -12,9 +14,9 @@ const (
 )
 
 type Setting struct {
-	Menus     []Menu          `json:"menus"`
-	Profile   Profile         `json:"profile"`
-	AuthSites map[string]Auth `json:"auth_sites"`
+	Categories []models.Category  `json:"categories"`
+	Profile    Profile            `json:"profile"`
+	AuthSites  map[string]Auth    `json:"auth_sites"`
 }
 
 type Profile struct {
@@ -24,22 +26,13 @@ type Profile struct {
 	Bio    string `json:"bio"`
 }
 
-type Menu struct {
-	SubMenus []SubMenu  `json:"submenus"`
-	Name     string     `json:"name"`
-}
-
-type SubMenu struct {
-	Name string  `json:"name"`
-	Url  string  `json:"url"`
-}
-
 type Auth struct {
 	ClientId string `json:"client_id"`
 	Url      string `json:"url"`
 }
 
-var S Setting
+var s Setting
+var mu sync.RWMutex
 
 func init() {
 	json_path := os.Getenv("GOPATH")
@@ -53,7 +46,15 @@ func init() {
 		log.Println(err)
 		return
 	}
-	if err := json.Unmarshal(data, &S); err != nil {
+	if err := json.Unmarshal(data, &s); err != nil {
 		log.Println("JSON unmarshaling failed: %s", err)
+		return
 	}
+	LoadCategories()
+}
+
+func GetSettings() Setting {
+	mu.RLock()
+	defer mu.RUnlock()
+	return s
 }
