@@ -2,6 +2,7 @@
  * Created by 根深 on 2016/8/11.
  */
 var settings = {}; //referred to vue(read only)
+var categories;
 var Config = {
     apiPrefix: "/at",
     MaxCommentLength: 20
@@ -31,6 +32,7 @@ function init() {
 
         $.get("/settings", function (data) {
             settings = data.settings;
+            categories = data.categories;
             settings.is_auth = data.is_auth;
             if (data.user) {
                 settings.user = data.user;
@@ -44,6 +46,7 @@ function init() {
                     data: function () {
                         return {
                             settings: settings,
+                            categories: categories,
                             title: "哈哈哈",
                             detail: {is_auth: true}
                         }
@@ -68,7 +71,13 @@ function init() {
                     },
                     computed: {},
                     methods: {},
+                    route: {
+                        data: function(){
+                            console.log("data!@");
+                        }
+                    },
                     created: function () {
+                        console.log("ready!@");
                         var self = this;
                         $.ajax({
                             url: Config.apiPrefix + "/category",
@@ -277,6 +286,9 @@ function init() {
                 router.map({
                     '/': {
                         name: 'home',
+                        component: List
+                    }, '/category/:menu/:sub_menu': {
+                        name: 'category',
                         component: List
                     },
                     '/detail/:id': {

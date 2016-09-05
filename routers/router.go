@@ -39,4 +39,7 @@ func initRouter() {
 	beego.Router(admin.AdminPrefix + adminApi + "/post", &admin.PostsController{}, "get:List")
 	beego.Router(admin.AdminPrefix + adminApi + "/post/add", &admin.PostsController{}, "post:Add")
 	//beego.Router(admin.AdminPrefix+"/post/delete", &admin.PostsController{}, "post:Del")
+	beego.Router(admin.AdminPrefix + adminApi + "/categories", &admin.CategoryController{}, "get:Get")
+	beego.Router(admin.AdminPrefix + adminApi + "/category/add", &admin.CategoryController{}, "post:CategoryAdd")
+	beego.Router(admin.AdminPrefix + adminApi + "/sub_category/add", &admin.CategoryController{}, "post:SubCategoryAdd")
 }

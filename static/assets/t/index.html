@@ -10,29 +10,22 @@
         <a class="header-logo header-affix-hide margin-left-no margin-right-no" data-offset-top="213"
            data-spy="affix" v-link="{ name: 'home'}">Material</a>
         <ul class="nav nav-list pull-right">
-            <li class="dropdown margin-right">
+            <li v-for="category in categories" v-if="category.sub_category.length != 0 "
+                class="dropdown margin-right hidden-xx hidden-xs">
                 <a class="dropdown-toggle text-black waves-attach waves-effect"
                    data-toggle="dropdown" aria-expanded="false">
-                    <span>Sample Pages</span>
+                    <span>{{category.name}}</span>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-right">
-                    <li>
-                        <a class="padding-right-lg waves-attach waves-effect" href="javascript:void(0)">
-                            <span class="icon icon-lg margin-right waves-effect">account_box</span>Profile Settings</a>
-                    </li>
-                    <li>
-                        <a class="padding-right-lg waves-attach waves-effect" href="javascript:void(0)">
-                            <span class="icon icon-lg margin-right">add_to_photos</span>Upload Photo</a>
-                    </li>
-                    <li>
-                        <a class="padding-right-lg waves-attach waves-effect" href="javascript:void(0)">
-                            <span class="icon icon-lg margin-right">exit_to_app</span>Logout</a>
-                    </li>
+                    <li v-for="sub in category.sub_category">
+                        <a v-link="{name:'category',params:{menu:category.slug,sub_menu:sub.slug}}"
+                           class="padding-right-lg waves-attach waves-effect">{{sub.name}}</a>
+                    </li><!--<span class="icon icon-lg margin-right waves-effect">account_box</span>-->
                 </ul>
             </li>
             <li>
                 <a data-toggle="menu" href="#ui_menu_profile">
-                    <span class="access-hide">John Smith</span>
+                    <span class="access-hide">{{settings.site_info.url}}</span>
                     <span class="avatar avatar-sm">
                      <img :alt="settings.profile.name" :src="settings.profile.avatar">
                 </span>
@@ -51,14 +44,13 @@
                             <input class="form-control" id="search" type="text">
                         </div>
                     </li>
-                    <li>
-                        <a class="collapsed waves-attach waves-effect" data-toggle="collapse" href="#ui_menu_samples">SamplePages</a>
-                        <ul class="menu-collapse collapse" id="ui_menu_samples">
-                            <li>
-                                <a class="waves-attach waves-effect" href="#">Login Page</a>
-                            </li>
-                            <li>
-                                <a class="waves-attach waves-effect" href="#">Picker Page</a>
+                    <li v-for="category in categories" v-if="category.sub_category.length != 0">
+                        <a class="collapsed waves-attach waves-effect" :href="'#ui_menu_'+$index"
+                           data-toggle="collapse">{{category.name}}</a>
+                        <ul class="menu-collapse collapse" :id="'ui_menu_'+$index">
+                            <li v-for="sub in category.sub_category">
+                                <a v-link="{name:'category',params:{menu:category.slug,sub_menu:sub.slug}}"
+                                   class="waves-attach waves-effect">{{sub.name}}</a>
                             </li>
                         </ul>
                     </li>
@@ -153,7 +145,8 @@
     </main>
     <footer class="ui-footer footer">
         <div class="container">
-            <p>Material</p>
+                <p>Material</p>
+            </div>
         </div>
     </footer>
     <div class="fbtn-container">
@@ -201,7 +194,8 @@
                         </div>
                         <div class="card-action">
                             <div class="card-action-btn pull-left">
-                                <a v-link="{name:'detail',params:{id:blog.id}}" class="btn btn-flat waves-effect waves-attach" href="javascript:void(0)">
+                                <a v-link="{name:'detail',params:{id:blog.id}}"
+                                   class="btn btn-flat waves-effect waves-attach" href="javascript:void(0)">
                                     <span class="icon">more_vert</span>&nbsp;Read More</a>
                             </div>
                         </div>
@@ -322,19 +316,21 @@
                 </div>
                 <p class="text-green" v-text="comment_load_status==0?'正在加载评论...':'正在加载更多评论...'"></p>
             </div>  <!--/text-center-->
-            <div  v-show="comment_load_status == 2" class="text-center">
-               <a @click="loadComment" class="btn btn-flat btn-green waves-attach waves-effect">加载更多</a>
+            <div v-show="comment_load_status == 2" class="text-center">
+                <a @click="loadComment" class="btn btn-flat btn-green waves-attach waves-effect">加载更多</a>
             </div>
             <div v-show="comment_load_status == 3" class="text-center">
                 <a disabled="disabled" class="btn btn-flat btn-green waves-attach waves-effect">没有更多评论了</a>
             </div>
-            <div  v-show="comment_load_status == 4" class="text-center">
+            <div v-show="comment_load_status == 4" class="text-center">
                 <span>评论加载失败...</span>
-                <a @click="loadComment" href="javascript:void(0)" class="btn btn-flat btn-red waves-attach waves-effect">重试</a>
+                <a @click="loadComment" href="javascript:void(0)"
+                   class="btn btn-flat btn-red waves-attach waves-effect">重试</a>
             </div>
-            <div  v-show="comment_load_status == 5" class="text-center">
+            <div v-show="comment_load_status == 5" class="text-center">
                 <span>无法加载更多内容...</span>
-                <a @click="loadComment" href="javascript:void(0)" class="btn btn-flat btn-red waves-attach waves-effect">重试</a>
+                <a @click="loadComment" href="javascript:void(0)"
+                   class="btn btn-flat btn-red waves-attach waves-effect">重试</a>
             </div>
         </div>
     </div>

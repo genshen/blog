@@ -214,7 +214,7 @@ var Util = {
         config: {
             authUrl: "" //todo
         },
-        init: function (url, data, o, onPostSuccess, onUnAuth, onPostError, onError) {
+        init: function (url, data, o, onPostSuccess, onUnAuth, onPostError, onError,onFinish) {
             var options = $.extend({}, {snackBarAlive: 4000,multiError:true, showNext: false, authUrl: this.config.authUrl}, o);
             if (!onError) {
                 onError = function () {
@@ -252,14 +252,20 @@ var Util = {
                     $("body").snackbar({content: "请<a href='" + url + "'>登录</a>后进行操作", alive: options.snackBarAlive});
                 }
             }
-            this.execute(url, data, onPostSuccess, onUnAuth, onPostError, onError);
+            this.execute(url, data, onPostSuccess, onUnAuth, onPostError, onError,onFinish);
         },
-        execute: function (url, data, onPostSuccess, onUnAuth, onPostError, onError) {
+        execute: function (url, data, onPostSuccess, onUnAuth, onPostError, onError,onFinish) {
             var xsrf;
+            var finish = function(code){
+                if (onFinish){
+                    onFinish(code);
+                }
+            };
             try { //cookie may be null or something else bad data
                 xsrf = base64_decode(Cookies.get('_xsrf').split("|")[0]);
             } catch (err) {
                 onError();
+                finish(0);
                 return;
             }
             $.ajax({
@@ -271,21 +277,27 @@ var Util = {
                         switch (data.Status) {
                             case 0:
                                 onPostError(data.Error);
+                                finish(1);
                                 break;
                             case 1:
                                 if (onPostSuccess) {
                                     onPostSuccess(data);
                                 }
+                                finish(2);
                                 break;
                         }
                     } catch (err) {
                         onError();
+                        finish(3);
                     }
+
                 }, error: function (r, err) {
                     if (r.status == 401) {
                         onUnAuth();
+                        finish(4);
                     } else {
                         onError();
+                        finish(5);
                     }
                 }
             });

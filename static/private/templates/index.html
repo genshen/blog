@@ -8,7 +8,7 @@
             </li>
         </ul>
         <a class="header-logo header-affix-hide margin-left-no margin-right-no" data-offset-top="213"
-           @click="changeView('menu-container')" data-spy="affix" href="javascript:void(0)">Admin Home</a>
+           v-link="{name:'menu'}" data-spy="affix" href="javascript:void(0)">Admin Home</a>
         <ul class="nav nav-list pull-right">
             <li class="dropdown header-nav-menu">
                 <a class="btn btn-flat btn-brand waves-attach waves-effect" href="#">
@@ -102,7 +102,7 @@
                                 <i class="material-icons">list</i><br>
                                 <span>文章列表</span>
                             </a>
-                            <a  v-link="{name: 'article_edit'}"
+                            <a v-link="{name: 'article_edit'}"
                                class="btn btn-brand waves-attach waves-effect">
                                 <i class="material-icons">create</i><br>
                                 <span>撰写文章</span>
@@ -135,6 +135,25 @@
                 </div>
             </div>
         </div><!---row-->
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-main">
+                        <div class="card-inner">
+                            <p class="card-heading text-brand">设置</p>
+                            <a v-link="{name: 'settings_category'}" class="btn btn-brand waves-attach waves-effect">
+                                <i class="material-icons">class</i><br>
+                                <span>栏目分类</span>
+                            </a>
+                            <a class="btn btn-brand waves-attach waves-effect">
+                                <i class="material-icons">palette</i><br>
+                                <span>系统设置</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div><!---row-->
     </div>
 </script>
 
@@ -142,7 +161,7 @@
     <div> Hello</div>
 </script>
 
-<script  type="text/x-template" id="article-edit">
+<script type="text/x-template" id="article-edit">
     <div class="container">
         <div class="row">
             <div class="col-md-12">
@@ -199,3 +218,138 @@
         </div>
     </div>
 </script>
+
+<script type="text/x-template" id="settings-category">
+    <div aria-hidden="true" class="modal modal-va-middle fade" id="category-edit-modal" role="dialog" tabindex="-1">
+        <div class="modal-dialog modal-xs">
+            <div class="modal-content">
+                <div class="modal-heading">
+                    <p class="modal-title">添加分类</p>
+                </div>
+                <div class="modal-inner">
+                    <div class="form-group form-group-label">
+                        <label class="floating-label" for="category_edit_name">名称</label>
+                        <input v-model="new_category_name" class="form-control" id="category_edit_name" type="text">
+                    </div>
+                    <div class="form-group form-group-label">
+                        <label class="floating-label" for="category_edit_slug">内链</label>
+                        <input v-model="new_category_slug" class="form-control" id="category_edit_slug" type="text">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <p class="text-right">
+                        <a class="btn btn-flat btn-brand-accent waves-attach waves-effect" data-dismiss="modal">取消</a>
+                        <a @click="addCategory" :disabled="new_category_submitting" v-text="new_category_submitting?'正在提交':'提交'"
+                           class="btn btn-flat btn-brand-accent waves-attach waves-effect"></a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+ <div aria-hidden="true" class="modal modal-va-middle fade" id="sub-category-edit-modal" role="dialog" tabindex="-1">
+        <div class="modal-dialog modal-xs">
+            <div class="modal-content">
+                <div class="modal-heading">
+                    <p class="modal-title">添加子分类</p>
+                </div>
+                <div class="modal-inner">
+                    <div class="form-group form-group-label">
+                        <label class="floating-label" for="sub_category_name">名称</label>
+                        <input v-model="new_sub_category_name" class="form-control" id="sub_category_name" type="text">
+                    </div>
+                    <div class="form-group form-group-label">
+                        <label class="floating-label" for="sub_category_slug">内链</label>
+                        <input v-model="new_sub_category_slug" class="form-control" id="sub_category_slug" type="text">
+                    </div>
+                    <div class="form-group form-group-label">
+                        <label  for="category-select">父级分类</label>
+                        <select v-model="new_sub_category_type" id="category-select">
+                            <option v-for="(index,category) in categories" :value="index">
+                                {{category.name}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <p class="text-right">
+                        <a class="btn btn-flat btn-brand-accent waves-attach waves-effect" data-dismiss="modal">取消</a>
+                        <a :disabled="new_sub_category_submitting" v-text="new_sub_category_submitting?'正在提交':'提交'"
+                           @click="addSubCategory" class="btn btn-flat btn-brand-accent waves-attach waves-effect"></a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <ul class="row breadcrumb" style="margin-bottom: 0">
+            <li><a v-link="{name:'menu'}">首页</a></li>
+            <li class="active"><a href="javascript:void(0)">设置</a></li>
+            <li class="active"><a href="javascript:void(0)">栏目分类</a></li>
+        </ul>
+        <div class="row">
+            <div class="col-md-12 ">
+                <div class="card">
+                    <div class="card-main">
+                        <div class="card-inner margin-bottom-no">
+                            <p class="card-heading">栏目分类
+                                <a  data-toggle="modal" data-target="#category-edit-modal" class="btn btn-flat btn-brand-accent waves-attach waves-effect">
+                                    <i class="icon">add</i>添加分类</a>
+                            </p>
+                            <div class="settings-category-add">
+                                <a data-toggle="modal" data-target="#sub-category-edit-modal" class="fbtn fbtn-red waves-circle waves-light waves-effect">
+                                    <i class="icon">add</i></a>
+                            </div>
+                            <div class="card-table">
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <thead>
+                                        <tr>
+                                            <th>父目录</th>
+                                            <th>父slug</th>
+                                            <th>名称</th>
+                                            <th>slug</th>
+                                            <th>包含帖子数量</th>
+                                            <th>操作</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <template v-for="(index,category) in categories">
+                                            <tr class="settings-category-ink-tr">
+                                                <td><b>{{category.name}}</b></td>
+                                                <td><b>{{category.slug}}</b></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td><a href="javascript:void(0)">删除父级分类</a></td>
+                                            </tr>
+                                            <tr v-for="sub in category.sub_category">
+                                                <td></td>
+                                                <td></td>
+                                                <td>{{sub.name}}</td>
+                                                <td>{{sub.slug}}</td>
+                                                <td>{{sub.posts_count}}</td>
+                                                <td><a href="javascript:void(0)">删除分类</a></td>
+                                            </tr>
+                                        </template>
+                                        </tbody>
+                                    </table>
+                                    <div class="text-center" v-if="categories.length==0">正在加载...</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-action">
+                            <div class="card-action-btn pull-right">
+                                <a class="btn btn-flat waves-attach waves-effect" href="javascript:void(0)"><span
+                                        class="icon">chevron_left</span></a>
+                                <a class="btn btn-flat waves-attach waves-effect" href="javascript:void(0)"><span
+                                        class="icon">chevron_right</span></a>
+                            </div>
+                        </div>
+                    </div>
+                </div><!---/card-->
+            </div><!--/col-md-12-->
+        </div>
+    </div>
+</script>
+

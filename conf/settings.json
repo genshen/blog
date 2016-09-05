@@ -1,4 +1,9 @@
 {
+  "site_info": {
+    "name": "Gensh",
+    "url": "http://gensh.me",
+    "source_code":"https://github.com/genshen/blog"
+  },
   "profile": {
     "avatar": "https://avatars2.githubusercontent.com/u/11265498?v=3&s=460",
     "name": "genshen",
