@@ -8,7 +8,7 @@
             </li>
         </ul>
         <a class="header-logo header-affix-hide margin-left-no margin-right-no" data-offset-top="213"
-           data-spy="affix" v-link="{ name: 'home'}">Material</a>
+           data-spy="affix" v-link="{ name: 'home'}">{{settings.site_info.name}}</a>
         <ul class="nav nav-list pull-right">
             <li v-for="category in categories" v-if="category.sub_category.length != 0 "
                 class="dropdown margin-right hidden-xx hidden-xs">
@@ -36,7 +36,7 @@
     <nav aria-hidden="true" tabindex="-1" class="menu " id="ui_menu">
         <div class="menu-scroll">
             <div class="menu-content">
-                <a class="menu-logo" v-link="{name: 'home'}">Material</a>
+                <a class="menu-logo" v-link="{name: 'home'}">{{settings.site_info.name}}</a>
                 <ul class="nav">
                     <li class="nav-search-box">
                         <div class="form-group form-group-label">
@@ -145,7 +145,17 @@
     </main>
     <footer class="ui-footer footer">
         <div class="container">
-                <p>Material</p>
+            <div class="row">
+                <div class="col-sm-12">
+                    <p>
+                        <a>关于</a>&nbsp;|
+                        <a :href="settings.site_info.source_code" target="_blank">Github</a>
+                    </p>
+                    <p class="powered">
+                        Powered by <a href="http://beego.me/" target="_blank">Beego Framework</a>
+                        <span>& UI by </span><a href="https://github.com/Daemonite/material" target="_blank">Material</a>
+                    </p>
+                </div>
             </div>
         </div>
     </footer>
@@ -156,16 +166,12 @@
                     class="fbtn-text fbtn-text-left">Links</span><span class="fbtn-ori icon">apps</span><span
                     class="fbtn-sub icon">close</span></a>
             <div class="fbtn-dropup">
-                <a class="fbtn waves-attach waves-effect waves-circle" href="https://github.com/Daemonite/material"
-                   target="_blank"><span
-                        class="fbtn-text fbtn-text-left">Fork me on GitHub</span><span class="icon">code</span></a>
-                <a class="fbtn fbtn-brand waves-attach waves-effect waves-circle waves-light"
-                   href="https://twitter.com/daemonites"
-                   target="_blank"><span class="fbtn-text fbtn-text-left">Follow Daemon on Twitter</span><span
-                        class="icon">share</span></a>
-                <a class="fbtn fbtn-green waves-attach waves-effect waves-circle" href="http://www.daemon.com.au/"
-                   target="_blank"><span
-                        class="fbtn-text fbtn-text-left">Visit Daemon Website</span><span class="icon">link</span></a>
+                <a class="fbtn waves-attach waves-effect waves-circle" href="https://github.com/genshen" target="_blank">
+                    <span class="fbtn-text fbtn-text-left">Fork Me On Github</span><span class="icon">code</span></a>
+                <a class="fbtn fbtn-brand waves-attach waves-effect waves-circlet" href="https://github.com/genshen" target="_blank">
+                    <span class="fbtn-text fbtn-text-left">My Works</span><span class="icon">all_inclusive</span></a>
+                <a class="fbtn fbtn-green waves-attach waves-effect waves-circle" href="http://gensh.me/" target="_blank">
+                    <span class="fbtn-text fbtn-text-left">Visit My Website</span><span class="icon">link</span></a>
             </div>
         </div>
     </div>
