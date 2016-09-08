@@ -24,7 +24,7 @@ type Posts struct {
 	ViewCount    int            `bson:"view_count" json:"view_count"`
 	CommentCount int            `bson:"comment_count" json:"comment_count"`
 	ReplyCount   int            `bson:"reply_count" json:"reply_count"`
-	//Classify
+	CategoryId   bson.ObjectId  `bson:"category_id" json:"category_id"`
 	//Tags
 	Status       int
 	CreatedAt    time.Time   `bson:"created_at" json:"created_at"`

@@ -64,8 +64,8 @@ function registerVueRouter() {
                     return;
                 }
                 var self = this;
-                Util.postData.init(CONFIG.apiPrefix + "/post/add/", {
-                    title: this.article_title, content: this.article_content,
+                Util.postData.init(CONFIG.apiPrefix + "/post/add/", {  //todo category_id
+                    category_id:"57cd6bfe20953120fc2beafc",title: this.article_title, content: this.article_content,
                     summary: marked(this.article_content).replace(/<.*?>/ig, "")
                 }, null, function () {
                     $("body").snackbar({content: "文章发布成功", alive: 4000});
