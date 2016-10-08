@@ -26,4 +26,11 @@ func init() {
 		log.Fatalln(err)
 	}
 	DB = session.DB(beego.AppConfig.String("db_name"))
+
+	if db_auth := beego.AppConfig.DefaultBool("db_auth", false); db_auth {
+		if err := DB.Login(beego.AppConfig.String("db_auth_user"),beego.AppConfig.String("db_auth_pwd")); err != nil { //if auth failed
+			log.Fatalln(err)
+		}
+	}
+
 }
