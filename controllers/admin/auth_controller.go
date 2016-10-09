@@ -30,7 +30,7 @@ func (this *AuthController) SignIn() {
 			if len(next) > 0 && next[0] != '/' {
 				next = "/" + next
 			} else if next == "" {
-				next = AdminAuthUri
+				next = AdminPrefix
 			}
 			this.Data["json"] = &utils.SimpleJsonResponse{Status:1, Addition:next}
 		}
