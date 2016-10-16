@@ -4,6 +4,7 @@ import (
 	"github.com/astaxie/beego/httplib"
 	"strings"
 	"errors"
+	"gensh.me/blog/components/keys"
 )
 
 const LenAccessTokenName = 13 //access_token=
@@ -33,9 +34,9 @@ type AuthInterface interface {
 }
 
 func (g GithubAuthUser) GetAccessToken(code string) string {
-	req := httplib.Post("https://github.com/login/oauth/access_token")
-	req.Param("client_id", "")
-	req.Param("client_secret", "")
+	req := httplib.Post(keys.GitHubKey.AuthUrl)
+	req.Param("client_id", keys.GitHubKey.ClientId)
+	req.Param("client_secret", keys.GitHubKey.ClientSecret)
 	req.Param("code", code)
 	req.Param("accept", "json")
 
@@ -66,9 +67,9 @@ func (g GithubAuthUser) GetAuthUserInfo(access_token string) (*User, error) {
 	return &u, err
 }
 
-func StartAuth(a AuthInterface, code string)(*User,error) {
+func StartAuth(a AuthInterface, code string) (*User, error) {
 	if access_token := a.GetAccessToken(code); access_token == "" {
-		return &User{},errors.New("can't fetch access_token")
+		return &User{}, errors.New("can't fetch access_token")
 	} else {
 		return a.GetAuthUserInfo(access_token)
 	}

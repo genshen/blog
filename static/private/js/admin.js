@@ -49,12 +49,67 @@ function registerVueRouter() {
         template: '#article-edit',
         data: function () {
             return {
+                upload_config:{token:"",upload_path:"",domain:""},
+                image_uploading_processing:false,
+                images:[], //{src:"blobUrl",status:0,file:fileObject}  //status:0未上传,1正在上传,2上传完成
                 markedStatus: false,
                 article_title: "",
                 article_content: ""
             }
         },
         methods: {
+            getUploadToken:function(){
+                $.ajax({url:CONFIG.apiPrefix+"/upload_token",context:this,success:function(data){
+                        this.upload_config = data;
+                },error:function(req,err){
+                        $("body").snackbar({alive: 3000, content: "加载上传配置信息出错了"});
+                }});
+            },
+            addUploadImage:function(){
+                if(this.upload_config.token){ //check upload_token
+                    $("#upload_image_input").trigger("click");
+                }else{
+                    $("body").snackbar({alive: 3000, content: "UploadToken无效"});
+                }
+            },
+            onUploadImageSelected:function(){
+                var files = $("#upload_image_input")[0].files;
+                var base_length = this.images.length;
+                for(var i=0;i<files.length;i++){
+                    var src = window.URL.createObjectURL(files[i]);
+                    this.images.push({src: src,status:0, file: files[i]});
+                    this.uploadImageToServer(this.images[base_length+i]);
+                }
+            },
+            uploadImageToServer:function(image){
+               var data = new FormData();
+                data.append("token",this.upload_config.token);
+                data.append("file",image.file);
+                $.ajax({
+                    url: this.upload_config.upload_path,
+                    type: 'POST',
+                    data: data,
+                    context:this,
+                    cache: false,
+                    processData: false,
+                    contentType: false,
+                    success:function(data){
+                        try{
+                            this.article_content += "![image]("+this.upload_config.domain+data.key+")\r\n";
+                        }catch(e){
+                            $("body").snackbar({alive: 3000, content: "上传出错了"});
+                        }
+                    },error:function(){
+                        $("body").snackbar({alive: 3000, content: "上传出错了"});
+                    }
+                });
+
+            },
+            // deleteUploadImage:function(index){
+            //     if (index < this.images.length) {
+            //         this.images.splice(index, 1)
+            //     }
+            // },
             submit: function () {
                 if (!this.article_title) {
                     $("body").snackbar({content: "标题不能为空", alive: 4000});
@@ -96,6 +151,8 @@ function registerVueRouter() {
                     self.markedStatus = true;
                 });
             }
+            //get image upload token
+            this.getUploadToken();
         }
     });
 

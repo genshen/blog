@@ -80,7 +80,7 @@ function init() {
                         console.log("ready!@");
                         var self = this;
                         $.ajax({
-                            url: Config.apiPrefix + "/category",
+                            url: Config.apiPrefix + "/category", //todo different category
                             success: function (data) { //if it is not json?
                                 try {
                                     data.forEach(function (e) {

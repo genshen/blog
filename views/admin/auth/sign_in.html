@@ -138,28 +138,6 @@
                     Util.postData.init(location.pathname,{email: this.email, password: this.password},null,function(data){
                          window.location.replace(data.Addition);
                     });
-                    // try { //cookie may be null or something else bad data
-                    //     xsrf = base64_decode(Cookies.get('_xsrf').split("|")[0]);
-                    // } catch (err) {
-                    //     $("body").snackbar({alive: 3500, content: ErrorSnackbar});
-                    //     return
-                    // }
-                    // var self = this;
-                    // $.ajax({
-                    //     type: 'POST',
-                    //     data: {_xsrf: xsrf, email: self.email, password: self.password},
-                    //     success: function (data) {
-                    //         if(data.Status == 1){
-                    //             window.location.replace(data.Addition)
-                    //         }else if(data.Status == 0){
-                    //             Util.parseError.init(data.Error)
-                    //         }else{
-                    //              $("body").snackbar({alive: 3500, content: ErrorSnackbar});
-                    //         }
-                    //     }, error: function () {
-                    //         $("body").snackbar({alive: 3500, content: ErrorSnackbar});
-                    //     }
-                    // });
                 } //else end
             }
         }

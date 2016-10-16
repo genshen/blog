@@ -162,6 +162,33 @@
 </script>
 
 <script type="text/x-template" id="article-edit">
+    <div aria-hidden="true" class="modal modal-va-middle fade" id="upload_image_modal" role="dialog" tabindex="-1">
+        <div class="modal-dialog modal-xs">
+            <div class="modal-content">
+                <div class="modal-heading">
+                    <p class="modal-title">上传图片</p>
+                </div>
+                <div class="modal-inner upload-image-field">
+                    <input @change="onUploadImageSelected" style="display: none" id="upload_image_input"
+                           type="file" name="file" multiple accept="image/*"/>
+                    <div v-for="image in images" class="upload-image-preview">
+                        <div class="image-item">
+                            <img :src="image.src"/>
+                            <a class="del-image" href="javascript:void(0)" @click="deleteUploadImage($index)">删除</a>
+                        </div>
+                    </div>
+                    <a class="add-image waves-effect waves-attach waves-circle fbtn fbtn-lg" @click="addUploadImage">
+                        <i class="icon">add</i></a>
+                </div>
+                <div class="modal-footer">
+                    <p class="text-right">
+                        <a class="btn btn-flat btn-brand-accent waves-attach waves-effect" data-dismiss="modal">取消</a>
+                        <a class="btn btn-flat btn-brand-accent waves-attach waves-effect" data-dismiss="modal">完成</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="container">
         <div class="row">
             <div class="col-md-12">
@@ -185,22 +212,22 @@
                         </div>
                         <div class="form-group form-group-label">
                             <label class="floating-label" for="article_edit_content">编辑</label>
-                            <textarea v-model="article_content" class="form-control" id="article_edit_content"
-                                      rows="12"></textarea>
+                            <textarea v-model="article_content" class="form-control" id="article_edit_content" rows="12"></textarea>
                         </div>
                         <div class="article-edit-footer">
                             <ul class="nav nav-list margin-no pull-left">
+                                <li><a class="btn btn-flat waves-effect" data-toggle="modal"
+                                       data-target="#upload_image_modal" title="上传图片" href="#">
+                                    <span class="icon">image</span></a>
+                                </li>
                                 <li class="dropdown">
                                     <a class="dropdown-toggle text-black waves-attach waves-effect"
                                        data-toggle="dropdown"><span class="icon">more_vert</span></a>
                                     <ul class="dropdown-menu">
+
                                         <li>
-                                            <a class="waves-attach waves-effect" href="javascript:void(0)"><span
-                                                    class="icon margin-right-sm">file_upload</span>&nbsp;上传图片</a>
-                                        </li>
-                                        <li>
-                                            <a class="waves-attach waves-effect" href="javascript:void(0)"><span
-                                                    class="icon margin-right-sm">drafts</span>&nbsp;存为草稿</a>
+                                            <a class="waves-attach waves-effect" >
+                                                <span class="icon margin-right-sm">drafts</span>&nbsp;存为草稿</a>
                                         </li>
                                     </ul>
                                 </li>

@@ -48,12 +48,32 @@ textarea {
     margin-top: 12px;
     margin-bottom: 8px;
 }
-
+/*markdown upload images*/
+.upload-image-preview{
+    display: inline-table;
+}.upload-image-preview .image-item{
+    display: inline-block;
+    margin:auto 4px;
+}
+.upload-image-preview img{
+    width:6em;
+    height:6em;
+    border:ridge rgba(255, 128, 171, 0.47) 1px;
+}
+.upload-image-preview .del-image{
+    display: block;
+    text-align:center;
+    margin-top:2px;
+}
+.upload-image-field .add-image{
+    display: inline-block;
+    vertical-align: top;
+}
 /*
-    based on Paraíso (light)
-    Created by Jan T. Sott (http://github.com/idleberg)
-    Inspired by the art of Rubens LP (http://www.rubenslp.com.br)
-*/
+        based on Paraíso (light)
+        Created by Jan T. Sott (http://github.com/idleberg)
+        Inspired by the art of Rubens LP (http://www.rubenslp.com.br)
+    */
 /* Paraíso Comment */
 .hljs-comment,
 .hljs-quote {
