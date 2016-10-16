@@ -21,12 +21,7 @@ function init() {
 
 function registerVueRouter() {
     var App = Vue.extend({
-        template: '#app_template',
-        data: function () {
-            return {}
-        }, ready: function () {
-        },
-        methods: {}
+        template: '#app_template'
     });
 
     var Menu = Vue.extend({
@@ -129,16 +124,17 @@ function registerVueRouter() {
                 });
             }
         },
-        filters: {
-            markdown: function (content) {
+        computed: {
+            compiledMarkdown: function () {
                 if (this.markedStatus) {
-                    return marked(content);
+                    return marked(this.article_content);
                 } else {
-                    return content;
+                    return this.article_content;
                 }
+                //return marked(this.article.content);
             }
         },
-        ready: function () {
+        created: function () {
             if (!this.markedStatus) {
                 var self = this;
                 loadJS(["//cdnjs.cloudflare.com/ajax/libs/marked/0.3.2/marked.min.js",
@@ -230,7 +226,7 @@ function registerVueRouter() {
                     });
             }
         },
-        ready: function () {
+        created: function () {
             var self = this;
             $.ajax({
                 url: CONFIG.apiPrefix + "/categories",
@@ -251,27 +247,17 @@ function registerVueRouter() {
         }
     });
 
-
-    var router = new VueRouter({root: "/admin", hashbang: false, history: true});
-    router.map({
-        '/': {
-            name: 'menu',
-            component: Menu
-        },
-        '/article/list': {
-            name: "article_list",
-            component: ArticleList
-        }, '/article/edit': {
-            name: "article_edit",
-            component: ArticleEdit
-        }, '/settings/category': {
-            name: "settings_category",
-            component: CategorySetting
-        }
+    var router = new VueRouter({base: "/admin", mode:"history",
+        routes :[{path: '/',name: 'menu', component: Menu},
+            {path: '/article/list',name: "article_list", component: ArticleList},
+            {path: '/article/edit', name: "article_edit", component: ArticleEdit},
+            {path: '/settings/category', name: "settings_category", component: CategorySetting}]
     });
-
-    router.start(App, 'template');
-    if (document.location.pathname == "/admin") {
-        router.go({name: "menu"})
-    }
+    new Vue({
+        router:router,
+        data: function () {
+            return {}
+        },created: function () {},
+        methods: {}
+    }).$mount('#app');
 }
