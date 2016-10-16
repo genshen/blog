@@ -41,26 +41,6 @@ function init() {
             (function () {
                 Vue.filter('formatTime', formatTime);
 
-                var App = Vue.extend({
-                    template: '#app_template',
-                    data: function () {
-                        return {
-                            settings: settings,
-                            categories: categories,
-                            title: "哈哈哈",
-                            detail: {is_auth: true}
-                        }
-                    }, ready: function () {
-                    },
-                    methods: {
-                        openGithub: function () {
-                            var url = this.settings.auth_sites.github.url + this.settings.auth_sites.github.client_id;
-                            window.open(url, "", ",location=no,status=no");
-                            $('#auth_model').modal('hide');
-                        }
-                    }
-                });
-
                 var List = Vue.extend({
                     template: '#list-template',
                     data: function () {
@@ -118,9 +98,9 @@ function init() {
                             comment_text: ""
                         }
                     },
-                    filters: {
-                        marked: function (value) {
-                            return marked(value);
+                    computed: {
+                        compiledMarkdown: function () {
+                            return marked(this.article.content);
                         }
                     },
                     methods: {
@@ -276,27 +256,37 @@ function init() {
                                 $("body").snackbar({alive: 3000, content: NormalErrorSnackBar});
                             }
                         });
-                    },
-                    ready: function () {
                         setTimeout(this.setCommentLoad, 100);
                     }
                 });
 
-                var router = new VueRouter({hashbang: false, history: true});
-                router.map({
-                    '/': {
-                        name: 'home',
-                        component: List
-                    }, '/category/:menu/:sub_menu': {
-                        name: 'category',
-                        component: List
-                    },
-                    '/detail/:id': {
-                        name: "detail",
-                        component: Detail
-                    }
+                const router = new VueRouter({mode:"history",
+                    routes: [
+                        {path:'/', name: 'home', component: List},
+                        {path:'/category/:menu/:sub_menu', name: 'category', component: List},
+                        {path:'/detail/:id', name: "detail", component: Detail}
+                    ]
                 });
-                router.start(App, 'template');
+
+               new Vue({router:router,
+                   data: function () {
+                       return {
+                           settings: settings,
+                           categories: categories,
+                           title: "哈哈哈",
+                           detail: {is_auth: true}
+                       }
+                   }, created: function () {
+                       console.log(this.settings);
+                   },
+                   methods: {
+                       openGithub: function () {
+                           var url = this.settings.auth_sites.github.url + this.settings.auth_sites.github.client_id;
+                           window.open(url, "", ",location=no,status=no");
+                           $('#auth_model').modal('hide');
+                       }
+                   }
+               }).$mount('#app');
             })();
         });
     });
