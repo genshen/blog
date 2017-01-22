@@ -1,0 +1,11 @@
+{{define "content"}}{{template "header" .}}
+<script src="{{.public.source_js_vue_router}}"></script>
+<script src="{{.public.source_js_marked}}"></script>
+<script src="{{.public.source_js_highlight}}"></script>
+<script src="/assets/js/util.js"></script>
+<script src="/assets/js/main.js"></script>
+<script type="text/javascript">
+    init();
+</script>
+{{template "footer" .}}
+{{end}}

@@ -18,6 +18,7 @@ type BaseController struct {
 func init(){
 	gob.Register(auth.User{})
 }
+
 func (this *BaseController)HasAuth() bool {
 	is_auth := this.GetSession(IsAuth)
 	if is_auth == nil {

@@ -46,7 +46,7 @@ function registerVueRouter() {
             return {
                 upload_config:{token:"",upload_path:"",domain:""},
                 image_uploading_processing:false,
-                images:[], //{src:"blobUrl",status:0,file:fileObject}  //status:0未上传,1正在上传,2上传完成
+                images:[], //{src:"blobUrl",status:0,file:fileObject}  //status:-1上传失败,0等待上传,1正在上传,2上传完成
                 markedStatus: false,
                 article_title: "",
                 article_content: ""
@@ -73,38 +73,44 @@ function registerVueRouter() {
                 for(var i=0;i<files.length;i++){
                     var src = window.URL.createObjectURL(files[i]);
                     this.images.push({src: src,status:0, file: files[i]});
-                    this.uploadImageToServer(this.images[base_length+i]);
+                    this.uploadImageToServer(base_length+i);
                 }
             },
-            uploadImageToServer:function(image){
-               var data = new FormData();
-                data.append("token",this.upload_config.token);
-                data.append("file",image.file);
-                $.ajax({
-                    url: this.upload_config.upload_path,
-                    type: 'POST',
-                    data: data,
-                    context:this,
-                    cache: false,
-                    processData: false,
-                    contentType: false,
-                    success:function(data){
-                        try{
-                            this.article_content += "![image]("+this.upload_config.domain+data.key+")\r\n";
-                        }catch(e){
+            uploadImageToServer:function(index){
+                if (index < this.images.length) {
+                    var image = this.images[index];
+                    var data = new FormData();
+                    data.append("token",this.upload_config.token);
+                    data.append("file",image.file);
+                    image.status = 1;
+                    $.ajax({
+                        url: this.upload_config.upload_path,
+                        type: 'POST',
+                        data: data,
+                        context:this,
+                        cache: false,
+                        processData: false,
+                        contentType: false,
+                        success:function(data){
+                            try{
+                                this.article_content += "![image]("+this.upload_config.domain+data.key+")\r\n";
+                                image.status = 2;
+                            }catch(e){
+                                $("body").snackbar({alive: 3000, content: "上传出错了"});
+                                image.status = -1;
+                            }
+                        },error:function(){
                             $("body").snackbar({alive: 3000, content: "上传出错了"});
+                            image.status = -1;
                         }
-                    },error:function(){
-                        $("body").snackbar({alive: 3000, content: "上传出错了"});
-                    }
-                });
-
+                    });
+                } //end if
             },
-            // deleteUploadImage:function(index){
-            //     if (index < this.images.length) {
-            //         this.images.splice(index, 1)
-            //     }
-            // },
+            deleteUploadImage:function(index){
+                if (index < this.images.length) {
+                    this.images.splice(index, 1)
+                }
+            },
             submit: function () {
                 if (!this.article_title) {
                     $("body").snackbar({content: "标题不能为空", alive: 4000});
@@ -247,7 +253,7 @@ function registerVueRouter() {
         }
     });
 
-    var router = new VueRouter({base: "/admin", mode:"history",
+    var router = new VueRouter({base: CONFIG.adminRouter, mode:"history",
         routes :[{path: '/',name: 'menu', component: Menu},
             {path: '/article/list',name: "article_list", component: ArticleList},
             {path: '/article/edit', name: "article_edit", component: ArticleEdit},
@@ -258,6 +264,10 @@ function registerVueRouter() {
         data: function () {
             return {}
         },created: function () {},
-        methods: {}
+        methods: {
+            test:function(){
+                console.log("test");
+            }
+        }
     }).$mount('#app');
 }

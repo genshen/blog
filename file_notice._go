@@ -17,13 +17,14 @@ import (
 )
 
 type Template struct {
-	Data map[string]string   `json:"data"`
+	Data map[string]interface{}   `json:"data"`
 }
 
 type WatchConfig struct {
-	Layouts      []string  		    `json:"layouts"`
-	Templates    map[string]Template    `json:"template"`
-	WatchFolders []WatchFolder          `json:"watched_folder"`
+	Layouts      []string                    `json:"layouts"`
+	Templates    map[string]Template         `json:"templates"`
+	WatchFolders []WatchFolder               `json:"watched_folders"`
+	PublicData   map[string]interface{}     `json:"public_data"`
 }
 
 type WatchFolder struct {
@@ -138,17 +139,18 @@ func generateTemplate(event fsnotify.Event, isCreate bool) {
 }
 
 func generateAllTemplate() {
-	for name, template := range watch_config.Templates{
+	for name, template := range watch_config.Templates {
 		log.Println("released file: ", view_temp + name)
 		generate(view_temp + name, view_out + name, template.Data)
 	}
 }
 
-func generate(container string, out string, data map[string]string) {
+func generate(container string, out string, data map[string]interface{}) {
 	s1, _ := template.ParseFiles(container)
 	for _, layout := range watch_config.Layouts {
 		s1.ParseFiles(view_temp + layout)
 	}
-	file, _ := os.Create(out);
+	file, _ := os.Create(out)
+	data["public"] = watch_config.PublicData
 	s1.ExecuteTemplate(file, "content", data)
 }

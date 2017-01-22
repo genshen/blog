@@ -1,3 +1,11 @@
 sass 更改记录:
 var\_variables 更改全局字体为 "Microsoft Yahei"
 material design icon:使用cdn 图标: addon/_material-icon.scss 注释;addon/material-icon/_variables.scss 注释
+
+文件源:
+"source_js_jquery":"//cdn.bootcss.com/jquery/2.2.4/jquery.min.js",
+    "source_js_vue":"//unpkg.com/vue@2.0.3/dist/vue.js",
+    "source_js_vue_router":"//unpkg.com/vue-router@2.0.1",
+    "source_js_marked":"//cdnjs.cloudflare.com/ajax/libs/marked/0.3.2/marked.min.js",
+    "source_js_highlight":"//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.6.0/highlight.min.j",
+    "source_css_material_icon":"//cdn.bootcss.com/material-design-icons/2.2.3/iconfont/material-icons.css"

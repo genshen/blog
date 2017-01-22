@@ -4,26 +4,39 @@
     "admin/layouts/header.html",
     "admin/layouts/scripts.html",
     "admin/layouts/footer.html",
-    "admin/layouts/end.html"
+    "admin/layouts/end.html",
+    "home/layouts/header.html",
+    "home/layouts/footer.html"
   ],
-  "template": {
+  "public_data": {
+    "source_js_jquery":"/assets/dist/js/jquery.min.js",
+    "source_js_vue":"/assets/dist/js/vue.js",
+    "source_js_vue_router":"/assets/dist/js/vue-router.js",
+    "source_js_marked":"/assets/dist/js/marked.min.js",
+    "source_js_highlight":"/assets/dist/js/highlight.min.js",
+    "source_css_material_icon":"/assets/dist/css/material-icons.css"
+  },
+  "templates": {
     "admin/auth/sign_in.html": {
-      "data": {
-        "title": "<title>登录</title>",
-        "is_auth_page":true
-      }
+      "data": {}
     },
     "admin/panel/index.html": {
       "data": {
-        "title": "<title>管理首页</title>",
-        "is_auth_page":false
+        "title": "<title>管理首页</title>"
+      }
+    },
+    "home/index.html": {
+      "data": {
+        "title": "gensh.me Blog",
+        "style_source":"/assets/css/main.css"
       }
     }
   },
-  "watched_folder": [
+  "watched_folders": [
     {
       "folder": "admin/auth"
-    },{
+    },
+    {
       "folder": "admin/panel"
     }
   ]

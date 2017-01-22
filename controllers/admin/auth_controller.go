@@ -18,6 +18,7 @@ type AuthController struct {
 func (this *AuthController) SignIn() {
 	if this.isUserLogin() {
 		this.Redirect(beego.URLFor("PanelController.Get"), 302)
+		return;
 	}
 	if (this.Ctx.Request.Method == "POST") {
 		sign_in_form := admin.SignInForm{Email:this.GetString("email"), Password:this.GetString("password")}

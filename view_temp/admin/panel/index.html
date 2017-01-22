@@ -1,17 +1,14 @@
-{{define "content"}}{{template "start" .}}
+{{define "content"}}{{template "admin_start" .}}
 <link href="/private/css/admin.css" rel="stylesheet">
-<style>
-</style>
-{{template "header" .}}
-<main id="app" class="ui-admin-content">
-    <div class="container">
-      OK
-    </div>
-</main>
-{{template "footer" .}}
-{{template "scripts" .}}
-<script src="/assets/js/util.js" type="text/javascript"></script>
+{{template "admin_header" .}}
+<template></template> <!--app_container--->
+<template id="template-container"></template>
+{{template "admin_footer" .}}{{template "admin_scripts" .}}
+<script src="{{.public.source_js_vue_router}}"></script>
+<script src="/assets/js/util.js"></script>
+<script src="/private/js/admin.js"></script>
 <script>
+    init();
 </script>
-{{template "end" .}}
+{{template "admin_end" .}}
 {{end}}

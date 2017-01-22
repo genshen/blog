@@ -175,7 +175,10 @@
                         <div v-for="(image,index) in images" class="upload-image-preview">
                             <div class="image-item">
                                 <img :src="image.src"/>
-                                <a class="del-image" href="javascript:void(0)" @click="deleteUploadImage(index)">删除</a>
+                                <a v-if="image.status == -1" class="image-status" @click="uploadImageToServer(index)" href="javascript:void(0)">重试</a>
+                                <a v-if="image.status == 0" class="image-status" href="javascript:void(0)">等待上传</a>
+                                <a v-if="image.status == 1" class="image-status" href="javascript:void(0)">正在上传</a>
+                                <a v-if="image.status == 2" class="image-status" @click="deleteUploadImage(index)" href="javascript:void(0)">删除</a>
                             </div>
                         </div>
                         <a class="add-image waves-effect waves-attach waves-circle fbtn fbtn-lg" @click="addUploadImage">

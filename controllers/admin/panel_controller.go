@@ -7,5 +7,5 @@ type PanelController struct {
 func (this *PanelController) Get() {
 	this.Data["Email"] = "astaxie@gmail.com"
 	this.EnableRender = true
-	this.TplName = "admin/templates/index.html"
+	this.TplName = "admin/panel/index.html"
 }

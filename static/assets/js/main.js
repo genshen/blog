@@ -282,7 +282,7 @@ function init() {
                    methods: {
                        openGithub: function () {
                            var url = this.settings.auth_sites.github.url + this.settings.auth_sites.github.client_id;
-                           window.open(url, "", ",location=no,status=no");
+                           window.open(url, "", "location=no,status=no");
                            $('#auth_model').modal('hide');
                        }
                    }
