@@ -9,7 +9,7 @@
     <meta name="theme-color" content="#009688">
     <title>{{.title}}</title>
     <link href="{{.public.source_css_material_icon}}" rel="stylesheet" media="none" onload="if(media!='all')media='all'">
-    <link href="/assets/dist/css/base.min.css" rel="stylesheet" media="none" onload="if(media!='all')media='all'">
+    <link href="{{.public.source_css_core}}" rel="stylesheet" media="none" onload="if(media!='all')media='all'">
     <link href="{{.style_source}}" rel="stylesheet" media="none" onload="if(media!='all')media='all'">
     <style>
         body{font-family: "Microsoft Yahei","Helvetica Neue",Helvetica,Arial,sans-serif;}
@@ -57,5 +57,5 @@
 </div>
 <template id="template-container"></template>
 <script src="{{.public.source_js_jquery}}"></script>
-<script src="/assets/dist/js/base.min.js"></script>
+<script src="{{.public.source_js_core}}"></script>
 <script src="{{.public.source_js_vue}}"></script>{{end}}

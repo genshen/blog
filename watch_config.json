@@ -14,7 +14,11 @@
     "source_js_vue_router":"/assets/dist/js/vue-router.js",
     "source_js_marked":"/assets/dist/js/marked.min.js",
     "source_js_highlight":"/assets/dist/js/highlight.min.js",
-    "source_css_material_icon":"/assets/dist/css/material-icons.css"
+    "source_css_material_icon":"/assets/dist/css/material-icons.css",
+    "source_css_core":"/assets/dist/css/base.min.css",
+    "source_js_core":"/assets/dist/js/base.min.js",
+    "source_css_core_admin":"/assets/dist/css/base.min.css",
+    "source_js_core_admin":"/assets/dist/js/base.min.js"
   },
   "templates": {
     "admin/auth/sign_in.html": {
