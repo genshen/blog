@@ -121,7 +121,7 @@ function registerVueRouter() {
                 }
                 var self = this;
                 Util.postData.init(CONFIG.apiPrefix + "/post/add/", {  //todo category_id
-                    category_id:"57cd6bfe20953120fc2beafc",title: this.article_title, content: this.article_content,
+                    category_id:"57cd6bfe20953120fc2beafc",sub_category_id:"57cd6bfe20953120fc2beafc",title: this.article_title, content: this.article_content,
                     summary: marked(this.article_content).replace(/<.*?>/ig, "")
                 }, null, function () {
                     $("body").snackbar({content: "文章发布成功", alive: 4000});
@@ -143,8 +143,8 @@ function registerVueRouter() {
         created: function () {
             if (!this.markedStatus) {
                 var self = this;
-                loadJS(["//cdnjs.cloudflare.com/ajax/libs/marked/0.3.2/marked.min.js",
-                    "//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.6.0/highlight.min.js"], function () {
+                loadJS(["/assets/dist/js/marked.min.js",//todo 资源路径，很重要 //cdnjs.cloudflare.com/ajax/libs/marked/0.3.2/marked.min.js，//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.6.0/highlight.min.js
+                    "/assets/dist/js/highlight.min.js"], function () {
                     marked.setOptions({
                         highlight: function (code) {
                             return hljs.highlightAuto(code).value;

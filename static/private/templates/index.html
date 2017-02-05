@@ -214,6 +214,12 @@
                                 <label class="floating-label" for="article_edit_title">标题</label>
                                 <input v-model="article_title" class="form-control" id="article_edit_title" type="text">
                             </div>
+                            <div class="form-group form-group-label" style="margin-bottom: 24px">
+                                <label for="article_edit_category">分类</label>
+                                <select class="form-control" id="article_edit_category" type="text">
+                                    <option value="1">算法</option>
+                                </select>
+                            </div>
                             <div class="form-group form-group-label">
                                 <label class="floating-label" for="article_edit_content">编辑</label>
                                 <textarea v-model="article_content" class="form-control" id="article_edit_content" rows="12"></textarea>
