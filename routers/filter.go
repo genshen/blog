@@ -7,6 +7,7 @@ import (
 	"gensh.me/blog/controllers/admin"
 	"net/http"
 	"os"
+	"gensh.me/blog/components/utils"
 )
 
 func intiFilter() {
@@ -14,7 +15,7 @@ func intiFilter() {
 	if beego.BConfig.RunMode == beego.DEV{
 		beego.InsertFilter(adminStaticPrefix + "/*", beego.BeforeRouter, ServeAdminStaticDev)
 	}else{
-		//beego.InsertFilter(adminStaticPrefix + "/*", beego.BeforeRouter, ServeAdminStatic)
+		beego.InsertFilter(adminStaticPrefix + "/*", beego.BeforeRouter, ServeAdminStatic)
 	}
 }
 
@@ -61,5 +62,14 @@ func ServeAdminStaticDev(context *context.Context) {
 			context.Output.Header("Content-Type", "text/css; charset=utf-8")
 		}
 		http.ServeContent(context.ResponseWriter, context.Request, "", fi.ModTime(), file)
+	}
+}
+
+func ServeAdminStatic(context *context.Context){
+	if _, ok := context.Input.Session(admin.UserId).(string); !ok {
+		context.Output.Status = 401
+		context.Output.Body([]byte("UnAuthenticated"))
+	} else {
+		utils.ServeHTTP(context.ResponseWriter,context.Request)
 	}
 }
