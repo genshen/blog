@@ -44,11 +44,14 @@ function registerVueRouter() {
         template: '#article-edit',
         data: function () {
             return {
+                categories: [],
                 upload_config:{token:"",upload_path:"",domain:""},
                 image_uploading_processing:false,
                 images:[], //{src:"blobUrl",status:0,file:fileObject}  //status:-1上传失败,0等待上传,1正在上传,2上传完成
                 markedStatus: false,
                 article_title: "",
+                field_category_id:0,
+                field_sub_category_id:0,
                 article_content: ""
             }
         },
@@ -121,7 +124,7 @@ function registerVueRouter() {
                 }
                 var self = this;
                 Util.postData.init(CONFIG.apiPrefix + "/post/add/", {  //todo category_id
-                    category_id:"57cd6bfe20953120fc2beafc",sub_category_id:"57cd6bfe20953120fc2beafc",title: this.article_title, content: this.article_content,
+                    category_id:this.field_category_id,sub_category_id:this.field_category_id,title: this.article_title, content: this.article_content,
                     summary: marked(this.article_content).replace(/<.*?>/ig, "")
                 }, null, function () {
                     $("body").snackbar({content: "文章发布成功", alive: 4000});
@@ -138,11 +141,23 @@ function registerVueRouter() {
                     return this.article_content;
                 }
                 //return marked(this.article.content);
+            },
+            sub_category_set: function(){
+                if(this.field_category_id){
+                    for(var index in this.categories){
+                        if(this.categories[index].id==this.field_category_id){
+                            this.field_sub_category_id = 0; //reset sub_category_id
+                            return this.categories[index].sub_category;
+                        }
+                    }
+                }
+                return [];
             }
         },
         created: function () {
             if (!this.markedStatus) {
                 var self = this;
+                loadCategories(this,this.categories);
                 loadJS(["/assets/dist/js/marked.min.js",//todo 资源路径，很重要 //cdnjs.cloudflare.com/ajax/libs/marked/0.3.2/marked.min.js，//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.6.0/highlight.min.js
                     "/assets/dist/js/highlight.min.js"], function () {
                     marked.setOptions({
@@ -233,23 +248,7 @@ function registerVueRouter() {
             }
         },
         created: function () {
-            var self = this;
-            $.ajax({
-                url: CONFIG.apiPrefix + "/categories",
-                success: function (data) {
-                    try {
-                        if (data) {
-                            data.forEach(function (e) {
-                                self.categories.push(e);
-                            });
-                        }
-                    } catch (e) {
-                        $("body").snackbar({alive: 3000, content: "出了点错误,请重试"});
-                    }
-                }, error: function (err) {
-                    $("body").snackbar({alive: 3000, content: "出了点错误,请重试"});
-                }
-            });
+            loadCategories(this,this.categories);
         }
     });
 
@@ -270,4 +269,23 @@ function registerVueRouter() {
             }
         }
     }).$mount('#app');
+}
+//container:Array, which includes those categories
+function loadCategories(context,container){
+    $.ajax({
+        url: CONFIG.apiPrefix + "/categories",
+        success: function (data) {
+            try {
+                if (data) {
+                    data.forEach(function (e) {
+                        container.push(e);
+                    });
+                }
+            } catch (e) {
+                $("body").snackbar({alive: 3000, content: "出了点错误,请重试"});
+            }
+        }, error: function (err) {
+            $("body").snackbar({alive: 3000, content: "出了点错误,请重试"});
+        }
+    });
 }

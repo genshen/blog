@@ -216,8 +216,13 @@
                             </div>
                             <div class="form-group form-group-label" style="margin-bottom: 24px">
                                 <label for="article_edit_category">分类</label>
-                                <select class="form-control" id="article_edit_category" type="text">
-                                    <option value="1">算法</option>
+                                <select v-model="field_category_id" id="article_edit_category" type="text">
+                                    <option value="0">请选择主分类</option>
+                                    <option v-for="category in categories" :value="category.id">{{category.name}}</option>
+                                </select>
+                                <select v-model="field_sub_category_id" id="article_edit_sun_category" type="text">
+                                    <option value="0">请选择子分类</option>
+                                    <option v-for="category in sub_category_set" :value="category.id">{{category.name}}</option>
                                 </select>
                             </div>
                             <div class="form-group form-group-label">

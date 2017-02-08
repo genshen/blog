@@ -135,7 +135,7 @@
                     $("body").snackbar({alive: 3500, content: "密码不能为空"});
                 }else{
                     Util.postData.config.authUrl = location.pathname;
-                    Util.postData.init(location.pathname,{email: this.email, password: this.password},null,function(data){
+                    Util.postData.init(location.pathname+location.search,{email: this.email, password: this.password},null,function(data){
                          window.location.replace(data.Addition);
                     });
                 } //else end
