@@ -16,6 +16,7 @@ func intiFilter() {
 		beego.InsertFilter(adminStaticPrefix + "/*", beego.BeforeRouter, ServeAdminStaticDev)
 	}else{
 		beego.InsertFilter(adminStaticPrefix + "/*", beego.BeforeRouter, ServeAdminStatic)
+		beego.InsertFilter(beego.AppConfig.String("cache_manifest"), beego.BeforeRouter, CacheManifest) //manifest file
 	}
 }
 
@@ -72,4 +73,8 @@ func ServeAdminStatic(context *context.Context){
 	} else {
 		utils.ServeHTTP(context.ResponseWriter,context.Request)
 	}
+}
+
+func CacheManifest(context *context.Context){
+	utils.ServeHTTP(context.ResponseWriter,context.Request)
 }
