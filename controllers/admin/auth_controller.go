@@ -37,8 +37,14 @@ func (this *AuthController) SignIn() {
 		}
 		this.ServeJSON()
 	} else {
+		this.Data["dev"] = false;
 		this.TplName = "admin/auth/sign_in.html"
 	}
+}
+
+/*only in Dev Mode*/
+func (this *AuthController) SignUp() {
+
 }
 
 func (this *AuthController) SignOut() {

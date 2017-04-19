@@ -15,7 +15,7 @@ type BaseController struct {
 	beego.Controller
 }
 
-func init(){
+func baseControllerInit(){
 	gob.Register(auth.User{})
 }
 

@@ -1,18 +1,21 @@
 /**
  * Created by 根深 on 2016/8/14.
  */
-var CONFIG = {
+var Config = {
     adminRouter: "/admin",
     apiPrefix: "/admin/api",
     adminAuthPath: "/admin/auth/signin",
     adminSignOutPath: "/admin/auth/signout",
-    adminStaticPrefix: "/private"
+    adminStaticPrefix: "/private",
+    markedLibPath: "/assets/dist/js/marked.min.js",//todo 资源路径 //cdnjs.cloudflare.com/ajax/libs/marked/0.3.2/marked.min.js，//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.6.0/highlight.min.js
+    highlightLibPath: "/assets/dist/js/highlight.min.js",
+    mathJaxLibPath: "http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default"
 };
 
 function init() {
-    Util.postData.config.authUrl = CONFIG.adminAuthPath;
+    Util.postData.config.authUrl = Config.adminAuthPath;
 
-    $.get(CONFIG.adminStaticPrefix + "/templates/index.html", function (data) {
+    $.get(Config.adminStaticPrefix + "/templates/index.html", function (data) {
         document.getElementById("template-container").outerHTML = data;
 
         registerVueRouter();
@@ -45,71 +48,73 @@ function registerVueRouter() {
         data: function () {
             return {
                 categories: [],
-                upload_config:{token:"",upload_path:"",domain:""},
-                image_uploading_processing:false,
-                images:[], //{src:"blobUrl",status:0,file:fileObject}  //status:-1上传失败,0等待上传,1正在上传,2上传完成
+                upload_config: {token: "", upload_path: "", domain: ""},
+                image_uploading_processing: false,
+                images: [], //{src:"blobUrl",status:0,file:fileObject}  //status:-1上传失败,0等待上传,1正在上传,2上传完成
                 markedStatus: false,
                 article_title: "",
-                field_category_id:0,
-                field_sub_category_id:0,
+                field_category_id: 0,
+                field_sub_category_id: 0,
                 article_content: ""
             }
         },
         methods: {
-            getUploadToken:function(){
-                $.ajax({url:CONFIG.apiPrefix+"/upload_token",context:this,success:function(data){
+            getUploadToken: function () {
+                $.ajax({
+                    url: Config.apiPrefix + "/upload_token", context: this, success: function (data) {
                         this.upload_config = data;
-                },error:function(req,err){
+                    }, error: function (req, err) {
                         $("body").snackbar({alive: 3000, content: "加载上传配置信息出错了"});
-                }});
+                    }
+                });
             },
-            addUploadImage:function(){
-                if(this.upload_config.token){ //check upload_token
+            addUploadImage: function () {
+                if (this.upload_config.token) { //check upload_token
                     $("#upload_image_input").trigger("click");
-                }else{
+                } else {
                     $("body").snackbar({alive: 3000, content: "UploadToken无效"});
                 }
             },
-            onUploadImageSelected:function(){
+            onUploadImageSelected: function () {
                 var files = $("#upload_image_input")[0].files;
                 var base_length = this.images.length;
-                for(var i=0;i<files.length;i++){
+                for (var i = 0; i < files.length; i++) {
                     var src = window.URL.createObjectURL(files[i]);
-                    this.images.push({src: src,status:0, file: files[i]});
-                    this.uploadImageToServer(base_length+i);
+                    this.images.push({src: src, status: 0, file: files[i]});
+                    this.uploadImageToServer(base_length + i);
                 }
             },
-            uploadImageToServer:function(index){
+            uploadImageToServer: function (index) {
                 if (index < this.images.length) {
                     var image = this.images[index];
                     var data = new FormData();
-                    data.append("token",this.upload_config.token);
-                    data.append("file",image.file);
+                    data.append("token", this.upload_config.token);
+                    data.append("file", image.file);
                     image.status = 1;
                     $.ajax({
                         url: this.upload_config.upload_path,
                         type: 'POST',
                         data: data,
-                        context:this,
+                        context: this,
                         cache: false,
                         processData: false,
                         contentType: false,
-                        success:function(data){
-                            try{
-                                this.article_content += "![image]("+this.upload_config.domain+data.key+")\r\n";
+                        success: function (data) {
+                            try {
+                                this.article_content += "![image](" + this.upload_config.domain + data.key + ")\r\n";
                                 image.status = 2;
-                            }catch(e){
+                            } catch (e) {
                                 $("body").snackbar({alive: 3000, content: "上传出错了"});
                                 image.status = -1;
                             }
-                        },error:function(){
+                        }, error: function () {
                             $("body").snackbar({alive: 3000, content: "上传出错了"});
                             image.status = -1;
                         }
                     });
                 } //end if
             },
-            deleteUploadImage:function(index){
+            deleteUploadImage: function (index) {
                 if (index < this.images.length) {
                     this.images.splice(index, 1)
                 }
@@ -123,8 +128,11 @@ function registerVueRouter() {
                     return;
                 }
                 var self = this;
-                Util.postData.init(CONFIG.apiPrefix + "/post/add/", {  //todo category_id
-                    category_id:this.field_category_id,sub_category_id:this.field_category_id,title: this.article_title, content: this.article_content,
+                Util.postData.init(Config.apiPrefix + "/post/add/", {  //todo category_id
+                    category_id: this.field_category_id,
+                    sub_category_id: this.field_category_id,
+                    title: this.article_title,
+                    content: this.article_content,
                     summary: marked(this.article_content).replace(/<.*?>/ig, "")
                 }, null, function () {
                     $("body").snackbar({content: "文章发布成功", alive: 4000});
@@ -142,10 +150,10 @@ function registerVueRouter() {
                 }
                 //return marked(this.article.content);
             },
-            sub_category_set: function(){
-                if(this.field_category_id){
-                    for(var index in this.categories){
-                        if(this.categories[index].id==this.field_category_id){
+            sub_category_set: function () {
+                if (this.field_category_id) {
+                    for (var index in this.categories) {
+                        if (this.categories[index].id == this.field_category_id) {
                             this.field_sub_category_id = 0; //reset sub_category_id
                             return this.categories[index].sub_category;
                         }
@@ -157,9 +165,8 @@ function registerVueRouter() {
         created: function () {
             if (!this.markedStatus) {
                 var self = this;
-                loadCategories(this,this.categories);
-                loadJS(["/assets/dist/js/marked.min.js",//todo 资源路径，很重要 //cdnjs.cloudflare.com/ajax/libs/marked/0.3.2/marked.min.js，//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.6.0/highlight.min.js
-                    "/assets/dist/js/highlight.min.js"], function () {
+                loadCategories(this, this.categories);
+                loadJS([Config.markedLibPath, Config.highlightLibPath, Config.mathJaxLibPath], function () {
                     marked.setOptions({
                         highlight: function (code) {
                             return hljs.highlightAuto(code).value;
@@ -196,7 +203,7 @@ function registerVueRouter() {
                     }
                     this.new_category_submitting = true;
                     var self = this;
-                    Util.postData.init(CONFIG.apiPrefix + "/category/add", {
+                    Util.postData.init(Config.apiPrefix + "/category/add", {
                             name: this.new_category_name,
                             slug: this.new_category_slug
                         },
@@ -226,7 +233,7 @@ function registerVueRouter() {
                 this.new_sub_category_submitting = true;
                 var self = this;
 
-                Util.postData.init(CONFIG.apiPrefix + "/sub_category/add", {
+                Util.postData.init(Config.apiPrefix + "/sub_category/add", {
                         id: _id,
                         name: this.new_sub_category_name,
                         slug: this.new_sub_category_slug
@@ -248,32 +255,34 @@ function registerVueRouter() {
             }
         },
         created: function () {
-            loadCategories(this,this.categories);
+            loadCategories(this, this.categories);
         }
     });
 
-    var router = new VueRouter({base: CONFIG.adminRouter, mode:"history",
-        routes :[{path: '/',name: 'menu', component: Menu},
-            {path: '/article/list',name: "article_list", component: ArticleList},
+    var router = new VueRouter({
+        base: Config.adminRouter, mode: "history",
+        routes: [{path: '/', name: 'menu', component: Menu},
+            {path: '/article/list', name: "article_list", component: ArticleList},
             {path: '/article/edit', name: "article_edit", component: ArticleEdit},
             {path: '/settings/category', name: "settings_category", component: CategorySetting}]
     });
     new Vue({
-        router:router,
+        router: router,
         data: function () {
             return {}
-        },created: function () {},
+        }, created: function () {
+        },
         methods: {
-            test:function(){
+            test: function () {
                 console.log("test");
             }
         }
     }).$mount('#app');
 }
 //container:Array, which includes those categories
-function loadCategories(context,container){
+function loadCategories(context, container) {
     $.ajax({
-        url: CONFIG.apiPrefix + "/categories",
+        url: Config.apiPrefix + "/categories",
         success: function (data) {
             try {
                 if (data) {
