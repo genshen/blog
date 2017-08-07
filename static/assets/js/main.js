@@ -119,11 +119,11 @@ function init() {
                             }
                         },
                         loadComment: function () {
-                            if (this.comment_load_status == 0 || this.comment_load_status == 1) {
+                            if (this.comment_load_status === 0 || this.comment_load_status === 1) {
                                 return;
                             }
                             var start = this.comments_loaded_count;
-                            this.comment_load_status = start == 0 ? 0 : 1;
+                            this.comment_load_status = start === 0 ? 0 : 1;
                             var self = this;
                             $.ajax({
                                 url: Config.apiPrefix + "/comments/" + this.$route.params.id + "/" + start,
@@ -137,12 +137,12 @@ function init() {
                                             }
                                         });
                                         self.comments_loaded_count += data.length;
-                                        self.comment_load_status = data.length == Config.MaxCommentLength ? 2 : 3; //2(has more) or 3(not more)
+                                        self.comment_load_status = data.length === Config.MaxCommentLength ? 2 : 3; //2(has more) or 3(not more)
                                     } catch (err) {
-                                        self.comment_load_status = start == 0 ? 4 : 5;
+                                        self.comment_load_status = start === 0 ? 4 : 5;
                                     }
                                 }, error: function (r, err) {
-                                    self.comment_load_status = start == 0 ? 4 : 5; //4 or 5
+                                    self.comment_load_status = start === 0 ? 4 : 5; //4 or 5
                                 }
                             });
                         },
@@ -150,7 +150,7 @@ function init() {
                             var h = this.comments.length - 1, l = 0;
                             while (l <= h) {
                                 var m = Math.floor((h + l) / 2);
-                                if (this.comments[m].id == id) {
+                                if (this.comments[m].id === id) {
                                     return true;
                                 }
                                 if (id > this.comments[m].id) {
@@ -162,7 +162,7 @@ function init() {
                             return false;
                         },
                         submitComment: function () {
-                            if (this.comment_text == "") {
+                            if (this.comment_text === "") {
                                 $("body").snackbar({alive: 3000, content: "评论内容不能为空"});
                                 return;
                             }
@@ -312,7 +312,7 @@ function formatTime(value) {
             value = v;
         }
     }
-    now = (new Date).getTime();
+    var now = (new Date).getTime();
     if (now - value < 60 * 1000) {
         return "刚刚";
     }

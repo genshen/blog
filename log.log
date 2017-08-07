@@ -1,6 +1,8 @@
 基于bootstrap 3.x 的sass 更改记录:
 var\_variables 更改全局字体为 "Microsoft Yahei"
-material design icon:使用cdn 图标: addon/_material-icon.scss 注释;addon/material-icon/_variables.scss 注释
+material design icon:使用cdn 图标: addon/_material-icon.scss 注释;addon/material-icon/_variables.scss 注释;注释addons/_waves的"mask: url();"
+
+base.css line 1248 del: mask: url();
 
 使用了static file
 

@@ -4,10 +4,11 @@ import (
 	"gensh.me/blog/components/context/admin"
 	"gensh.me/blog/components/utils"
 	"github.com/astaxie/beego"
+	"html/template"
 )
 
 const (
-	UserId = "AdminUserID"
+	UserId   = "AdminUserID"
 	Username = "AdminUsername"
 )
 
@@ -21,10 +22,10 @@ func (this *AuthController) SignIn() {
 		return;
 	}
 	if (this.Ctx.Request.Method == "POST") {
-		sign_in_form := admin.SignInForm{Email:this.GetString("email"), Password:this.GetString("password")}
+		sign_in_form := admin.SignInForm{Email: this.GetString("email"), Password: this.GetString("password")}
 		if errs := sign_in_form.Valid(); errs != nil {
-			s := utils.NewInstant(errs, map[string]string{"email":sign_in_form.Email, "password": ""})
-			this.Data["json"] = &utils.SimpleJsonResponse{Status:0, Error:&s}
+			s := utils.NewInstant(errs, map[string]string{"email": sign_in_form.Email, "password": ""})
+			this.Data["json"] = &utils.SimpleJsonResponse{Status: 0, Error: &s}
 		} else {
 			this.LoginUser(sign_in_form.ID, sign_in_form.Username)
 			next := this.GetString("next")
@@ -33,7 +34,7 @@ func (this *AuthController) SignIn() {
 			} else if next == "" {
 				next = AdminPrefix
 			}
-			this.Data["json"] = &utils.SimpleJsonResponse{Status:1, Addition:next}
+			this.Data["json"] = &utils.SimpleJsonResponse{Status: 1, Addition: next}
 		}
 		this.ServeJSON()
 	} else {
@@ -43,8 +44,25 @@ func (this *AuthController) SignIn() {
 }
 
 /*only in Dev Mode*/
-func (this *AuthController) SignUp() {
+type SignUpForm struct {
+	Email    string
+	Username string
+	Password string
+}
 
+func (this *AuthController) SignUp() {
+	if (this.Ctx.Request.Method == "POST") { //todo
+		email := this.GetString("Email")
+		username := this.GetString("Username")
+		password := this.GetString("Password")
+		admin.CreateUser(username, email, password)
+		this.Data["json"] = &utils.SimpleJsonResponse{Status: 1, Addition: ""};
+		this.ServeJSON()
+	} else {
+		this.Data["xsrfdata"]=template.HTML(this.XSRFFormHTML())
+		this.Data["Form"] = &SignUpForm{}
+		this.TplName = "admin/auth/sign_up.html"
+	}
 }
 
 func (this *AuthController) SignOut() {

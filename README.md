@@ -12,8 +12,8 @@ qiniupkg.com/x/log.v7
 go get -u github.com/beego/bee
 ```
 
-##config database
-Mongodb is used for blog storage,to configure Mongodb,add those line to **[conf/database.conf](/conf/database.conf)** file:  
+## config database
+Mongodb is used for blog storage,to configure Mongodb,add those lines to **[conf/database.conf](/conf/database.conf)** file:
 ```
 db_type = mongodb
 db_name = blog
@@ -26,7 +26,7 @@ db_auth_pwd = genshen_blog
 ```
 
 ## config qiniu cloud
-to store your files(e.g. images) using qiniu cloud,add those lines to  **[conf/keys.conf](/conf/keys.conf)** file:  
+to store your files(e.g. images) by using qiniu cloud,add those lines to  **[conf/keys.conf](/conf/keys.conf)** file:
 ```
 qiniu_access_key = xxxxxx
 qiniu_secret_key = xxxxx

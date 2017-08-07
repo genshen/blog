@@ -43,6 +43,7 @@ func FilterAuth(ctx *context.Context) {
 
 //for controller,if some output has sent,the code will not run
 //so context.Abort is net necessary
+const PrivateDir_PrefixPath = "static/embeddable"  //todo it must be the same as the real folder
 func ServeAdminStaticDev(context *context.Context) {
 	if _, ok := context.Input.Session(admin.UserId).(string); !ok {
 		context.Output.Status = 401
@@ -50,13 +51,13 @@ func ServeAdminStaticDev(context *context.Context) {
 	} else {
 		//var filePath = context.Request.RequestURI[len(adminStaticPrefix):]
 		//fmt.Println(filePath)
-		fi, err := os.Stat("static"+ context.Request.RequestURI)
+		fi, err := os.Stat(PrivateDir_PrefixPath+ context.Request.RequestURI)
 		if err != nil {
 			context.Output.Status = 404
 			context.Output.Body([]byte("not found"))
 			return
 		}
-		file, _ := os.Open("static"+context.Request.RequestURI)
+		file, _ := os.Open(PrivateDir_PrefixPath+context.Request.RequestURI)
 		defer file.Close()
 		if strings.HasSuffix(context.Request.RequestURI,"css"){
 			context.Output.Header("Content-Type", "text/css; charset=utf-8")

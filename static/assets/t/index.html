@@ -180,7 +180,7 @@
 <script type="text/x-template" id="list-template">
     <div class="container">
         <div class="row">
-            <div v-for="blog in lists" class="col-md-12">
+            <div v-for="blog in lists" class="col-md-12 col-lg-10 col-lg-push-1">
                 <div class="card">
                     <div class="card-main">
                         <div class="card-header">
@@ -224,124 +224,135 @@
             </div>
         </div>
         <div class="container">
-            <div class="blog-detail-mate">
-                 <span class="avatar inline-avatar">
-                    <a :href="settings.profile.url" target="_blank">
-                        <img :src="settings.profile.avatar">
-                    </a>
-                </span>
-                <span class="refer-me">
-                    By <a :href="settings.profile.url" target="_blank">{{settings.profile.name}}</a>&nbsp;·&nbsp;</span>
-                <span class="label label-brand" title="2015-12-23">{{article.created_at | formatTime}}</span>
-            </div>
-            <article class="row blog-article markdown-preview">
-                <div class="col-md-12" v-html="compiledMarkdown"></div>
-            </article>
-            <div class="row comment-area">
-                <p class="col-md-12"><b>{{comments.length}}条评论</b></p>
-                <div class="col-md-12 form-group form-group-label comment-form">
-                    <label class="floating-label" for="comment-input" style="left:auto;">你的评论</label>
-                    <textarea v-model="comment_text" class="form-control" id="comment-input" rows="4"
-                              style="resize: none"></textarea>
-                    <div class="help-block pull-left"><code>支持Markdown输入</code></div>
-                    <div class="pull-right">
-                        <a title="预览" class="btn btn-flat btn-brand waves-attach waves-effect"><i class="material-icons">visibility</i></a>
-                        <a @click="submitComment" class="btn btn-brand  waves-attach waves-effect">发布</a>
-                    </div>
-                </div>
-                <div class="clearfix"></div>
-                <div id="comment-flag" style="height:8px"></div>
-                <div v-for="(comment,comment_index) in comments" :class="{'comments-border':comment_index != 0}"
-                     class="col-md-12 comment-item">
-                    <div class="comment-mate">
-                         <span class="avatar inline-avatar">
-                            <a :href="comment.user.url" target="_blank">
-                                <img alt="Avatar" :src="comment.user.avatar">
-                            </a>
-                        </span>
-                        <span class="user-refer">
-                            &nbsp;<a :href="comment.user.url" target="_blank">{{comment.user.name}}</a>&nbsp;
-                        </span>
-                        </span>
-                        <span class="label label-brand" :title="comment.create_at">{{comment.create_at | formatTime}}</span>
-                        <a @click="toggleReplyBox(comment_index,-1)" href="javascript:void(0)"
-                           class="pull-right reply-refer">
-                            <i class="material-icons">reply</i><span>回复</span>
+            <div class="row">
+                <div class="blog-detail-mate col-md-12 col-lg-10 col-lg-push-1">
+                    <span class="avatar inline-avatar">
+                        <a :href="settings.profile.url" target="_blank">
+                            <img :src="settings.profile.avatar">
                         </a>
-                    </div>
-                    <div class="comment-content">
-                        {{comment.content}}
-                    </div>
-                    <div class="reply-area row">
-                        <div v-for="(reply,reply_index) in comment.replies" class="clo-md-12 reply-item">
-                            <div class="comment-mate">
-                                 <span class="avatar inline-avatar">
-                                    <a :href="reply.user.url" target="_blank">
-                                        <img alt="Avatar" :src="reply.user.avatar">
-                                    </a>
-                                </span>
-                                <span class="user-refer">
-                                    &nbsp;<a :href="reply.user.url" target="_blank">{{reply.user.name}}</a>&nbsp;
-                                </span>
-                                <span class="label label-brand"
-                                      :title="reply.create_at">{{reply.create_at | formatTime}}</span>
-                                <a @click="toggleReplyBox(comment_index,reply_index)" href="javascript:void(0)"
-                                   class="pull-right reply-refer">
-                                    <i class="material-icons">reply</i><span>回复</span>
-                                </a>
-                            </div>
-                            <div class="reply-content">
-                                {{reply.content}}
-                            </div>
-                        </div>
-                        <div v-show="comment.show_reply_box" class="form-group form-group-label reply-box-form">
-                            <label class="floating-label" :for="'reply-box-'+comment_index">回复</label>
-                            <textarea v-model="comment.new_reply_content" class="form-control"
-                                      :id="'reply-box-'+comment_index" rows="3"></textarea>
-                            <div class="pull-right">
-                                <a @click="cancelReply(comment_index)" title="取消"
-                                   class="btn btn-flat btn-brand waves-attach waves-effect">
-                                    <i class="material-icons">clear</i>
-                                </a>
-                                <a @click="submitReply(comment_index)"
-                                   class="btn btn-brand waves-attach waves-effect">回复</a>
-                            </div>
-                        </div>
-                    </div> <!---/reply-area-->
-                </div> <!--/comment-item-->
-                <div v-show="comment_load_status == 0 || comment_load_status == 1" class="text-center">
-                    <div class="progress-circular progress-circular-inline progress-circular-green">
-                        <div class="progress-circular-wrapper">
-                            <div class="progress-circular-inner">
-                                <div class="progress-circular-left">
-                                    <div class="progress-circular-spinner"></div>
-                                </div>
-                                <div class="progress-circular-gap"></div>
-                                <div class="progress-circular-right">
-                                    <div class="progress-circular-spinner"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <p class="text-green" v-text="comment_load_status==0?'正在加载评论...':'正在加载更多评论...'"></p>
-                </div>  <!--/text-center-->
-                <div v-show="comment_load_status == 2" class="text-center">
-                    <a @click="loadComment" class="btn btn-flat btn-green waves-attach waves-effect">加载更多</a>
-                </div>
-                <div v-show="comment_load_status == 3" class="text-center">
-                    <a disabled="disabled" class="btn btn-flat btn-green waves-attach waves-effect">没有更多评论了</a>
-                </div>
-                <div v-show="comment_load_status == 4" class="text-center">
-                    <span>评论加载失败...</span>
-                    <a @click="loadComment" href="javascript:void(0)"
-                       class="btn btn-flat btn-red waves-attach waves-effect">重试</a>
-                </div>
-                <div v-show="comment_load_status == 5" class="text-center">
-                    <span>无法加载更多内容...</span>
-                    <a @click="loadComment" href="javascript:void(0)"
-                       class="btn btn-flat btn-red waves-attach waves-effect">重试</a>
+                    </span>
+                    <span class="refer-me">
+                        By <a :href="settings.profile.url" target="_blank">{{settings.profile.name}}</a>&nbsp;·&nbsp;</span>
+                    <span class="label label-brand" title="2015-12-23">{{article.created_at | formatTime}}</span>
                 </div>
             </div>
+            <div class="row">
+                <div class="col-md-12 col-lg-10 col-lg-push-1 blog-article markdown-preview">
+                    <hr>
+                    <article v-html="compiledMarkdown"></article>
+                    <hr>
+                </div>
+            </div>
+            <div class="row"> <!--row1 start-->
+                <div class="col-md-12 col-lg-10 col-lg-push-1">
+                    <div class="row comment-area">
+                        <p class="col-md-12"><b>{{comments.length}}条评论</b></p>
+                            <div class="col-md-12 form-group form-group-label comment-form">
+                                <label class="floating-label" for="comment-input" style="left:auto;">你的评论</label>
+                                <textarea v-model="comment_text" class="form-control" id="comment-input" rows="4"
+                                          style="resize: none"></textarea>
+                                <div class="help-block pull-left"><code>支持Markdown输入</code></div>
+                                <div class="pull-right">
+                                    <a title="预览" class="btn btn-flat btn-brand waves-attach waves-effect"><i class="material-icons">visibility</i></a>
+                                    <a @click="submitComment" class="btn btn-brand  waves-attach waves-effect">发布</a>
+                                </div>
+                            </div>
+                            <div class="clearfix"></div>
+                            <div id="comment-flag" style="height:8px"></div>
+                            <div v-for="(comment,comment_index) in comments" :class="{'comments-border':comment_index != 0}"
+                                 class="col-md-12 comment-item">
+                                <div class="comment-mate">
+                                     <span class="avatar inline-avatar">
+                                        <a :href="comment.user.url" target="_blank">
+                                            <img alt="Avatar" :src="comment.user.avatar">
+                                        </a>
+                                    </span>
+                                    <span class="user-refer">
+                                        &nbsp;<a :href="comment.user.url" target="_blank">{{comment.user.name}}</a>&nbsp;
+                                    </span>
+                                    </span>
+                                    <span class="label label-brand" :title="comment.create_at">{{comment.create_at | formatTime}}</span>
+                                    <a @click="toggleReplyBox(comment_index,-1)" href="javascript:void(0)"
+                                       class="pull-right reply-refer">
+                                        <i class="material-icons">reply</i><span>回复</span>
+                                    </a>
+                                </div>
+                                <div class="comment-content">
+                                    {{comment.content}}
+                                </div>
+                                <div class="reply-area row">
+                                    <div v-for="(reply,reply_index) in comment.replies" class="clo-md-12 reply-item">
+                                        <div class="comment-mate">
+                                             <span class="avatar inline-avatar">
+                                                <a :href="reply.user.url" target="_blank">
+                                                    <img alt="Avatar" :src="reply.user.avatar">
+                                                </a>
+                                            </span>
+                                            <span class="user-refer">
+                                                &nbsp;<a :href="reply.user.url" target="_blank">{{reply.user.name}}</a>&nbsp;
+                                            </span>
+                                            <span class="label label-brand"
+                                                  :title="reply.create_at">{{reply.create_at | formatTime}}</span>
+                                            <a @click="toggleReplyBox(comment_index,reply_index)" href="javascript:void(0)"
+                                               class="pull-right reply-refer">
+                                                <i class="material-icons">reply</i><span>回复</span>
+                                            </a>
+                                        </div>
+                                        <div class="reply-content">
+                                            {{reply.content}}
+                                        </div>
+                                    </div>
+                                    <div v-show="comment.show_reply_box" class="form-group form-group-label reply-box-form">
+                                        <label class="floating-label" :for="'reply-box-'+comment_index">回复</label>
+                                        <textarea v-model="comment.new_reply_content" class="form-control"
+                                                  :id="'reply-box-'+comment_index" rows="3"></textarea>
+                                        <div class="pull-right">
+                                            <a @click="cancelReply(comment_index)" title="取消"
+                                               class="btn btn-flat btn-brand waves-attach waves-effect">
+                                                <i class="material-icons">clear</i>
+                                            </a>
+                                            <a @click="submitReply(comment_index)"
+                                               class="btn btn-brand waves-attach waves-effect">回复</a>
+                                        </div>
+                                    </div>
+                                </div> <!---/reply-area-->
+                            </div> <!--/comment-item-->
+                            <div v-show="comment_load_status == 0 || comment_load_status == 1" class="text-center">
+                                <div class="progress-circular progress-circular-inline progress-circular-green">
+                                    <div class="progress-circular-wrapper">
+                                        <div class="progress-circular-inner">
+                                            <div class="progress-circular-left">
+                                                <div class="progress-circular-spinner"></div>
+                                            </div>
+                                            <div class="progress-circular-gap"></div>
+                                            <div class="progress-circular-right">
+                                                <div class="progress-circular-spinner"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <p class="text-green" v-text="comment_load_status==0?'正在加载评论...':'正在加载更多评论...'"></p>
+                            </div>  <!--/text-center-->
+                            <div v-show="comment_load_status == 2" class="text-center">
+                                <a @click="loadComment" class="btn btn-flat btn-green waves-attach waves-effect">加载更多</a>
+                            </div>
+                            <div v-show="comment_load_status == 3" class="text-center">
+                                <a disabled="disabled" class="btn btn-flat btn-green waves-attach waves-effect">没有更多评论了</a>
+                            </div>
+                            <div v-show="comment_load_status == 4" class="text-center">
+                                <span>评论加载失败...</span>
+                                <a @click="loadComment" href="javascript:void(0)"
+                                   class="btn btn-flat btn-red waves-attach waves-effect">重试</a>
+                            </div>
+                            <div v-show="comment_load_status == 5" class="text-center">
+                                <span>无法加载更多内容...</span>
+                                <a @click="loadComment" href="javascript:void(0)"
+                                   class="btn btn-flat btn-red waves-attach waves-effect">重试</a>
+                            </div>
+                        </div>
+
+                </div>
+            </div> <!--row end-->
         </div>
     </div>
 </script>

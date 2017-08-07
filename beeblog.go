@@ -7,6 +7,5 @@ import (
 )
 
 func main() {
-	//admin.CreateUser("genshen","genshenchu@gmail.com","genshen1234")
 	beego.Run()
 }

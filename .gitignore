@@ -3,12 +3,12 @@
 *.o
 *.a
 *.so
+*.iml
 
 # Folders
 _obj
 _test
 .idea/
-.idea
 temp
 
 # Architecture specific extensions/prefixes

@@ -35,7 +35,7 @@ func initRouter() {
 	beego.Router(admin.AdminAuthUri, &admin.AuthController{}, "get,post:SignIn")
 	if beego.BConfig.RunMode == beego.DEV {
 		//can register a admin user in Dev Mode
-		beego.Router(admin.AdminAuthUri, &admin.AuthController{}, "get,post:SignUp")
+		beego.Router("/dev/sign_up", &admin.AuthController{}, "get,post:SignUp")
 	}
 
 	beego.Router(admin.AdminPrefix + "/", &admin.PanelController{}, "get:Get")
