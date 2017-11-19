@@ -2,7 +2,7 @@ package models
 
 import (
 	"gopkg.in/mgo.v2/bson"
-	"gensh.me/blog/components/auth"
+	"github.com/genshen/blog/components/auth"
 	"time"
 )
 

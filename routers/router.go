@@ -1,9 +1,9 @@
 package routers
 
 import (
-	"gensh.me/blog/controllers"
 	"github.com/astaxie/beego"
-	"gensh.me/blog/controllers/admin"
+	"github.com/genshen/blog/controllers"
+	"github.com/genshen/blog/controllers/admin"
 )
 
 var adminStaticPrefix, adminApi string

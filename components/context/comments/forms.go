@@ -4,9 +4,9 @@ import (
 	"time"
 	"github.com/astaxie/beego/validation"
 	"gopkg.in/mgo.v2/bson"
-	"gensh.me/blog/models"
-	"gensh.me/blog/models/database"
-	"gensh.me/blog/components/auth"
+	"github.com/genshen/blog/models"
+	"github.com/genshen/blog/models/database"
+	"github.com/genshen/blog/components/auth"
 )
 
 type CommentAddForm struct {

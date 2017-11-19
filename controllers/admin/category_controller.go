@@ -1,8 +1,8 @@
 package admin
 
 import (
-	"gensh.me/blog/components/utils"
-	"gensh.me/blog/components/context/category"
+	"github.com/genshen/blog/components/utils"
+	"github.com/genshen/blog/components/context/category"
 )
 
 type CategoryController struct {

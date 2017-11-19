@@ -1,10 +1,10 @@
 package admin
 
 import (
-	"gensh.me/blog/components/context/posts"
-	"gensh.me/blog/components/utils"
 	"qiniupkg.com/api.v7/kodo"
-	"gensh.me/blog/components/keys"
+	"github.com/genshen/blog/components/utils"
+	"github.com/genshen/blog/components/keys"
+	"github.com/genshen/blog/components/context/posts"
 )
 
 type PostsController struct {

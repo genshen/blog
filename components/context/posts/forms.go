@@ -1,11 +1,11 @@
 package posts
 
 import (
-	"github.com/astaxie/beego/validation"
-	"gensh.me/blog/models/database"
-	"gensh.me/blog/models"
 	"time"
 	"gopkg.in/mgo.v2/bson"
+	"github.com/astaxie/beego/validation"
+	"github.com/genshen/blog/models/database"
+	"github.com/genshen/blog/models"
 )
 
 type PostAddForm struct {

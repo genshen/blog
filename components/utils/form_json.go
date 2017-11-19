@@ -1,9 +1,9 @@
 package utils
 
 import (
-	"github.com/astaxie/beego/validation"
-	"encoding/json"
 	"fmt"
+	"encoding/json"
+	"github.com/astaxie/beego/validation"
 )
 
 type Err struct {

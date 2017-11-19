@@ -8,18 +8,18 @@ import (
 )
 
 const (
-	settings_path = "gensh.me/blog/conf/settings.json"
+	SETTINGS_PATH = "conf/settings.json"
 )
 
 type Setting struct {
-	SiteInfo  SiteInfo          `json:"site_info"`
-	Profile   Profile           `json:"profile"`
-	AuthSites map[string]Auth  `json:"auth_sites"`
+	SiteInfo  SiteInfo        `json:"site_info"`
+	Profile   Profile         `json:"profile"`
+	AuthSites map[string]Auth `json:"auth_sites"`
 }
 
 type SiteInfo struct {
-	Name       string  `json:"name"`
-	SourceCode string  `json:"source_code"`
+	Name       string `json:"name"`
+	SourceCode string `json:"source_code"`
 }
 
 type Profile struct {
@@ -37,8 +37,8 @@ type Auth struct {
 var S Setting
 
 func init() {
-	json_path := os.Getenv("GOPATH")
-	f, err := os.Open(json_path + "/src/" + settings_path)
+	//json_path := os.Getenv("GOPATH")
+	f, err := os.Open( /*json_path + "/src/" + */ SETTINGS_PATH) //todo path
 	if err != nil {
 		log.Println(err)
 		return

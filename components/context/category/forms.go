@@ -2,8 +2,8 @@ package category
 
 import (
 	"github.com/astaxie/beego/validation"
-	"gensh.me/blog/models"
-	"gensh.me/blog/models/database"
+	"github.com/genshen/blog/models"
+	"github.com/genshen/blog/models/database"
 	"qiniupkg.com/x/log.v7"
 	"gopkg.in/mgo.v2/bson"
 )

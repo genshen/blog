@@ -2,9 +2,9 @@ package admin
 
 import (
 	"github.com/astaxie/beego/logs"
-	"gensh.me/blog/models"
-	"gensh.me/blog/models/database"
-	"gensh.me/blog/components/auth"
+	"github.com/genshen/blog/models"
+	"github.com/genshen/blog/models/database"
+	"github.com/genshen/blog/components/auth"
 )
 
 func CreateUser(username, email, password string)bool {

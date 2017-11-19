@@ -1,9 +1,9 @@
 package controllers
 
 import (
-	"gensh.me/blog/components/utils"
-	"gensh.me/blog/components/context/comments"
 	"strconv"
+	"github.com/genshen/blog/components/utils"
+	"github.com/genshen/blog/components/context/comments"
 )
 
 type CommentController struct {

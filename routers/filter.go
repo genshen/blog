@@ -6,14 +6,17 @@ import (
 	"net/http"
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/context"
-	"gensh.me/blog/controllers/admin"
-	"gensh.me/blog/components/utils"
+	"github.com/genshen/blog/controllers/admin"
+	"github.com/genshen/blog/components/utils"
 )
 
 func intiFilter() {
 	beego.InsertFilter(admin.AdminPrefix + "/*", beego.BeforeRouter, FilterAuth)
 	if beego.BConfig.RunMode == beego.DEV{
 		beego.InsertFilter(adminStaticPrefix + "/*", beego.BeforeRouter, ServeAdminStaticDev)
+		beego.InsertFilter("/*",beego.BeforeRouter, func(ctx *context.Context){
+			ctx.Output.Header("Access-Control-Allow-Origin", "*")
+		})
 	}else{
 		beego.InsertFilter(adminStaticPrefix + "/*", beego.BeforeRouter, ServeAdminStatic)
 	}

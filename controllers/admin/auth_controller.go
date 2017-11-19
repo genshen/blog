@@ -1,8 +1,8 @@
 package admin
 
 import (
-	"gensh.me/blog/components/context/admin"
-	"gensh.me/blog/components/utils"
+	"github.com/genshen/blog/components/context/admin"
+	"github.com/genshen/blog/components/utils"
 	"github.com/astaxie/beego"
 	"html/template"
 )

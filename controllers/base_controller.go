@@ -1,9 +1,9 @@
 package controllers
 
 import (
-	"github.com/astaxie/beego"
-	"gensh.me/blog/components/auth"
 	"encoding/gob"
+	"github.com/astaxie/beego"
+	"github.com/genshen/blog/components/auth"
 )
 
 const (
