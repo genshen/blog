@@ -40,9 +40,19 @@ func initRouter() {
 
 	beego.Router(admin.AdminPrefix+"/", &admin.PanelController{}, "get:Get")
 
+	if beego.AppConfig.DefaultBool("storage::EnableQiNiuCloud", false) {
+		beego.Router(adminApi+"/upload_token", &admin.StorageController{}, "get:QiNiuCloudStorageUploadToken")
+	} else {
+		beego.Router(adminApi+"/upload_token", &admin.StorageController{}, "get:LocalStorageUploadToken")
+		// Note: no adminApi prefix !!
+		beego.Router(beego.AppConfig.DefaultString("storage::LocalStorageDomain", "/images/:hash"),
+			&admin.StorageController{}, "get:LocalStorageResource")
+		// Note:urlFor is ues in function storage_controller.go#initStorage
+		beego.Router(adminApi+"/upload", &admin.StorageController{}, "post:LocalUpload")
+		admin.InitStorage()
+	}
 	beego.Router(adminApi+"/article", &admin.PostsController{}, "get:List")
 	beego.Router(adminApi+"/article/publish", &admin.PostsController{}, "post:Add")
-	beego.Router(adminApi+"/upload_token", &admin.PostsController{}, "get:UploadToken")
 	//beego.Router(admin.AdminPrefix+"/post/delete", &admin.PostsController{}, "post:Del")
 	beego.Router(adminApi+"/categories", &admin.CategoryController{}, "get:Get")
 	beego.Router(adminApi+"/category/add", &admin.CategoryController{}, "post:CategoryAdd")

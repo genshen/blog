@@ -1,9 +1,7 @@
 package admin
 
 import (
-	"qiniupkg.com/api.v7/kodo"
 	"github.com/genshen/blog/components/utils"
-	"github.com/genshen/blog/components/keys"
 	"github.com/genshen/blog/components/context/posts"
 )
 
@@ -12,7 +10,7 @@ type PostsController struct {
 }
 
 func (this *PostsController) List() {
-	this.ServeJSON()
+	this.ServeJSON() // todo
 }
 
 func (this *PostsController) Add() {
@@ -24,23 +22,5 @@ func (this *PostsController) Add() {
 		this.Data["json"] = &utils.SimpleJsonResponse{Status: 0,
 			Error: utils.NewInstant(errors, map[string]string{"category_id": "", "title": "", "content": "", "summary": ""})}
 	}
-	this.ServeJSON()
-}
-
-type QiNiuToken struct {
-	Token      string `json:"token"`
-	Domain     string `json:"domain"`
-	UploadPath string `json:"upload_path"`
-}
-
-func (this *PostsController) UploadToken() {
-	zone := 0
-	c := kodo.New(zone, nil) // 创建一个 Client 对象
-	policy := &kodo.PutPolicy{
-		Scope:   keys.QiniuConfig.BucketName,
-		Expires: keys.QiniuConfig.Expires,
-	}
-	up_token := c.MakeUptoken(policy)
-	this.Data["json"] = &QiNiuToken{Token: up_token, Domain: keys.QiniuConfig.Domain, UploadPath: keys.QiniuConfig.UploadPath}
 	this.ServeJSON()
 }
