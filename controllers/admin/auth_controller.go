@@ -68,7 +68,7 @@ func (this *AuthController) SignUp() {
 func (this *AuthController) SignOut() {
 	this.DelSession(UserId)
 	this.DelSession(Username)
-	this.Redirect(AdminAuthUri, 302)
+	this.Redirect(AdminSignInUri, 302)
 }
 
 func (this *AuthController) LoginUser(id string, username string) {
