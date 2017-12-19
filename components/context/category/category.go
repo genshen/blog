@@ -4,8 +4,8 @@ import (
 	"log"
 	"sync"
 	"gopkg.in/mgo.v2/bson"
-	"gensh.me/blog/models"
-	"gensh.me/blog/models/database"
+	"github.com/genshen/blog/models"
+	"github.com/genshen/blog/models/database"
 )
 
 var mu sync.RWMutex

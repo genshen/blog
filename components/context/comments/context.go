@@ -1,9 +1,9 @@
 package comments
 
 import (
-	"gensh.me/blog/models"
-	"gensh.me/blog/models/database"
 	"gopkg.in/mgo.v2/bson"
+	"github.com/genshen/blog/models"
+	"github.com/genshen/blog/models/database"
 )
 
 func FindCommentsById(post_id string,start int) *[]models.Comment{

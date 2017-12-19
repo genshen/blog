@@ -1,10 +1,10 @@
 package admin
 
 import (
-	"gensh.me/blog/models/database"
-	"gensh.me/blog/models"
-	security "gensh.me/blog/components/auth"
 	"gopkg.in/mgo.v2/bson"
+	"github.com/genshen/blog/models/database"
+	"github.com/genshen/blog/models"
+	security "github.com/genshen/blog/components/auth"
 )
 
 func AddAdmin(username string, email string, password string) {

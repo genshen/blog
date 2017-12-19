@@ -1,15 +1,15 @@
 package routers
 
 import (
-	"gensh.me/blog/controllers"
 	"github.com/astaxie/beego"
-	"gensh.me/blog/controllers/admin"
+	"github.com/genshen/blog/controllers"
+	"github.com/genshen/blog/controllers/admin"
 )
 
 var adminStaticPrefix, adminApi string
 
 func init() {
-	adminApi = beego.AppConfig.String("admin_api")
+	adminApi = admin.AdminPrefix + beego.AppConfig.String("admin_api")
 	adminStaticPrefix = beego.AppConfig.String("admin_static_prefix")
 
 	initRouter()
@@ -32,19 +32,29 @@ func initRouter() {
 
 	//admin router
 	beego.Router(admin.AdminSignOutUri, &admin.AuthController{}, "get:SignOut")
-	beego.Router(admin.AdminAuthUri, &admin.AuthController{}, "get,post:SignIn")
+	beego.Router(admin.AdminSignInUri, &admin.AuthController{}, "get,post:SignIn")
 	if beego.BConfig.RunMode == beego.DEV {
 		//can register a admin user in Dev Mode
-		beego.Router("/dev/sign_up", &admin.AuthController{}, "get,post:SignUp")
+		beego.Router(adminApi+"/dev/sign_up", &admin.AuthController{}, "get,post:SignUp")
 	}
 
-	beego.Router(admin.AdminPrefix + "/", &admin.PanelController{}, "get:Get")
+	beego.Router(admin.AdminPrefix+"/", &admin.PanelController{}, "get:Get")
 
-	beego.Router(admin.AdminPrefix + adminApi + "/post", &admin.PostsController{}, "get:List")
-	beego.Router(admin.AdminPrefix + adminApi + "/post/add", &admin.PostsController{}, "post:Add")
-	beego.Router(admin.AdminPrefix + adminApi + "/upload_token", &admin.PostsController{}, "get:UploadToken")
+	if beego.AppConfig.DefaultBool("storage::EnableQiNiuCloud", false) {
+		beego.Router(adminApi+"/upload_token", &admin.StorageController{}, "get:QiNiuCloudStorageUploadToken")
+	} else {
+		beego.Router(adminApi+"/upload_token", &admin.StorageController{}, "get:LocalStorageUploadToken")
+		// Note: no adminApi prefix !!
+		beego.Router(beego.AppConfig.DefaultString("storage::LocalStorageDomain", "/images/:hash"),
+			&admin.StorageController{}, "get:LocalStorageResource")
+		// Note:urlFor is ues in function storage_controller.go#initStorage
+		beego.Router(adminApi+"/upload", &admin.StorageController{}, "post:LocalUpload")
+		admin.InitStorage()
+	}
+	beego.Router(adminApi+"/article", &admin.PostsController{}, "get:List")
+	beego.Router(adminApi+"/article/publish", &admin.PostsController{}, "post:Add")
 	//beego.Router(admin.AdminPrefix+"/post/delete", &admin.PostsController{}, "post:Del")
-	beego.Router(admin.AdminPrefix + adminApi + "/categories", &admin.CategoryController{}, "get:Get")
-	beego.Router(admin.AdminPrefix + adminApi + "/category/add", &admin.CategoryController{}, "post:CategoryAdd")
-	beego.Router(admin.AdminPrefix + adminApi + "/sub_category/add", &admin.CategoryController{}, "post:SubCategoryAdd")
+	beego.Router(adminApi+"/categories", &admin.CategoryController{}, "get:Get")
+	beego.Router(adminApi+"/category/add", &admin.CategoryController{}, "post:CategoryAdd")
+	beego.Router(adminApi+"/sub_category/add", &admin.CategoryController{}, "post:SubCategoryAdd")
 }

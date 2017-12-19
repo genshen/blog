@@ -1,10 +1,10 @@
 package auth
 
 import (
-	"github.com/astaxie/beego/httplib"
 	"strings"
 	"errors"
-	"gensh.me/blog/components/keys"
+	"github.com/astaxie/beego/httplib"
+	"github.com/genshen/blog/components/keys"
 )
 
 const LenAccessTokenName = 13 //access_token=

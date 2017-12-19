@@ -4,8 +4,8 @@ import "github.com/astaxie/beego"
 
 var (
 	AdminSignOutUri string
-	AdminAuthUri string
-	AdminPrefix string
+	AdminSignInUri  string
+	AdminPrefix     string
 )
 
 type BaseController struct {
@@ -13,7 +13,7 @@ type BaseController struct {
 }
 
 func init() {
-	AdminAuthUri = beego.AppConfig.String("admin_auth_path")
+	AdminSignInUri = beego.AppConfig.String("admin_sign_in_path")
 	AdminSignOutUri = beego.AppConfig.String("admin_sign_out_path")
 	AdminPrefix = beego.AppConfig.String("admin_prefix")
 }

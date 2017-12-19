@@ -6,14 +6,18 @@ import (
 	"net/http"
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/context"
-	"gensh.me/blog/controllers/admin"
-	"gensh.me/blog/components/utils"
+	"github.com/genshen/blog/controllers/admin"
+	"github.com/genshen/blog/components/utils"
 )
 
 func intiFilter() {
 	beego.InsertFilter(admin.AdminPrefix + "/*", beego.BeforeRouter, FilterAuth)
 	if beego.BConfig.RunMode == beego.DEV{
 		beego.InsertFilter(adminStaticPrefix + "/*", beego.BeforeRouter, ServeAdminStaticDev)
+		beego.InsertFilter("static/*",beego.BeforeRouter, func(ctx *context.Context){
+			ctx.Redirect(302,"http://localhost:8080"+ctx.Request.RequestURI)
+			//ctx.Output.Header("Access-Control-Allow-Origin", "*")
+		})
 	}else{
 		beego.InsertFilter(adminStaticPrefix + "/*", beego.BeforeRouter, ServeAdminStatic)
 	}
@@ -26,7 +30,7 @@ func FilterAuth(ctx *context.Context) {
 		index = len(ctx.Request.RequestURI)
 	}
 	baseUri = ctx.Request.RequestURI[0:index]
-	if baseUri != admin.AdminAuthUri && baseUri != admin.AdminSignOutUri {
+	if baseUri != admin.AdminSignInUri && baseUri != admin.AdminSignOutUri {
 		_, ok := ctx.Input.Session(admin.UserId).(string)
 		if !ok {
 			var urlTail = ctx.Request.RequestURI[len(admin.AdminPrefix):] //thr router filter means len(RequestURI)>= len(AdminPrefix)
@@ -35,7 +39,7 @@ func FilterAuth(ctx *context.Context) {
 				ctx.Output.Header("Content-type","application/json")
 				ctx.Output.Body([]byte("{\"Ststau\":2,\"Error\":\"需要登录后才能操作\"}")) //todo
 			} else {
-				ctx.Redirect(302, admin.AdminAuthUri + "?next=" + ctx.Request.RequestURI)
+				ctx.Redirect(302, admin.AdminSignInUri+ "?next=" + ctx.Request.RequestURI)
 			}
 		}
 	}

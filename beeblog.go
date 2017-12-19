@@ -1,8 +1,8 @@
 package main
 
 import (
-	_ "gensh.me/blog/routers"
-	_"gensh.me/blog/models/database"
+	_ "github.com/genshen/blog/routers"
+	_"github.com/genshen/blog/models/database"
 	"github.com/astaxie/beego"
 )
 

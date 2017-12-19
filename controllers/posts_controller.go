@@ -1,7 +1,7 @@
 package controllers
 
 import (
-	"gensh.me/blog/components/context/posts"
+	"github.com/genshen/blog/components/context/posts"
 )
 
 type PostsController struct {

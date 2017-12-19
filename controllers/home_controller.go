@@ -1,10 +1,10 @@
 package controllers
 
 import (
-	"gensh.me/blog/components/context/settings"
-	"gensh.me/blog/components/auth"
-	"gensh.me/blog/models"
-	"gensh.me/blog/components/context/category"
+	"github.com/genshen/blog/components/context/settings"
+	"github.com/genshen/blog/components/auth"
+	"github.com/genshen/blog/models"
+	"github.com/genshen/blog/components/context/category"
 )
 
 type HomeController struct {

@@ -1,8 +1,8 @@
 package controllers
 
 import (
-	"gensh.me/blog/components/auth"
 	"encoding/json"
+	"github.com/genshen/blog/components/auth"
 )
 
 type AuthController struct {
