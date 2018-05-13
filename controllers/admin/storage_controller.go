@@ -5,15 +5,14 @@ import (
 	"io"
 	"fmt"
 	"log"
+	"time"
+	"net/http"
 	"crypto/sha1"
+	"mime/multipart"
 	"path/filepath"
-	"qiniupkg.com/api.v7/kodo"
 	"github.com/genshen/blog/components/keys"
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/logs"
-	"mime/multipart"
-	"net/http"
-	"time"
 )
 
 type StorageController struct {
@@ -58,13 +57,7 @@ func InitStorage() {
 }
 
 func (this *StorageController) QiNiuCloudStorageUploadToken() {
-	zone := 0
-	c := kodo.New(zone, nil) // 创建一个 Client 对象
-	policy := &kodo.PutPolicy{
-		Scope:   keys.QiniuConfig.BucketName,
-		Expires: keys.QiniuConfig.Expires,
-	}
-	up_token := c.MakeUptoken(policy)
+	up_token := keys.NewUploadToken()
 	this.Data["json"] = &StorageToken{Token: up_token, Domain: keys.QiniuConfig.Domain, UploadPath: keys.QiniuConfig.UploadPath}
 	this.ServeJSON()
 }

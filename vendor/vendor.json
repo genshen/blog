@@ -75,6 +75,60 @@
 			"revisionTime": "2016-01-05T22:08:40Z"
 		},
 		{
+			"checksumSHA1": "rWu/BUx4H/jz6OxFGJTQO7K/O2w=",
+			"path": "github.com/qiniu/api.v7",
+			"revision": "8b646e84541d64e7cf118c51d2ee034425a486bb",
+			"revisionTime": "2018-05-10T09:23:06Z"
+		},
+		{
+			"checksumSHA1": "S8HOwhDrcgqDyywBZHDVf0/8j0Q=",
+			"path": "github.com/qiniu/api.v7/auth/qbox",
+			"revision": "8b646e84541d64e7cf118c51d2ee034425a486bb",
+			"revisionTime": "2018-05-10T09:23:06Z"
+		},
+		{
+			"checksumSHA1": "cfTc4oH34GEd6CXeNSzekEPpN7o=",
+			"path": "github.com/qiniu/api.v7/cdn",
+			"revision": "8b646e84541d64e7cf118c51d2ee034425a486bb",
+			"revisionTime": "2018-05-10T09:23:06Z"
+		},
+		{
+			"checksumSHA1": "nUyWDaL427ctaDO2iWjmQrvwwZE=",
+			"path": "github.com/qiniu/api.v7/conf",
+			"revision": "8b646e84541d64e7cf118c51d2ee034425a486bb",
+			"revisionTime": "2018-05-10T09:23:06Z"
+		},
+		{
+			"checksumSHA1": "2Lhy9103r6UKA5PaN7ZDHiKsw70=",
+			"path": "github.com/qiniu/api.v7/storage",
+			"revision": "8b646e84541d64e7cf118c51d2ee034425a486bb",
+			"revisionTime": "2018-05-10T09:23:06Z"
+		},
+		{
+			"checksumSHA1": "beTNGx1rXgzHQQKZzLDl6WJPafg=",
+			"path": "github.com/qiniu/x/bytes.v7",
+			"revision": "946c4a16076d6d98aeb78619e2bd4012357f7228",
+			"revisionTime": "2015-07-21T03:42:11Z"
+		},
+		{
+			"checksumSHA1": "g5gqSqUO071V3ULvUGWT8uaFB8g=",
+			"path": "github.com/qiniu/x/bytes.v7/seekable",
+			"revision": "946c4a16076d6d98aeb78619e2bd4012357f7228",
+			"revisionTime": "2015-07-21T03:42:11Z"
+		},
+		{
+			"checksumSHA1": "nEYHAZwW+PZDXfvtbwJ0ZScoN44=",
+			"path": "github.com/qiniu/x/reqid.v7",
+			"revision": "946c4a16076d6d98aeb78619e2bd4012357f7228",
+			"revisionTime": "2015-07-21T03:42:11Z"
+		},
+		{
+			"checksumSHA1": "OQVghp//ATup7BfCaB1BLjYTJb4=",
+			"path": "github.com/qiniu/x/xlog.v7",
+			"revision": "946c4a16076d6d98aeb78619e2bd4012357f7228",
+			"revisionTime": "2015-07-21T03:42:11Z"
+		},
+		{
 			"checksumSHA1": "H2ZvmkbJ9YyhyaVc3YSYVTJlNGU=",
 			"path": "github.com/smartystreets/assertions",
 			"revision": "2063fd1cc7c975db70502811a34b06ad034ccdf2",
@@ -147,82 +201,22 @@
 			"revisionTime": "2016-08-18T02:01:20Z"
 		},
 		{
-			"checksumSHA1": "FScvKwivlFvoDvfeCiHJ4crGDRo=",
-			"path": "qiniupkg.com/api.v7/api",
-			"revision": "ad7023b87b2f5c169812da49fe44900be1c4e5c2",
-			"revisionTime": "2016-11-04T10:23:44Z"
-		},
-		{
-			"checksumSHA1": "puuQ+XItb64YTOMAeWmK/wozaxo=",
-			"path": "qiniupkg.com/api.v7/auth/qbox",
-			"revision": "ad7023b87b2f5c169812da49fe44900be1c4e5c2",
-			"revisionTime": "2016-11-04T10:23:44Z"
-		},
-		{
-			"checksumSHA1": "zu+k+1N/RSF7j7+D4fLN4g9KTfA=",
-			"path": "qiniupkg.com/api.v7/conf",
-			"revision": "ad7023b87b2f5c169812da49fe44900be1c4e5c2",
-			"revisionTime": "2016-11-04T10:23:44Z"
-		},
-		{
-			"checksumSHA1": "x8xgta5c4cegVqGl0uPiByWz86E=",
-			"path": "qiniupkg.com/api.v7/kodo",
-			"revision": "ad7023b87b2f5c169812da49fe44900be1c4e5c2",
-			"revisionTime": "2016-11-04T10:23:44Z"
-		},
-		{
-			"checksumSHA1": "1MO2S91qoNLS4oVAbDnWxhU7it4=",
-			"path": "qiniupkg.com/api.v7/kodocli",
-			"revision": "ad7023b87b2f5c169812da49fe44900be1c4e5c2",
-			"revisionTime": "2016-11-04T10:23:44Z"
-		},
-		{
-			"checksumSHA1": "n5BVAYgjR6Ewu/f5ZtFEMQw2cg4=",
+			"checksumSHA1": "9t2exgz3OI0iupx2XzTY64dTNTI=",
 			"path": "qiniupkg.com/x/bytes.v7",
-			"revision": "f512abcf45ab4e2ba0fd4784c57b53d495997d66",
-			"revisionTime": "2015-07-21T03:41:13Z"
+			"revision": "946c4a16076d6d98aeb78619e2bd4012357f7228",
+			"revisionTime": "2015-07-21T03:42:11Z"
 		},
 		{
-			"checksumSHA1": "D8o364JSeYSXiqyONWx8Lyz5mGA=",
-			"path": "qiniupkg.com/x/bytes.v7/seekable",
-			"revision": "f512abcf45ab4e2ba0fd4784c57b53d495997d66",
-			"revisionTime": "2015-07-21T03:41:13Z"
-		},
-		{
-			"checksumSHA1": "lZpPFmsyzRMToTt+2fUX+PBzZnE=",
-			"path": "qiniupkg.com/x/ctype.v7",
-			"revision": "f512abcf45ab4e2ba0fd4784c57b53d495997d66",
-			"revisionTime": "2015-07-21T03:41:13Z"
-		},
-		{
-			"checksumSHA1": "2/bFXG8FXH2LJmlkgq1h3/a3RxQ=",
+			"checksumSHA1": "TeAfwkuKkelqJ9HJ56Z3sboLxhE=",
 			"path": "qiniupkg.com/x/log.v7",
-			"revision": "f512abcf45ab4e2ba0fd4784c57b53d495997d66",
-			"revisionTime": "2015-07-21T03:41:13Z"
+			"revision": "946c4a16076d6d98aeb78619e2bd4012357f7228",
+			"revisionTime": "2015-07-21T03:42:11Z"
 		},
 		{
-			"checksumSHA1": "q0yB/Ie0jfqr0ePkdbpwi4hDOQM=",
+			"checksumSHA1": "H8+RHqplH5pNwKVURcANz3Z7+8Y=",
 			"path": "qiniupkg.com/x/reqid.v7",
-			"revision": "f512abcf45ab4e2ba0fd4784c57b53d495997d66",
-			"revisionTime": "2015-07-21T03:41:13Z"
-		},
-		{
-			"checksumSHA1": "ro7nbrE3KwapbBQ6DK+ajjEkPm0=",
-			"path": "qiniupkg.com/x/rpc.v7",
-			"revision": "f512abcf45ab4e2ba0fd4784c57b53d495997d66",
-			"revisionTime": "2015-07-21T03:41:13Z"
-		},
-		{
-			"checksumSHA1": "qO82X/wOaqSKzx/xIZYQsmrdcyY=",
-			"path": "qiniupkg.com/x/url.v7",
-			"revision": "f512abcf45ab4e2ba0fd4784c57b53d495997d66",
-			"revisionTime": "2015-07-21T03:41:13Z"
-		},
-		{
-			"checksumSHA1": "CCXvM9IWuwIsVeIxLi0Rf0PzYs8=",
-			"path": "qiniupkg.com/x/xlog.v7",
-			"revision": "f512abcf45ab4e2ba0fd4784c57b53d495997d66",
-			"revisionTime": "2015-07-21T03:41:13Z"
+			"revision": "946c4a16076d6d98aeb78619e2bd4012357f7228",
+			"revisionTime": "2015-07-21T03:42:11Z"
 		}
 	],
 	"rootPath": "github.com/genshen/blog"
