@@ -3,8 +3,8 @@ package admin
 import (
 	"github.com/genshen/blog/components/context/admin"
 	"github.com/genshen/blog/components/utils"
-	"github.com/astaxie/beego"
 	"html/template"
+	"github.com/astaxie/beego"
 )
 
 const (
@@ -13,28 +13,34 @@ const (
 )
 
 type AuthController struct {
-	BaseController
+	beego.Controller
 }
 
 func (this *AuthController) SignIn() {
-	if this.isUserLogin() {
-		this.Redirect(beego.URLFor("PanelController.Get"), 302)
-		return;
-	}
-	if (this.Ctx.Request.Method == "POST") {
-		sign_in_form := admin.SignInForm{Email: this.GetString("email"), Password: this.GetString("password")}
-		if errs := sign_in_form.Valid(); errs != nil {
-			s := utils.NewInstant(errs, map[string]string{"email": sign_in_form.Email, "password": ""})
+	if this.Ctx.Request.Method == "POST" {
+		signInForm := admin.SignInForm{Email: this.GetString("email"), Password: this.GetString("password")}
+		if errs := signInForm.Valid(); errs != nil {
+			s := utils.NewSingleErrorInstant(errs)
 			this.Data["json"] = &utils.SimpleJsonResponse{Status: 0, Error: &s}
 		} else {
-			this.LoginUser(sign_in_form.ID, sign_in_form.Username)
 			next := this.GetString("next")
 			if len(next) > 0 && next[0] != '/' {
 				next = "/" + next
 			} else if next == "" {
-				next = AdminPrefix
+				next = AdminHomePage
 			}
-			this.Data["json"] = &utils.SimpleJsonResponse{Status: 1, Addition: next}
+
+			var con utils.UserInfo // todo get user information
+			if token, _, err := utils.JwtNewToken(con, ""); err != nil {
+				this.Data["json"] = &utils.SimpleJsonResponse{Status: 0,
+					Error: map[string]string{"jwt_error": "generating jwt error."}}
+			} else {
+				a := struct {
+					Next     string `json:"next"`
+					JwtToken string `json:"jwt_token"`
+				}{next, token}
+				this.Data["json"] = &utils.SimpleJsonResponse{Status: 1, Addition: a}
+			}
 		}
 		this.ServeJSON()
 	} else {
@@ -59,19 +65,8 @@ func (this *AuthController) SignUp() {
 		this.Data["json"] = &utils.SimpleJsonResponse{Status: 1, Addition: ""};
 		this.ServeJSON()
 	} else {
-		this.Data["xsrfdata"]=template.HTML(this.XSRFFormHTML())
+		this.Data["xsrfdata"] = template.HTML(this.XSRFFormHTML())
 		this.Data["Form"] = &SignUpForm{}
 		this.TplName = "admin/auth/sign_up.html"
 	}
-}
-
-func (this *AuthController) SignOut() {
-	this.DelSession(UserId)
-	this.DelSession(Username)
-	this.Redirect(AdminSignInUri, 302)
-}
-
-func (this *AuthController) LoginUser(id string, username string) {
-	this.SetSession(UserId, id)
-	this.SetSession(Username, username)
 }

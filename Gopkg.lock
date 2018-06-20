@@ -19,6 +19,12 @@
   revision = "c5118e9535f237996bae7c7baebe4ed4247cb2c6"
 
 [[projects]]
+  name = "github.com/dgrijalva/jwt-go"
+  packages = ["."]
+  revision = "06ea1031745cb8b3dab3f6a236daf2b0aa468b7e"
+  version = "v3.2.0"
+
+[[projects]]
   branch = "master"
   name = "github.com/gopherjs/gopherjs"
   packages = ["js"]
@@ -98,6 +104,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "b24acdf4199f52a8e8a3c523275b2b38db7c3fd77e5d34697de07dae666cd910"
+  inputs-digest = "bb86e7b2d6fbeb891736ac2824780b335a1b7826041e30c60324fb318c1361b2"
   solver-name = "gps-cdcl"
   solver-version = 1

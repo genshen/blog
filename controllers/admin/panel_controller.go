@@ -1,7 +1,11 @@
 package admin
 
 type PanelController struct {
-	BaseController
+	BaseAuthController
+}
+
+func (p *PanelController) OnUnAuth() {
+	p.Redirect(AdminSignInUri+"?next="+p.Ctx.Request.RequestURI, 302)
 }
 
 func (this *PanelController) Get() {

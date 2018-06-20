@@ -16,7 +16,7 @@ import (
 )
 
 type StorageController struct {
-	BaseController
+	BaseAuthController
 }
 
 type StorageToken struct {

@@ -6,7 +6,7 @@ import (
 )
 
 type PostsController struct {
-	BaseController
+	BaseAuthController
 }
 
 func (this *PostsController) List() {

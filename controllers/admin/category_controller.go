@@ -6,7 +6,7 @@ import (
 )
 
 type CategoryController struct {
-	BaseController
+	BaseAuthController
 }
 
 //get all categories
