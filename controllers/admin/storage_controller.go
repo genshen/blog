@@ -5,8 +5,6 @@ import (
 	"io"
 	"fmt"
 	"log"
-	"time"
-	"net/http"
 	"crypto/sha1"
 	"mime/multipart"
 	"path/filepath"
@@ -56,15 +54,15 @@ func InitStorage() {
 	}
 }
 
-func (this *StorageController) QiNiuCloudStorageUploadToken() {
+func (c *StorageController) QiNiuCloudStorageUploadToken() {
 	up_token := keys.NewUploadToken()
-	this.Data["json"] = &StorageToken{Token: up_token, Domain: keys.QiniuConfig.Domain, UploadPath: keys.QiniuConfig.UploadPath}
-	this.ServeJSON()
+	c.Data["json"] = &StorageToken{Token: up_token, Domain: keys.QiniuConfig.Domain, UploadPath: keys.QiniuConfig.UploadPath}
+	c.ServeJSON()
 }
 
-func (this *StorageController) LocalStorageUploadToken() {
-	this.Data["json"] = &StorageToken{Token: "token", Domain: localStorageConfig.Domain, UploadPath: localStorageConfig.UploadUrl}
-	this.ServeJSON()
+func (c *StorageController) LocalStorageUploadToken() {
+	c.Data["json"] = &StorageToken{Token: "token", Domain: localStorageConfig.Domain, UploadPath: localStorageConfig.UploadUrl}
+	c.ServeJSON()
 }
 
 // Note:urlFor is ues in function storage_controller.go#initStorage
@@ -85,17 +83,6 @@ func (c *StorageController) LocalUpload() {
 	}
 	c.Ctx.Output.Header("Content-type", "application/json")
 	c.Ctx.Output.Body([]byte(body))
-}
-
-func (c *StorageController) LocalStorageResource() {
-	hash := c.Ctx.Input.Param(":hash")
-	if (len(hash) >= 3) {
-		var path string = filepath.Join(localStorageConfig.StorageDir, hash[0:1]+"/"+hash[1:2]+"/"+hash[2:])
-		// todo check exist
-		file, _ := os.Open(path)
-		defer file.Close()
-		http.ServeContent(c.Ctx.ResponseWriter, c.Ctx.Request, "", time.Now(), file)
-	}
 }
 
 // calculate a file hash,returns a Hexadecimal string of hash sum.

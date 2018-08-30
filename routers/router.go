@@ -26,7 +26,7 @@ func initRouter() {
 	beego.Router(blogPagePrefix+"/settings", &controllers.HomeController{}, "get:Settings")
 	beego.Router(blogPagePrefix+"/auth/callback", &controllers.AuthController{}, "get:Callback")
 
-	beego.Router(blogApiPrefix+"/at/category", &controllers.PostsController{}, "get:Category")
+	beego.Router(blogApiPrefix+"/category", &controllers.PostsController{}, "get:Category")
 
 	beego.Router(blogApiPrefix+"/detail/:id([0-9A-Fa-f]{24,24})", &controllers.PostsController{}, "get:Detail")
 	beego.Router(blogApiPrefix+"/comment/add", &controllers.CommentController{}, "post:Add")
@@ -49,7 +49,7 @@ func initRouter() {
 		beego.Router(admin.AdminApiPrefix+"/upload_token", &admin.StorageController{}, "get:LocalStorageUploadToken")
 		// Note: no adminApi prefix !!
 		beego.Router(beego.AppConfig.DefaultString("storage::LocalStorageDomain", "/images/:hash"),
-			&admin.StorageController{}, "get:LocalStorageResource")
+			&admin.LocalStorageHashController{}, "get:LocalStorageResource")
 		// Note:urlFor is ues in function storage_controller.go#initStorage
 		beego.Router(admin.AdminApiPrefix+"/upload", &admin.StorageController{}, "post:LocalUpload")
 		admin.InitStorage()
