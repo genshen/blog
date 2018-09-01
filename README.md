@@ -2,14 +2,14 @@
 my personal blog with Golang and material design  
 [demo](https://gensh.me):https://gensh.me  
 
-## dependency packages
-```
-go get -u github.com/astaxie/beego  
-go get -u gopkg.in/mgo.v2/bson
-qiniupkg.com/x/log.v7
+## dependency tools
+We use go modules to build project and manage dependencies.
+Make sure you have go 1.11 installed or vgo installed.
+For more details, see [https://github.com/golang/go/wiki/Modules](https://github.com/golang/go/wiki/Modules).
 
-[optional packages]
-go get -u github.com/beego/bee
+## Build
+```bash
+$ go build
 ```
 
 ## config database
