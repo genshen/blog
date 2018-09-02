@@ -5,15 +5,9 @@ import (
 	"github.com/genshen/blog/components/context/category"
 )
 
+// category managing
 type CategoryController struct {
 	BaseAuthController
-}
-
-//get all categories
-func (this *CategoryController)Get() {
-	c := category.GetCategories()
-	this.Data["json"] = &c
-	this.ServeJSON()
 }
 
 func (this *CategoryController)CategoryAdd() {

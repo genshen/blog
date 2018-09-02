@@ -8,7 +8,7 @@ import (
 )
 
 const (
-	ConfigJwtTokenLifetime      = 600
+	ConfigJwtTokenLifetime      = 1200
 	ConfigJwtSecret             = "ds"
 	JwtAdminConfigQueryTokenKey = "_jwt"
 )
