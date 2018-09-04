@@ -1,15 +1,23 @@
 package keys
 
-import "github.com/astaxie/beego"
+import (
+	"github.com/astaxie/beego/logs"
+	"github.com/genshen/blog/components/utils"
+)
 
-var GitHubKey  struct {
+var GitHubKey struct {
 	AuthUrl      string
 	ClientId     string
 	ClientSecret string
 }
 
 func loadGithubKeys() {
-	GitHubKey.AuthUrl = beego.AppConfig.String("github_auth_url")
-	GitHubKey.ClientId = beego.AppConfig.String("github_client_id")
-	GitHubKey.ClientSecret = beego.AppConfig.String("github_client_secret")
+	if utils.CustomConfig.Auth.Keys != nil {
+		githubConfig := utils.CustomConfig.Auth.Keys["github"]
+		GitHubKey.AuthUrl = githubConfig.AuthUrl
+		GitHubKey.ClientId = githubConfig.ClientId
+		GitHubKey.ClientSecret = githubConfig.SecretId
+	} else {
+		logs.Warning("github key not found in config.")
+	}
 }

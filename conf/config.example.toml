@@ -1,0 +1,40 @@
+
+[database]
+  db_type = "mongodb"
+  db_name = "blog"
+  db_debug = false
+  db_config = "localhost:27017"
+  db_auth = false
+  db_auth_user = ""
+  db_auth_pwd = ""
+
+[auth] # authO2 config
+  before_auth = ""  # commands before callback of authO2
+  [auth.keys]
+    [auth.keys.github]
+      auth_url = ""
+      client_id = ""
+      secret_id = ""
+
+[storage]
+  enable_qiniu_cloud = false
+  local_storage_dir = "upload"
+  local_storage_domain = "/cdn/:hash"
+  [storage.qiniu_config]
+    access_key = ""
+    secret_key = ""
+    bucket_name = ""
+    token_expires = 360
+    config_domain = ""
+    upload_path = ""
+
+[api]
+  blog_pages_prefix = ""
+  blog_api_prefix = "/blog/at"
+  admin_pages_prefix = "/admin"
+  admin_api_prefix = "/s/api"
+  admin = "dev"  # not used
+  admin_sign_up_path = "/dev/sign_up"
+  admin_sign_in_path = "/auth/sign_in"
+  admin_sign_out_path = "/auth/sign_out"
+  admin_home_page = ""

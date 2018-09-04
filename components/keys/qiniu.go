@@ -1,9 +1,9 @@
 package keys
 
 import (
-	"github.com/astaxie/beego"
-	"github.com/qiniu/api.v7/storage"
+	"github.com/genshen/blog/components/utils"
 	"github.com/qiniu/api.v7/auth/qbox"
+	"github.com/qiniu/api.v7/storage"
 )
 
 var QiniuConfig struct {
@@ -16,12 +16,13 @@ var QiniuConfig struct {
 }
 
 func loadQiniuKeys() {
-	QiniuConfig.accessKey = beego.AppConfig.String("qiniu_access_key")
-	QiniuConfig.secretKey = beego.AppConfig.String("qiniu_secret_key")
-	QiniuConfig.bucketName = beego.AppConfig.String("qiniu_bucket_name")
-	QiniuConfig.expires = uint32(beego.AppConfig.DefaultInt("qiniu_token_expires", 60))
-	QiniuConfig.Domain = beego.AppConfig.String("qiniu_config_domain")
-	QiniuConfig.UploadPath = beego.AppConfig.String("qiniu_config_upload_path")
+	qiniuConfig := utils.CustomConfig.Storage.QiNiuConfig
+	QiniuConfig.accessKey = qiniuConfig.AccessKey
+	QiniuConfig.secretKey = qiniuConfig.SecretKey
+	QiniuConfig.bucketName = qiniuConfig.BucketName
+	QiniuConfig.expires = qiniuConfig.TokenExpires
+	QiniuConfig.Domain = qiniuConfig.ConfigDomain
+	QiniuConfig.UploadPath = qiniuConfig.UploadPath
 }
 
 func NewUploadToken() string {

@@ -2,6 +2,7 @@ package routers
 
 import (
 	"github.com/astaxie/beego"
+	"github.com/genshen/blog/components/utils"
 	"github.com/genshen/blog/controllers/admin"
 )
 
@@ -16,12 +17,12 @@ func initAdminRoute() {
 
 	beego.Router(admin.AdminPagesPrefix+"/", &admin.PanelController{}, "get:Get")
 
-	if beego.AppConfig.DefaultBool("storage::EnableQiNiuCloud", false) {
+	if utils.CustomConfig.Storage.EnableQiNiuCloud {
 		beego.Router(admin.AdminApiPrefix+"/upload_token", &admin.StorageController{}, "get:QiNiuCloudStorageUploadToken")
 	} else {
 		beego.Router(admin.AdminApiPrefix+"/upload_token", &admin.StorageController{}, "get:LocalStorageUploadToken")
 		// Note: no adminApi prefix !!
-		beego.Router(beego.AppConfig.DefaultString("storage::LocalStorageDomain", "/images/:hash"),
+		beego.Router(utils.CustomConfig.Storage.LocalStorageDomain,
 			&admin.LocalStorageHashController{}, "get:LocalStorageResource")
 		// Note:urlFor is ues in function storage_controller.go#initStorage
 		beego.Router(admin.AdminApiPrefix+"/upload", &admin.StorageController{}, "post:LocalUpload")

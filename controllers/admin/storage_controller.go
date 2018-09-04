@@ -1,16 +1,17 @@
 package admin
 
 import (
-	"os"
-	"io"
-	"fmt"
-	"log"
 	"crypto/sha1"
-	"mime/multipart"
-	"path/filepath"
-	"github.com/genshen/blog/components/keys"
+	"fmt"
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/logs"
+	"github.com/genshen/blog/components/keys"
+	"github.com/genshen/blog/components/utils"
+	"io"
+	"log"
+	"mime/multipart"
+	"os"
+	"path/filepath"
 )
 
 type StorageController struct {
@@ -36,9 +37,9 @@ var localStorageConfig struct {
 
 // init storage configure in router/router.go
 func InitStorage() {
-	if !beego.AppConfig.DefaultBool("storage::EnableQiNiuCloud", false) {
+	if !utils.CustomConfig.Storage.EnableQiNiuCloud {
 		localStorageConfig.UploadUrl = beego.URLFor(LocalUploadURLFor)
-		localStorageConfig.StorageDir = beego.AppConfig.DefaultString("storage::LocalStorageDir", "up")
+		localStorageConfig.StorageDir = utils.CustomConfig.Storage.LocalStorageDir
 		localStorageConfig.Domain = beego.URLFor(LocalStorageResourceURLFor, ":hash", "")
 		for pre := 0; pre <= 0xF; pre++ {
 			for next := 0; next <= 0xF; next++ {

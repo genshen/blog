@@ -2,6 +2,7 @@ package routers
 
 import (
 	"github.com/astaxie/beego"
+	"github.com/genshen/blog/components/utils"
 	"github.com/genshen/blog/controllers"
 )
 
@@ -9,8 +10,8 @@ var blogPagePrefix string
 var blogApiPrefix string
 
 func init() {
-	blogPagePrefix = beego.AppConfig.DefaultString("blog_pages_prefix", "")
-	blogApiPrefix = beego.AppConfig.String("blog_api_prefix")
+	blogPagePrefix = utils.CustomConfig.Api.BlogPagesPrefix
+	blogApiPrefix = utils.CustomConfig.Api.BlogApiPrefix
 	initRouter()
 	initAdminRoute()
 	intiFilter()

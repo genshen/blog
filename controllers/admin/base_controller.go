@@ -2,8 +2,8 @@ package admin
 
 import (
 	"github.com/astaxie/beego"
-	"strings"
 	"github.com/genshen/blog/components/utils"
+	"strings"
 )
 
 var (
@@ -27,14 +27,14 @@ type BaseAuthController struct {
 }
 
 func init() {
-	AdminPagesPrefix = beego.AppConfig.String("admin_pages_prefix")
-	AdminApiPrefix = beego.AppConfig.String("admin_api_prefix")
+	AdminPagesPrefix = utils.CustomConfig.Api.AdminPagesPrefix
+	AdminApiPrefix = utils.CustomConfig.Api.AdminApiPrefix
 
-	AdminSignUpUri = AdminPagesPrefix + beego.AppConfig.String("admin_sign_up_path")
-	AdminSignInUri = AdminPagesPrefix + beego.AppConfig.String("admin_sign_in_path")
-	AdminSignOutUri = AdminPagesPrefix + beego.AppConfig.String("admin_sign_out_path")
+	AdminSignUpUri = AdminPagesPrefix + utils.CustomConfig.Api.AdminSignUpPath
+	AdminSignInUri = AdminPagesPrefix + utils.CustomConfig.Api.AdminSignInPath
+	AdminSignOutUri = AdminPagesPrefix + utils.CustomConfig.Api.AdminSignOutPath
 
-	AdminHomePage = AdminPagesPrefix + beego.AppConfig.DefaultString("admin_home_page", "")
+	AdminHomePage = AdminPagesPrefix + utils.CustomConfig.Api.AdminHomePath
 }
 
 func (b *BaseAuthController) Prepare() {
