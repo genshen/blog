@@ -27,7 +27,7 @@ func (auth *AuthController) SignIn() {
 			if len(next) > 0 && next[0] != '/' {
 				next = "/" + next
 			} else if next == "" {
-				next = AdminHomePage
+				next = utils.CustomConfig.Api.AdminHomePath
 			}
 
 			var con admin.UserInfo // todo get user information

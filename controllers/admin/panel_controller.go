@@ -1,11 +1,13 @@
 package admin
 
+import "github.com/genshen/blog/components/utils"
+
 type PanelController struct {
 	BaseAuthController
 }
 
 func (p *PanelController) OnUnAuth() {
-	p.Redirect(AdminSignInUri+"?next="+p.Ctx.Request.RequestURI, 302)
+	p.Redirect(utils.CustomConfig.Api.AdminSignInPath+"?next="+p.Ctx.Request.RequestURI, 302)
 }
 
 func (this *PanelController) Get() {

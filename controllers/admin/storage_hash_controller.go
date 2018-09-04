@@ -1,6 +1,7 @@
 package admin
 
 import (
+	"github.com/genshen/blog/components/utils"
 	"path/filepath"
 	"os"
 	"net/http"
@@ -17,7 +18,7 @@ type LocalStorageHashController struct {
 func (c *LocalStorageHashController) LocalStorageResource() {
 	hash := c.Ctx.Input.Param(":hash")
 	if len(hash) >= 3 {
-		var path string = filepath.Join(localStorageConfig.StorageDir, hash[0:1]+"/"+hash[1:2]+"/"+hash[2:])
+		var path string = filepath.Join(utils.CustomConfig.Storage.LocalStorageDir, hash[0:1]+"/"+hash[1:2]+"/"+hash[2:])
 		// todo check exist
 		file, _ := os.Open(path)
 		defer file.Close()

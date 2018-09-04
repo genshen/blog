@@ -37,8 +37,9 @@ var CustomConfig struct {
 			ConfigDomain string `toml:"config_domain"`
 			UploadPath   string `toml:"upload_path"`
 		} `toml:"qiniu_config"`
-		LocalStorageDir    string `toml:"local_storage_dir"`
-		LocalStorageDomain string `toml:"local_storage_domain"` // todo default "/images/:hash"
+		LocalStorageDir       string `toml:"local_storage_dir"`
+		LocalStorageUploadUrl string `toml:"local_storage_upload_url"`
+		LocalStorageDomain    string `toml:"local_storage_domain"` // todo default "/images/:hash"
 	} `toml:"storage"`
 	Api struct {
 		BlogPagesPrefix  string `toml:"blog_pages_prefix"`
@@ -58,5 +59,16 @@ func init() {
 	if _, err := toml.DecodeFile("conf/config.toml", &CustomConfig); err != nil {
 		log.Fatalln(err)
 		return
+	}
+	// post process of api section in configure
+	// sign-in sign-out sign-up and admin-home all start with {AdminPagesPrefix}
+	CustomConfig.Api.AdminSignUpPath = CustomConfig.Api.AdminPagesPrefix + CustomConfig.Api.AdminSignUpPath
+	CustomConfig.Api.AdminSignInPath = CustomConfig.Api.AdminPagesPrefix + CustomConfig.Api.AdminSignInPath
+	CustomConfig.Api.AdminSignOutPath = CustomConfig.Api.AdminPagesPrefix + CustomConfig.Api.AdminSignOutPath
+	CustomConfig.Api.AdminHomePath = CustomConfig.Api.AdminPagesPrefix + CustomConfig.Api.AdminHomePath
+
+	// post process of storage section in config
+	if !CustomConfig.Storage.EnableQiNiuCloud {
+		CustomConfig.Storage.LocalStorageUploadUrl = CustomConfig.Api.AdminApiPrefix + CustomConfig.Storage.LocalStorageUploadUrl
 	}
 }

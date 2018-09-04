@@ -3,7 +3,6 @@ package admin
 import (
 	"crypto/sha1"
 	"fmt"
-	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/logs"
 	"github.com/genshen/blog/components/keys"
 	"github.com/genshen/blog/components/utils"
@@ -24,27 +23,14 @@ type StorageToken struct {
 	UploadPath string `json:"upload_path"`
 }
 
-const (
-	LocalUploadURLFor          = "StorageController.LocalUpload"
-	LocalStorageResourceURLFor = "StorageController.LocalStorageResource"
-)
-
-var localStorageConfig struct {
-	UploadUrl  string
-	StorageDir string
-	Domain     string
-}
-
 // init storage configure in router/router.go
 func InitStorage() {
 	if !utils.CustomConfig.Storage.EnableQiNiuCloud {
-		localStorageConfig.UploadUrl = beego.URLFor(LocalUploadURLFor)
-		localStorageConfig.StorageDir = utils.CustomConfig.Storage.LocalStorageDir
-		localStorageConfig.Domain = beego.URLFor(LocalStorageResourceURLFor, ":hash", "")
+		localStorageDir := utils.CustomConfig.Storage.LocalStorageDir
 		for pre := 0; pre <= 0xF; pre++ {
 			for next := 0; next <= 0xF; next++ {
 				suffix := fmt.Sprintf("/%x/%x", pre, next)
-				newPath := filepath.Join(".", localStorageConfig.StorageDir, suffix)
+				newPath := filepath.Join(".", localStorageDir, suffix)
 				if _, err := os.Stat(newPath); os.IsNotExist(err) {
 					if err = os.MkdirAll(newPath, 0744); err != nil {
 						log.Fatalln(err)
@@ -57,12 +43,19 @@ func InitStorage() {
 
 func (c *StorageController) QiNiuCloudStorageUploadToken() {
 	up_token := keys.NewUploadToken()
-	c.Data["json"] = &StorageToken{Token: up_token, Domain: keys.QiniuConfig.Domain, UploadPath: keys.QiniuConfig.UploadPath}
+	c.Data["json"] = &StorageToken{
+		Token:      up_token,
+		Domain:     keys.QiniuConfig.Domain,
+		UploadPath: keys.QiniuConfig.UploadPath,
+	}
 	c.ServeJSON()
 }
 
 func (c *StorageController) LocalStorageUploadToken() {
-	c.Data["json"] = &StorageToken{Token: "token", Domain: localStorageConfig.Domain, UploadPath: localStorageConfig.UploadUrl}
+	c.Data["json"] = &StorageToken{
+		Token:      "token",
+		Domain:     utils.CustomConfig.Storage.LocalStorageDomain,
+		UploadPath: utils.CustomConfig.Storage.LocalStorageUploadUrl}
 	c.ServeJSON()
 }
 
@@ -78,7 +71,7 @@ func (c *StorageController) LocalUpload() {
 	var path = h.Filename
 	var body = "{\"error\":true}" //default: has error.
 	if hash := hashFile(f); len(hash) >= 3 {
-		path = filepath.Join(localStorageConfig.StorageDir, hash[0:1]+"/"+hash[1:2]+"/"+hash[2:])
+		path = filepath.Join(utils.CustomConfig.Storage.LocalStorageDir, hash[0:1]+"/"+hash[1:2]+"/"+hash[2:])
 		c.SaveToFile("file", path) //todo check exist.
 		body = "{\"key\":\"" + hash + "\",\"hash\":\"" + hash + "\"}"
 	}

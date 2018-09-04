@@ -7,16 +7,6 @@ import (
 	"strings"
 )
 
-var (
-	AdminSignUpUri  string
-	AdminSignOutUri string
-	AdminSignInUri  string
-	AdminHomePage   string
-
-	AdminPagesPrefix string
-	AdminApiPrefix   string
-)
-
 type UnAuth interface {
 	OnUnAuth()
 }
@@ -25,17 +15,6 @@ type UnAuth interface {
 type BaseAuthController struct {
 	user admin.UserInfo
 	beego.Controller
-}
-
-func init() {
-	AdminPagesPrefix = utils.CustomConfig.Api.AdminPagesPrefix
-	AdminApiPrefix = utils.CustomConfig.Api.AdminApiPrefix
-
-	AdminSignUpUri = AdminPagesPrefix + utils.CustomConfig.Api.AdminSignUpPath
-	AdminSignInUri = AdminPagesPrefix + utils.CustomConfig.Api.AdminSignInPath
-	AdminSignOutUri = AdminPagesPrefix + utils.CustomConfig.Api.AdminSignOutPath
-
-	AdminHomePage = AdminPagesPrefix + utils.CustomConfig.Api.AdminHomePath
 }
 
 func (b *BaseAuthController) Prepare() {
