@@ -2,6 +2,7 @@ package admin
 
 import (
 	"github.com/astaxie/beego"
+	"github.com/genshen/blog/components/context/admin"
 	"github.com/genshen/blog/components/utils"
 	"strings"
 )
@@ -22,7 +23,7 @@ type UnAuth interface {
 
 // app controller needing auth will inherit this struct, and implement OnUnAuth interface.
 type BaseAuthController struct {
-	user utils.UserInfo
+	user admin.UserInfo
 	beego.Controller
 }
 
@@ -50,17 +51,17 @@ func (b *BaseAuthController) Prepare() {
 			token = authHead[lIndex+1:]
 		}
 	} else {
-		if token = b.GetString(utils.JwtAdminConfigQueryTokenKey); token == "" {
+		if token = b.GetString(admin.JwtAdminConfigQueryTokenKey); token == "" {
 			b.SetUnAuth()
 			return
 		} // else token != "", then passed and go on running
 	}
 
-	if claims, err := utils.JwtVerify(token); err != nil { // todo set claims
+	if claims, err := utils.JwtVerify(&admin.UserInfo{}, token); err != nil { // todo set claims
 		b.SetUnAuth()
 	} else {
 		// check passed.
-		b.user = claims.UserInfo
+		b.user = *(claims.(*admin.UserInfo)) // do interface conversion and pointer conversion.
 	}
 }
 

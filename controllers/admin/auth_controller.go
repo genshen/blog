@@ -1,10 +1,10 @@
 package admin
 
 import (
+	"github.com/astaxie/beego"
 	"github.com/genshen/blog/components/context/admin"
 	"github.com/genshen/blog/components/utils"
 	"html/template"
-	"github.com/astaxie/beego"
 )
 
 const (
@@ -16,36 +16,36 @@ type AuthController struct {
 	beego.Controller
 }
 
-func (this *AuthController) SignIn() {
-	if this.Ctx.Request.Method == "POST" {
-		signInForm := admin.SignInForm{Email: this.GetString("email"), Password: this.GetString("password")}
+func (auth *AuthController) SignIn() {
+	if auth.Ctx.Request.Method == "POST" {
+		signInForm := admin.SignInForm{Email: auth.GetString("email"), Password: auth.GetString("password")}
 		if errs := signInForm.Valid(); errs != nil {
 			s := utils.NewSingleErrorInstant(errs)
-			this.Data["json"] = &utils.SimpleJsonResponse{Status: 0, Error: &s}
+			auth.Data["json"] = &utils.SimpleJsonResponse{Status: 0, Error: &s}
 		} else {
-			next := this.GetString("next")
+			next := auth.GetString("next")
 			if len(next) > 0 && next[0] != '/' {
 				next = "/" + next
 			} else if next == "" {
 				next = AdminHomePage
 			}
 
-			var con utils.UserInfo // todo get user information
-			if token, _, err := utils.JwtNewToken(con, ""); err != nil {
-				this.Data["json"] = &utils.SimpleJsonResponse{Status: 0,
+			var con admin.UserInfo // todo get user information
+			if token, _, err := utils.NewJwtToken(&con, "", admin.AdminConfigJwtTokenLifetime); err != nil {
+				auth.Data["json"] = &utils.SimpleJsonResponse{Status: 0,
 					Error: map[string]string{"jwt_error": "generating jwt error."}}
 			} else {
 				a := struct {
 					Next     string `json:"next"`
 					JwtToken string `json:"jwt_token"`
 				}{next, token}
-				this.Data["json"] = &utils.SimpleJsonResponse{Status: 1, Addition: a}
+				auth.Data["json"] = &utils.SimpleJsonResponse{Status: 1, Addition: a}
 			}
 		}
-		this.ServeJSON()
+		auth.ServeJSON()
 	} else {
-		this.Data["dev"] = false;
-		this.TplName = "admin/auth/sign_in.html"
+		auth.Data["dev"] = false;
+		auth.TplName = "admin/auth/sign_in.html"
 	}
 }
 
@@ -56,17 +56,17 @@ type SignUpForm struct {
 	Password string
 }
 
-func (this *AuthController) SignUp() {
-	if (this.Ctx.Request.Method == "POST") { //todo
-		email := this.GetString("Email")
-		username := this.GetString("Username")
-		password := this.GetString("Password")
+func (auth *AuthController) SignUp() {
+	if (auth.Ctx.Request.Method == "POST") { //todo
+		email := auth.GetString("Email")
+		username := auth.GetString("Username")
+		password := auth.GetString("Password")
 		admin.CreateUser(username, email, password)
-		this.Data["json"] = &utils.SimpleJsonResponse{Status: 1, Addition: ""};
-		this.ServeJSON()
+		auth.Data["json"] = &utils.SimpleJsonResponse{Status: 1, Addition: ""};
+		auth.ServeJSON()
 	} else {
-		this.Data["xsrfdata"] = template.HTML(this.XSRFFormHTML())
-		this.Data["Form"] = &SignUpForm{}
-		this.TplName = "admin/auth/sign_up.html"
+		auth.Data["xsrfdata"] = template.HTML(auth.XSRFFormHTML())
+		auth.Data["Form"] = &SignUpForm{}
+		auth.TplName = "admin/auth/sign_up.html"
 	}
 }
