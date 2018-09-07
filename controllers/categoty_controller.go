@@ -1,9 +1,12 @@
 package controllers
 
-import "github.com/genshen/blog/components/context/category"
+import (
+	"github.com/astaxie/beego"
+	"github.com/genshen/blog/components/context/category"
+)
 
 type CategoryController struct {
-	BaseController
+	beego.Controller
 }
 
 //get all categories

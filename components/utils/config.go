@@ -5,7 +5,7 @@ import (
 	"log"
 )
 
-type AuthO2Config struct {
+type OAuth2Config struct {
 	AuthUrl  string `toml:"auth_url"`
 	ClientId string `toml:"client_id"`
 	SecretId string `toml:"secret_id"`
@@ -23,9 +23,9 @@ var CustomConfig struct {
 		DbAuthPwd  string `toml:"db_auth_pwd"`
 	} `toml:"database"`
 	Auth struct {
-		// authO2 config
+		// oauth2 config
 		BeforeAuth string                  `toml:"before_auth"`
-		Keys       map[string]AuthO2Config `toml:"keys"`
+		Keys       map[string]OAuth2Config `toml:"keys"`
 	} `toml:"auth"`
 	Storage struct {
 		EnableQiNiuCloud bool `toml:"enable_qiniu_cloud"`

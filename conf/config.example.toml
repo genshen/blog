@@ -8,8 +8,8 @@
   db_auth_user = ""
   db_auth_pwd = ""
 
-[auth] # authO2 config
-  before_auth = ""  # commands before callback of authO2
+[auth] # oauth2 config
+  before_auth = ""  # commands before callback of oauth2
   [auth.keys]
     [auth.keys.github]
       auth_url = ""

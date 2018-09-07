@@ -8,14 +8,15 @@ import (
 )
 
 const (
-	ConfigJwtSecret             = "ds"
+	ConfigJwtSecret = "ds"
 )
 
 type JwtClaims interface {
 	jwt.Claims
 	// Initialize this JwtClaims with issuer and lifetime
 	JwtCreator(issuer string, lifetime int64)
-	// convert token to JwtClaims.
+	// convert token to JwtClaims
+	// It returns parsed pointer of JwtClaims and error if it has.
 	ToJwtClaims(token *jwt.Token) (JwtClaims, error)
 }
 

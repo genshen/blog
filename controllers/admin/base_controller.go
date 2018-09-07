@@ -1,56 +1,26 @@
 package admin
 
 import (
-	"github.com/astaxie/beego"
 	"github.com/genshen/blog/components/context/admin"
 	"github.com/genshen/blog/components/utils"
-	"strings"
+	"github.com/genshen/blog/controllers/base"
 )
-
-type UnAuth interface {
-	OnUnAuth()
-}
 
 // app controller needing auth will inherit this struct, and implement OnUnAuth interface.
 type BaseAuthController struct {
 	user admin.UserInfo
-	beego.Controller
+	base.JwtAuthController
 }
 
-func (b *BaseAuthController) Prepare() {
-	var authHead = b.Ctx.Input.Header("Authorization")
-	var token string
-	if authHead != "" {
-		// Authorization: Bearer <token>
-		lIndex := strings.LastIndex(authHead, " ")
-		if lIndex < 0 || lIndex+1 >= len(authHead) {
-			b.SetUnAuth()
-			return
-		} else {
-			token = authHead[lIndex+1:]
-		}
-	} else {
-		if token = b.GetString(admin.JwtAdminConfigQueryTokenKey); token == "" {
-			b.SetUnAuth()
-			return
-		} // else token != "", then passed and go on running
-	}
+func (b *BaseAuthController) JwtQueryTokenKey() string {
+	return admin.JwtAdminConfigQueryTokenKey
+}
 
+func (b *BaseAuthController) TokenVerify(token string) {
 	if claims, err := utils.JwtVerify(&admin.UserInfo{}, token); err != nil { // todo set claims
-		b.SetUnAuth()
+		b.SetUnAuth() // or call UnAuth interface directly
 	} else {
-		// check passed.
+		// verify passed.
 		b.user = *(claims.(*admin.UserInfo)) // do interface conversion and pointer conversion.
-	}
-}
-
-func (b *BaseAuthController) SetUnAuth() {
-	if app, ok := b.AppController.(UnAuth); ok {
-		app.OnUnAuth()
-	} else {
-		//log.Panic("the UnAuth interface must be implemented.")
-		b.Ctx.Output.Status = 401
-		b.Ctx.Output.Body([]byte("UnAuthenticated"))
-		b.StopRun()
 	}
 }

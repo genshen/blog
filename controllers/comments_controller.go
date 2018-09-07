@@ -1,58 +1,60 @@
 package controllers
 
 import (
-	"strconv"
-	"github.com/genshen/blog/components/utils"
+	"github.com/genshen/blog/components/auth"
+	"github.com/genshen/blog/components/context/admin"
 	"github.com/genshen/blog/components/context/comments"
+	"github.com/genshen/blog/components/utils"
+	"github.com/genshen/blog/controllers/base"
 )
 
 type CommentController struct {
-	BaseController
+	user auth.User // oauth2 user data
+	base.JwtAuthController
 }
 
-func (this *CommentController) Add() {
-	var result *utils.SimpleJsonResponse
-	if this.HasAuth() {
-		user := this.GetUserData()
-		post_id := this.GetString("post_id")
-		content := this.GetString("content")
-		form := comments.CommentAddForm{PostId:post_id, Content:content}
-		if errors, comment_id := form.ValidAndSave(&user); errors == nil {
-			result = &utils.SimpleJsonResponse{Status:1, Addition:comment_id}
-		} else {
-			result = &utils.SimpleJsonResponse{Status:0,
-				Error:utils.NewInstant(errors, map[string]string{"post_id":"", "content":""})}
-		}
+func (com *CommentController) JwtQueryTokenKey() string {
+	return admin.JwtAdminConfigQueryTokenKey
+}
+
+func (com *CommentController) TokenVerify(token string) {
+	if claims, err := utils.JwtVerify(&auth.User{}, token); err != nil { // todo set claims
+		com.SetUnAuth() // or call UnAuth interface directly
 	} else {
-		result = &utils.SimpleJsonResponse{Status:2, Error:"需要登录后才能操作"}
+		// verify passed.
+		com.user = *(claims.(*auth.User)) // do interface conversion and pointer conversion.
 	}
-	this.Data["json"] = result
-	this.ServeJSON()
 }
 
-func (this *CommentController)ReplyAdd() {
+func (com *CommentController) Add() {
 	var result *utils.SimpleJsonResponse
-	if this.HasAuth() {
-		user := this.GetUserData()
-		comment_id := this.GetString("comment_id")
-		content := this.GetString("content")
-		form := comments.ReplyAddForm{CommentId:comment_id, Content:content}
-		if errors := form.ValidAndSave(&user); errors == nil {
-			result = &utils.SimpleJsonResponse{Status:1, Addition:"success"}
-		} else {
-			result = &utils.SimpleJsonResponse{Status:0,
-				Error:utils.NewInstant(errors, map[string]string{"comment_id":"", "content":""})}
-		}
+	postId := com.GetString("post_id")
+	content := com.GetString("content")
+	form := comments.CommentAddForm{PostId: postId, Content: content}
+	if errors, comment_id := form.ValidAndSave(&com.user); errors == nil {
+		result = &utils.SimpleJsonResponse{Status: 1, Addition: comment_id}
 	} else {
-		result = &utils.SimpleJsonResponse{Status:2, Error:"需要登录后才能操作"}
+		result = &utils.SimpleJsonResponse{Status: 0,
+			Error: utils.NewInstant(errors, map[string]string{"post_id": "", "content": ""})}
 	}
-	this.Data["json"] = result
-	this.ServeJSON()
+
+	com.Data["json"] = result
+	com.ServeJSON()
 }
 
-func (this *CommentController)Load() {
-	post_id := this.Ctx.Input.Param(":post_id")
-	start, _ := strconv.ParseInt(this.Ctx.Input.Param(":start"), 10, 8)
-	this.Data["json"] = comments.FindCommentsById(post_id, int(start))
-	this.ServeJSON()
+func (com *CommentController) ReplyAdd() {
+	var result *utils.SimpleJsonResponse
+
+	comment_id := com.GetString("comment_id")
+	content := com.GetString("content")
+	form := comments.ReplyAddForm{CommentId: comment_id, Content: content}
+	if errors := form.ValidAndSave(&com.user); errors == nil {
+		result = &utils.SimpleJsonResponse{Status: 1, Addition: "success"}
+	} else {
+		result = &utils.SimpleJsonResponse{Status: 0,
+			Error: utils.NewInstant(errors, map[string]string{"comment_id": "", "content": ""})}
+	}
+
+	com.Data["json"] = result
+	com.ServeJSON()
 }

@@ -7,6 +7,7 @@ import (
 )
 
 const JwtAdminConfigQueryTokenKey = "_jwt"
+const JwtAdminIssuer = "admin_issuer"
 const AdminConfigJwtTokenLifetime = 1200
 
 type UserInfo struct {

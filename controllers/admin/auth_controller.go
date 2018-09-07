@@ -31,7 +31,7 @@ func (auth *AuthController) SignIn() {
 			}
 
 			var con admin.UserInfo // todo get user information
-			if token, _, err := utils.NewJwtToken(&con, "", admin.AdminConfigJwtTokenLifetime); err != nil {
+			if token, _, err := utils.NewJwtToken(&con, admin.JwtAdminIssuer, admin.AdminConfigJwtTokenLifetime); err != nil {
 				auth.Data["json"] = &utils.SimpleJsonResponse{Status: 0,
 					Error: map[string]string{"jwt_error": "generating jwt error."}}
 			} else {

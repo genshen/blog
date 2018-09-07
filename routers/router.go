@@ -32,6 +32,6 @@ func initRouter() {
 
 	beego.Router(blogApiPrefix+"/detail/:id([0-9A-Fa-f]{24,24})", &controllers.PostsController{}, "get:Detail")
 	beego.Router(blogApiPrefix+"/comment/add", &controllers.CommentController{}, "post:Add")
-	beego.Router(blogApiPrefix+"/comments/:post_id([0-9A-Fa-f]{24,24})/:start([0-9]+)", &controllers.CommentController{}, "get:Load")
+	beego.Router(blogApiPrefix+"/comments/:post_id([0-9A-Fa-f]{24,24})/:start([0-9]+)", &controllers.CommentsListController{}, "get:CommentsList")
 	beego.Router(blogApiPrefix+"/reply/add", &controllers.CommentController{}, "post:ReplyAdd")
 }

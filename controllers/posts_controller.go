@@ -1,13 +1,14 @@
 package controllers
 
 import (
+	"github.com/astaxie/beego"
 	"github.com/genshen/blog/components/context/posts"
 )
 
 const DefPostListCount = 20
 
 type PostsController struct {
-	BaseController
+	beego.Controller
 }
 
 // load all posts
